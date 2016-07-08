@@ -2,6 +2,7 @@
 #include<memory>
 #include"Geometry.h"
 #include<vector>
+#include<map>
 
 enum BlockType{
 	bt_none,
@@ -12,16 +13,19 @@ enum BlockType{
 
 };
 class Block;
+class Player;
 class BlockFactory
 {
 private:
-	std::vector<Rect> _blocks;
+	std::vector<std::shared_ptr<Block>> _blocks;
+	std::map<BlockType, int> _imgMap;
+	Player& _player;
 public:
 	BlockFactory();
 	~BlockFactory();
-	void CreateBlock(BlockType,Vector2);
+	void CreateBlock(BlockType bt,Vector2 pos);
 	void Update();
 
-	std::vector<Rect>& GetBlocks(){ return _blocks; }
+	std::vector<std::shared_ptr<Block>>& GetBlocks(){ return _blocks; }
 };
 
