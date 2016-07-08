@@ -6,6 +6,7 @@
 #include"EnemyFactory.h"
 #include"EnemyBulletFactory.h"
 #include"BlockFactory.h"
+#include"Stage.h"
 class PlayingScene:public Scene
 {
 private:
@@ -15,6 +16,7 @@ private:
 	Camera _camera;
 	EnemyFactory _enemyFac;
 	BlockFactory _blockFac;
+	Stage _stage;
 
 	std::shared_ptr<Player> _pl;
 	

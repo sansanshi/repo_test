@@ -6,12 +6,14 @@ enum CharacterType{
 	ct_player,
 	ct_grabMan,
 	ct_knifeMan,
+	ct_stage,
 
 };
 enum ColliderType{
 	col_none,
 	col_default,
 	col_attack,
+	col_stage,
 };
 
 #include "Geometry.h"

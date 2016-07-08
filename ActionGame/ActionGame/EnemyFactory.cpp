@@ -7,10 +7,11 @@
 EnemyFactory::EnemyFactory(Player& player,Camera& camera) :_playerRef(player), _cameraRef(camera)
 {
 	_enemyImgMap[et_grabman] = LoadGraph("img/grabman_.png");
-	_enemyImgMap[et_knifeman] = LoadGraph("img/knifeman.png");
+	_enemyImgMap[et_knifeman] = LoadGraph("img/knifeman_.png");
 	_enemyImgMap[et_batman] = LoadGraph("img/boss1_.png");
 	
 	_enemydeadImgMap[et_grabman] = LoadGraph("img/grabman_dead.png");
+	_enemydeadImgMap[et_knifeman] = LoadGraph("img/knifeman_dead.png");
 	_timer = 0;
 }
 
@@ -42,9 +43,9 @@ EnemyFactory::Create(EnemyType et, Vector2& pos)
 		return _enemies.back();
 		break;
 	case et_knifeman:
-		/*std::shared_ptr<Enemy> ret;
-		ret.reset(new KnifeMan(pos, _enemyImgMap[et], _expHandle, _eBulletFactory));
-		return _enemies.back();*/
+		ret.reset(new KnifeMan(pos, _enemyImgMap[et], _enemydeadImgMap[et], _playerRef,_cameraRef));
+		_enemies.push_back(ret);
+		return _enemies.back();
 		break;
 	case et_batman:
 		/*_enemies.push_back(new (pos, _enemyImgMap[et], _expHandle, _bgChips, _bgScroll, _eBulletFactory, _playerPos));
