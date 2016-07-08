@@ -15,7 +15,7 @@ GrabMan::GrabMan(Vector2 pos, int handle, int deadHandle, Player& player, Camera
 	_deadhandle = deadHandle;
 	_walkFrame = 0;
 
-	_isGrab = false;
+	_isGrabbing = false;
 	_isNear = false;
 	_isDead = false;
 	_isLeft = false;
@@ -37,11 +37,13 @@ GrabMan::OnCollided(Collider* col)
 		_walkFrame = 0;
 	}
 	if (col->Type() == col_default&&col->CharaType() == ct_player){
-		Player* p=dynamic_cast<Player*>(col->_gameObject);
+		
+		Player* p = dynamic_cast<Player*>(col->_gameObject);
 		p->Grabbed(this);
-		_isGrab = true;
+		_isGrabbing = true;
 		_pFunc = &GrabMan::GrabUpdate;
 		_walkFrame = 0;
+		_isCollidable = false;//‚±‚ê‚µ‚Æ‚©‚È‚¢‚Æ“–‚½‚Á‚Ä‚¢‚éŠÔ‰½“x‚àOnCollided‚ªŒÄ‚Î‚ê‚é		
 	}
 }
 void
@@ -54,9 +56,10 @@ GrabMan::OnCollided(GameObject* obj)
 	if (obj->ColType() == col_default&&obj->CharaType() == ct_player){
 		Player* p = dynamic_cast<Player*>(obj);
 		p->Grabbed(this);
-		_isGrab = true;
+		_isGrabbing = true;
 		_pFunc = &GrabMan::GrabUpdate;
 		_walkFrame = 0;
+		_isCollidable = false;
 	}
 }
 
@@ -94,7 +97,7 @@ GrabMan::Draw()
 		if (_isNear) graphNum = 16 * (((_walkFrame % 20) / 10) + 2);
 		else graphNum = 16 * ((_walkFrame % 20) / 10);
 
-		if (_isGrab)DrawCameraGraph(_pos.x,_pos.y,16*4,0,16,40,8,20,3.0,0,_handle,true,_isLeft);//DrawRectExtendGraph(_pos.x, _pos.y, _pos.x + 64, _pos.y + 128, 16 * 4, 0, 16, 40, _handle, true);
+		if (_isGrabbing)DrawCameraGraph(_pos.x,_pos.y,16*4,0,16,40,8,20,3.0,0,_handle,true,_isLeft);//DrawRectExtendGraph(_pos.x, _pos.y, _pos.x + 64, _pos.y + 128, 16 * 4, 0, 16, 40, _handle, true);
 		else DrawCameraGraph(_pos.x,_pos.y,graphNum,0,16,40,8,20,3.0,0,_handle,true,_isLeft);//DrawRectExtendGraph(_pos.x, _pos.y, _pos.x + 64, _pos.y + 128, 16 * ((_walkFrame % 50) / 10), 0, 16, 40, _handle, true);
 		_collider.Draw();
 	}
@@ -166,5 +169,6 @@ GrabMan::Shaked()
 	_shakedCnt++;
 	if (_shakedCnt > 5){
 		Kill();
+		_isGrabbing = false;
 	}
 }

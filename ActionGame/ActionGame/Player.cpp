@@ -42,6 +42,7 @@ Player::Player(Camera& cameraRef) :_cameraRef(cameraRef)
 	_handleMap[ps_CrouchPunch] = LoadGraph("img/crouch_punch_.png");
 	_handleMap[ps_Kamae] = LoadGraph("img/kamae.png");
 	_handleMap[ps_CrouchKamae] = LoadGraph("img/crouch_kamae_.png");
+	_handleMap[ps_grabbed] = LoadGraph("img/walk_.png");
 
 	_pFuncMap[ps_Neutral] = &Player::WalkUpdate;
 	_pFuncMap[ps_Walk] = &Player::WalkUpdate;
@@ -54,6 +55,7 @@ Player::Player(Camera& cameraRef) :_cameraRef(cameraRef)
 	_pFuncMap[ps_CrouchPunch] = &Player::CrouchPunchUpdate;
 	_pFuncMap[ps_Kamae] = &Player::KamaeUpdate;
 	_pFuncMap[ps_CrouchKamae] = &Player::CrouchKamaeUpdate;
+	_pFuncMap[ps_grabbed] = &Player::GrabbedUpdate;
 
 	_stateFrame[ps_Neutral] = 0;
 	_stateFrame[ps_Walk] = 0;
@@ -66,6 +68,7 @@ Player::Player(Camera& cameraRef) :_cameraRef(cameraRef)
 	_stateFrame[ps_CrouchPunch] = 0;
 	_stateFrame[ps_Kamae] = 0;
 	_stateFrame[ps_CrouchKamae] = 0;
+	_stateFrame[ps_grabbed] = 0;
 
 
 	_drawFuncMap[ps_Neutral] = &Player::DrawNeutral;
@@ -79,6 +82,7 @@ Player::Player(Camera& cameraRef) :_cameraRef(cameraRef)
 	_drawFuncMap[ps_CrouchPunch] = &Player::DrawCrouchPunch;
 	_drawFuncMap[ps_Kamae] = &Player::DrawKamae;
 	_drawFuncMap[ps_CrouchKamae] = &Player::DrawCrouchKamae;
+	_drawFuncMap[ps_grabbed] = &Player::DrawWalk;
 
 	//attackCol 幅高さ決める　　プレイヤーのセンターからoffset isRightでoffset.xを変える
 	_attackCol.width = 20;
@@ -418,6 +422,7 @@ Player::GrabbedUpdate()
 	if (_key[KEY_INPUT_LEFT])_isRight = false;
 	if (_key[KEY_INPUT_RIGHT])_isRight = true;
 
+	
 	if (!isPressedRight&&_key[KEY_INPUT_RIGHT]){
 		for (auto grabman : _grabbingEnemies)
 		{
@@ -430,6 +435,18 @@ Player::GrabbedUpdate()
 			grabman->Shaked();
 		}
 	}
+
+	//不要なもの削除ループ
+	_grabbingEnemies.remove_if(
+		[](GrabMan* e){//ラムダ式が使われている
+		return !e->IsGrabbing();
+	});
+
+
+	if (_grabbingEnemies.size() == 0){
+		ChangeState(ps_Walk);
+	}
+
 }
 
 void

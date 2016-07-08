@@ -24,7 +24,7 @@ private:
 	void GrabUpdate();
 
 	bool _isNear;//プレイヤーに近いか（NearUpdate）に入ったか
-	bool _isGrab;//プレイヤーをつかんでいるか
+	bool _isGrabbing;//プレイヤーをつかんでいるか
 	bool _isDead;
 	bool _isLeft;//反転するか
 
@@ -45,5 +45,7 @@ public:
 	void ChangeState();
 	void DrawCameraGraph(int x, int y, int srcX, int srcY, int width, int height, int cx, int cy, double extRate, double angle, int handle, int transFlag, int turnFlag);
 	void Shaked();//掴み状態でプレイヤーにシェイクされた
+
+	bool IsGrabbing(){ return _isGrabbing; }
 };
 
