@@ -21,7 +21,7 @@ private:
 	std::map<BlockType, int> _imgMap;
 	Player& _player;
 public:
-	BlockFactory();
+	BlockFactory(Player&);
 	~BlockFactory();
 	void CreateBlock(BlockType bt,Vector2 pos);
 	void Update();

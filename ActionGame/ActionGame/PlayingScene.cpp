@@ -5,7 +5,7 @@
 //凝ったタイトル作る
 //死んだら最初から始まる
 
-PlayingScene::PlayingScene() : _player(_camera), _camera(_player), _enemyFac(_player,_camera)
+PlayingScene::PlayingScene() : _player(_camera), _camera(_player), _enemyFac(_player, _camera), _blockFac(_player)
 {
 	_groundZero = 360.0f;
 	_stageGrHandle = LoadGraph("img/stage.png");

@@ -1,7 +1,8 @@
 #include "BlockFactory.h"
+#include"Player.h"
 
 
-BlockFactory::BlockFactory()
+BlockFactory::BlockFactory(Player& player) :_player(player)
 {
 }
 
