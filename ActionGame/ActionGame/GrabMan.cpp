@@ -172,3 +172,8 @@ GrabMan::Shaked()
 		_isGrabbing = false;
 	}
 }
+void
+GrabMan::Reject(Vector2 vec)
+{
+
+}

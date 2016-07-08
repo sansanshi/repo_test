@@ -28,7 +28,6 @@ private:
 	Camera& _cameraRef;
 	float _cOffsetX;
 
-
 public:
 	KnifeMan(Vector2 pos, int handle, int deadHandle, Player& player, Camera& camera);
 	~KnifeMan();
@@ -40,6 +39,7 @@ public:
 	void Kill();
 	void ChangeState();
 	void DrawCameraGraph(int x, int y, int srcX, int srcY, int width, int height, int cx, int cy, double extRate, double angle, int handle, int transFlag, int turnFlag);
-	
+
+	void Reject(Vector2);
 
 };

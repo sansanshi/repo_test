@@ -59,6 +59,13 @@ public:
 			}
 	}
 
+	static Vector2
+		RejectVec(Collider* colA, Collider* colB)//押し戻しベクトルを返す(押し戻されるのはcolAの方）
+	{
+			colA->_gameObject->Reject(Vector2(0,-3));//ここ
+			return Vector2(0, -3);
+	}
+
 	//CollisionDetectorに入れる
 	//矩形が重なった部分の中心を返す
 	//※処理を正しく行うためにこの処理はIshitがtrueのときのみ呼び出す

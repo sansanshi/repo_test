@@ -6,7 +6,7 @@
 //プレイヤーを2000とかかなり右のほうに置いておいて0に向かっていった方が作りやすい
 //0からはスクロールしないようにする
 
-Player::Player(Camera& cameraRef) :_cameraRef(cameraRef)
+Player::Player(Camera& camera, Stage& stage) :_cameraRef(camera), _stageRef(stage)
 {
 	_collider = Collider(this, ct_player, col_default);
 
@@ -119,7 +119,7 @@ Player::Draw()
 	(this->*_drawFuncMap[_state])();
 	_collider.Draw();
 	_attackCol.Draw(0xff000000);
-	DrawBox(0, 400, 640, 480, 0xffffff,false);
+	//DrawBox(0, 400, 640, 480, 0xffffff,false);
 }
 
 void
@@ -219,16 +219,16 @@ Player::JumpUpdate()
 	{
 		if (_kickInterval == 0)ChangeState(ps_JumpKick);
 	}
-
-	if (_collider.Bottom() >= 400.0f) {
-		_pos.y = 400.0 - _collider.height/2;
-		_collider.SetCenter(_pos+Vector2(_cameraRef.OffsetX(),0));;
-		//_pFunc = &Player::WalkUpdate;
-		ChangeState(ps_Walk);
-		//_stateFrame[ps_Jump] = 0;
-		_velocity = Vector2(0, 0);
-		_acceleration = Vector2(0, 0);
-	}
+	//ここ
+	//if (_collider.Bottom() >= 400.0f) {
+	//	_pos.y = 400.0 - _collider.height/2;
+	//	_collider.SetCenter(_pos+Vector2(_cameraRef.OffsetX(),0));;
+	//	//_pFunc = &Player::WalkUpdate;
+	//	ChangeState(ps_Walk);
+	//	//_stateFrame[ps_Jump] = 0;
+	//	_velocity = Vector2(0, 0);
+	//	_acceleration = Vector2(0, 0);
+	//}
 	
 }
 
@@ -536,4 +536,11 @@ Player::Grabbed(GrabMan* enemy)
 	_grabbingEnemies.push_back(enemy);
 	ChangeState(ps_grabbed);
 
+}
+
+void 
+Player::Reject(Vector2 vec)
+{
+	_pos += vec;
+	_collider.SetCenter(_pos + Vector2(_cameraRef.OffsetX(), 0));
 }

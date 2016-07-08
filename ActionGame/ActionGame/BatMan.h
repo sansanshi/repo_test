@@ -6,5 +6,6 @@ class BatMan :
 public:
 	BatMan();
 	~BatMan();
+	void Reject(Vector2);
 };
 

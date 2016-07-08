@@ -19,6 +19,7 @@ public:
 	void OnCollided(std::shared_ptr<GameObject>);
 
 	void Draw();
+	void Reject(Vector2);
 };
 
 /*std::string str;

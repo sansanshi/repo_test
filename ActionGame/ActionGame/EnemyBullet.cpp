@@ -42,3 +42,8 @@ EnemyBullet::OnCollided(GameObject* obj)
 {
 
 }
+void
+EnemyBullet::Reject(Vector2 vec)
+{
+
+}

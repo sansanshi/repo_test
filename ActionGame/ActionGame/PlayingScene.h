@@ -18,7 +18,6 @@ private:
 	BlockFactory _blockFac;
 	Stage _stage;
 
-	std::shared_ptr<Player> _pl;
 	
 public:
 	PlayingScene();

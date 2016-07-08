@@ -47,5 +47,6 @@ public:
 	void Shaked();//掴み状態でプレイヤーにシェイクされた
 
 	bool IsGrabbing(){ return _isGrabbing; }
+	void Reject(Vector2);
 };
 

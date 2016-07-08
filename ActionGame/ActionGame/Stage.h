@@ -17,6 +17,7 @@ public:
 	void OnCollided(Collider*);
 	void OnCollided(GameObject*);
 	void OnCollided(std::shared_ptr<GameObject>);
+	void Reject(Vector2);
 
 	void Draw();
 	void DrawCameraGraph(int x, int y, int srcX, int srcY, int width, int height, int cx, int cy, double extRate, double angle, int handle, int transFlag, int turnFlag);

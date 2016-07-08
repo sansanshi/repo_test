@@ -9,6 +9,7 @@
 class Camera;
 class Enemy;
 class GrabMan;
+class Stage;
 
 enum PlayerState{
 	ps_Neutral,
@@ -92,8 +93,10 @@ private:
 
 	std::list<GrabMan*> _grabbingEnemies;//プレイヤーを掴んでいるエネミーのリスト
 
+	Stage& _stageRef;
+
 public:
-	Player(Camera&);
+	Player(Camera&,Stage&);
 	~Player();
 	Vector2& GetPos(){ return _pos; }
 	void Update();
@@ -126,6 +129,7 @@ public:
 	void Grabbed(GrabMan*);
 	//今の地面の判定ではなく地面という矩形との当たり判定で押し返す
 
+	void Reject(Vector2);
 };
 
 

@@ -131,3 +131,8 @@ KnifeMan::DrawCameraGraph(int x, int y, int srcX, int srcY, int width, int heigh
 	DrawRectRotaGraph2(x + _cameraRef.OffsetX(), y, srcX, srcY, width, height, cx, cy, extRate, angle, handle, transFlag, turnFlag);
 }
 
+void
+KnifeMan::Reject(Vector2 vec)
+{
+
+}

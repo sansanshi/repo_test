@@ -22,5 +22,7 @@ public:
 	CharacterType CharaType(){ return _collider.CharaType(); }
 	bool IsAvailable(){ return _isAvailable; }
 	bool IsCollidable(){ return _isCollidable; }
+
+	virtual void Reject(Vector2)=0;//‰Ÿ‚µ–ß‚µŠÖ”
 };
 

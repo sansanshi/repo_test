@@ -5,7 +5,7 @@
 //凝ったタイトル作る
 //死んだら最初から始まる
 
-PlayingScene::PlayingScene() : _player(_camera), _camera(_player), _enemyFac(_player, _camera), _blockFac(_player)
+PlayingScene::PlayingScene() : _player(_camera,_stage), _camera(_player), _enemyFac(_player, _camera), _blockFac(_player), _stage(_camera)
 {
 	_groundZero = 360.0f;
 	_stageGrHandle = LoadGraph("img/stage.png");
@@ -46,6 +46,12 @@ PlayingScene::Update()
 		CollisionDetector::HitCheck(&_player, enemy);//ここ
 	}
 
+	if (CollisionDetector::IsHit(_player.GetCollider(), _stage.GetCollider()))
+	{
+		Vector2 vec=CollisionDetector::RejectVec(&_player.GetCollider(), &_stage.GetCollider());
+		_player.Reject(vec);
+	}
+
 	//Collider col = _player.GetAttackCol();
 	//Collider playerCol = _player.GetCollider();
 	//GameObject& obj = _grabman;
@@ -68,5 +74,6 @@ PlayingScene::Update()
 
 	_enemyFac.Draw();
 	_player.Draw();
+	_stage.Draw();
 }
 
