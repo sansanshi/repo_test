@@ -10,6 +10,7 @@ Camera::Camera(Player& playerRef):_playerRef(playerRef)
 
 Camera::~Camera()
 {
+	int a = 0;
 }
 
 
