@@ -1,6 +1,15 @@
 #pragma once
 #include "Enemy.h"
+#include<map>
+enum State
+{
+	state_none,
+	state_near,
+	state_far,
+	state_grab,
+	state_arial,
 
+};
 class Player;
 class Camera;
 class GrabMan :
@@ -8,7 +17,12 @@ class GrabMan :
 {
 private:
 	int _walkFrame;
-
+	State _state;
+	typedef void(GrabMan::*func_void)();
+	std::map<State, func_void> _pfuncMap;
+	std::map<State, func_void> _drawFuncMap;
+	std::map<State, int> _stateFrame;
+	
 	void(GrabMan::*_pFunc)();
 	void AliveUpdate();
 	Vector2 _pos;

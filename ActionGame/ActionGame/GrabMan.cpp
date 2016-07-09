@@ -175,5 +175,12 @@ GrabMan::Shaked()
 void
 GrabMan::Reject(Vector2 vec)
 {
-
+	//_pos += vec;
+	//_collider.SetCenter(_pos + Vector2(_cameraRef.OffsetX(), 0));
+	//if (_velocity.y > 0.0f&&vec.y < 0.0f)//ãŒü‚«‚É‰Ÿ‚µ•Ô‚³‚ê‚½ê‡
+	//{
+	//	ChangeState(ps_Walk);
+	//	_velocity.Init();
+	//	_acceleration.Init();
+	//}
 }

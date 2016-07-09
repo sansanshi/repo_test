@@ -9,11 +9,11 @@ Collider::~Collider()
 {
 }
 
-Rect
-Collider::GetRect()
-{
-	return _rect;
-}
+//Rect
+//Collider::GetRect()
+//{
+//	return _rect;
+//}
 
 void
 Collider::SetRect(Rect rc)

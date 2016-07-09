@@ -54,6 +54,7 @@ struct Vector2{
 	}
 	float Length();
 	Vector2& Normalize();
+	void Init();//Vector2(0,0)‚É‚·‚é
 };
 struct Rect{
 	Vector2 pos;

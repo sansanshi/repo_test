@@ -70,6 +70,14 @@ Player::Player(Camera& camera, Stage& stage) :_cameraRef(camera), _stageRef(stag
 	_stateFrame[ps_CrouchKamae] = 0;
 	_stateFrame[ps_grabbed] = 0;
 
+	std::map<PlayerState, int>::iterator it = _stateFrame.begin();//map‚Ìfirst‚Íconst‚ç‚µ‚¢‚Ì‚Å–³—‚Á‚Û‚¢
+	for (int i = 0; it != _stateFrame.end();)
+	{
+		//(*it).first = static_cast<PlayerState>(i);
+		(*it).second = 1;
+		++it;
+	}
+
 
 	_drawFuncMap[ps_Neutral] = &Player::DrawNeutral;
 	_drawFuncMap[ps_Walk] = &Player::DrawWalk;
@@ -543,4 +551,10 @@ Player::Reject(Vector2 vec)
 {
 	_pos += vec;
 	_collider.SetCenter(_pos + Vector2(_cameraRef.OffsetX(), 0));
+	if (_velocity.y > 0.0f&&vec.y < 0.0f)//ãŒü‚«‚É‰Ÿ‚µ•Ô‚³‚ê‚½ê‡
+	{
+		ChangeState(ps_Walk);
+		_velocity.Init();
+		_acceleration.Init();
+	}
 }

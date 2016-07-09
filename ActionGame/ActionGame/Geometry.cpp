@@ -25,3 +25,9 @@ Vector2::Normalize()
 {
 	return Vector2(x / Length(), y / Length());
 }
+
+void
+Vector2::Init()
+{
+	x = y = 0;
+}

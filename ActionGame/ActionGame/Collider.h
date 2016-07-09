@@ -23,13 +23,13 @@ private:
 	bool _isCollidable;
 	bool _isAvailable;
 protected:
-	Rect _rect;
+	//Rect _rect;
 public:
 	Collider();
 	~Collider();
 	Collider(GameObject* gameObj, CharacterType charaType, ColliderType colType) :_gameObject(gameObj), _charaType(charaType), _colType(colType){};
 
-	Rect GetRect();
+	//Rect GetRect();
 	//virtual void OnCollided() =0;
 	//virtual void OnCollided(Collider* col)=0 ;
 

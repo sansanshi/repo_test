@@ -62,8 +62,19 @@ public:
 	static Vector2
 		RejectVec(Collider* colA, Collider* colB)//押し戻しベクトルを返す(押し戻されるのはcolAの方）
 	{
-			colA->_gameObject->Reject(Vector2(0,-3));//ここ
-			return Vector2(0, -3);
+		Vector2 ret;
+		Rect temp = RectOfOverlapped(*colA, *colB);
+		if (temp.width < temp.height)//横方向の押し戻し
+		{
+			ret = colA->Left() < colB->Left() ? Vector2(-temp.width, 0) : Vector2(temp.width, 0);
+		}
+		else//縦方向の押し戻し
+		{
+			ret = colA->Top() < colB->Top() ? Vector2(0, -temp.height) : Vector2(0, temp.height);
+		}
+
+		//colA->_gameObject->Reject(Vector2(0,-20));//ここ
+		return ret;
 	}
 
 	//CollisionDetectorに入れる
