@@ -31,7 +31,7 @@ Player::Player(Camera& camera, Stage& stage) :_cameraRef(camera), _stageRef(stag
 
 	_hpMax = 600;
 	_hp = _hpMax;
-	_attackDamage = 2;
+	_attackDamage = 1;
 
 	_handleMap[ps_Neutral] = LoadGraph("img/neutral.png");
 	_handleMap[ps_Jump] = LoadGraph("img/jump.png");
@@ -264,6 +264,8 @@ Player::PunchUpdate()
 void
 Player::WalkUpdate()
 {
+	_velocity.y = 5.0f;//これやってるの危ないかも
+
 	_walkFrame=vx!=0?_walkFrame+1:0;
 	_kickInterval = max(_kickInterval-1, 0);
 	
@@ -291,7 +293,7 @@ Player::WalkUpdate()
 
 	if (_key[KEY_INPUT_SPACE])
 	{
-		_velocity.y -= _jumpPower;
+		_velocity.y = -_jumpPower;
 		_acceleration.y = 0.3f;
 		//_pFunc = &Player::JumpUpdate;
 		ChangeState(ps_Jump);
@@ -299,12 +301,10 @@ Player::WalkUpdate()
 	if (_key[KEY_INPUT_Z])
 	{
 		ChangeState(ps_Punch);
-		//_cameraRef.InvokeQuake(10.0f);
 		
 	}
 	if (_key[KEY_INPUT_X])
 	{
-		//_pFunc = &Player::KickUpdate;
 		if(_kickInterval==0)ChangeState(ps_Kamae);
 	}
 
@@ -312,8 +312,6 @@ Player::WalkUpdate()
 
 	_pos += _velocity;
 	_velocity += _acceleration;
-
-	if (_collider.Bottom() >= 400.0f) _pos.y = 400.0 - _collider.height / 2;//_posが真ん中になってるので/2している
 
 	_collider.SetCenter(_pos+Vector2(_cameraRef.OffsetX(),0));
 }
@@ -528,6 +526,11 @@ Player::DrawCrouchKamae()
 void
 Player::ChangeState(PlayerState state)
 {
+	if (state == ps_Grabbed)
+	{
+		int a;
+		a = 1;
+	}
 	_stateFrame[_state] = 0;//	今までのステートのフレームは0にする
 	_state = state;
 	_pFunc = _pFuncMap[_state];
@@ -553,6 +556,7 @@ Player::Grabbed(GrabMan* enemy)
 {
 	_grabbingEnemies.push_back(enemy);
 	ChangeState(ps_Grabbed);
+	_pos = Vector2(_pos.x, enemy->GetPos().y);
 	_collider.SetCenter(_pos + Vector2(_cameraRef.OffsetX(), 0));;
 	_collider.width = 32;
 	_collider.height = 128;
@@ -568,7 +572,7 @@ Player::Reject(Vector2 vec)
 {
 	_pos += vec;
 	_collider.SetCenter(_pos + Vector2(_cameraRef.OffsetX(), 0));
-	if (_velocity.y > 0.0f&&vec.y < 0.0f)//上向きに押し返された場合
+	if (_state==ps_Jump||_state==ps_JumpKick)//上向きに押し返された場合←ここやめたほうがいいかも
 	{
 		ChangeState(ps_Walk);
 		_velocity.Init();

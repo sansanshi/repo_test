@@ -26,8 +26,9 @@ private:
 	
 	void(GrabMan::*_pFunc)();
 	void AliveUpdate();
-	Vector2 _pos;
-	Vector2 _velocity;
+	//Vector2 _pos;
+	//Vector2 _velocity;
+	Vector2 _acceleration;
 	int _handle;
 	int _deadhandle;
 

@@ -13,13 +13,14 @@ GrabMan::GrabMan(Vector2 pos, int& handle, int& deadHandle, Player& player, Came
 	_collider.SetRect(Rect(_pos, 29, 128));
 	_collider.SetCenter(_pos + Vector2(_cameraRef.OffsetX(),0));
 	_velocity = Vector2(0, 0);
-	_pFunc = &GrabMan::FarUpdate;
+	_acceleration=Vector2(0,0.3f);
+	_pFunc = &GrabMan::ArialUpdate;
 	_handle = handle;
 	_deadhandle = deadHandle;
 	_walkFrame = 0;
 	_state = state_far;
 
-	_hpMax = 5;
+	_hpMax = 2;
 	_hp = _hpMax;
 
 	_pfuncMap[state_far] = &GrabMan::FarUpdate;
@@ -62,7 +63,7 @@ GrabMan::OnCollided(Collider* col)
 {
 	if (col->Type() == col_attack&&col->CharaType()==ct_player){
 		Vector2 vec = (_pos-_playerRef.GetCenter()).Normalize();
-		Reject(Vector2(vec.x * 10, 0));
+		Reject(Vector2(vec.x * 20, 0));
 		Player* p=dynamic_cast<Player*>(col->_gameObject);
 		Damage(p->GetAttackDmg());
 	}
@@ -137,7 +138,7 @@ GrabMan::Draw()
 void
 GrabMan::Kill()
 {
-	_velocity.x = _isLeft ? 3.0f : -3.0f;
+	_velocity.x = _isLeft ? 10.0f : -10.0f;
 	_velocity.y = -3.0f;
 	_collider.ToDisable();//_isCollidable = false;
 	_isDead = true;
@@ -190,7 +191,9 @@ GrabMan::GrabUpdate()
 void
 GrabMan::ArialUpdate()
 {
-
+	_velocity += _acceleration;
+	_pos += _velocity;
+	_collider.SetCenter_Cam(_pos, _cameraRef.OffsetX());
 }
 
 void
@@ -252,6 +255,7 @@ GrabMan::Reject(Vector2 vec)
 	{
 		ChangeState(state_far);
 		_velocity.Init();
+		_acceleration.Init();
 	}
 }
 

@@ -10,6 +10,8 @@ class Enemy :
 private:
 
 protected:
+	Vector2 _pos;
+	Vector2 _velocity;
 	
 public:
 	Enemy();
@@ -22,6 +24,7 @@ public:
 	virtual void OnCollided(Collider*) = 0;
 	virtual void OnCollided(std::shared_ptr<GameObject>)=0;
 	virtual void Kill() = 0;
+	Vector2 GetPos(){ return _pos; }
 	//void virtual 
 };
 //class A{

@@ -33,3 +33,9 @@ Collider::ToEnable()
 {
 	_isCollidable = true;
 }
+
+void
+Collider::SetCenter_Cam(Vector2 v, float f)
+{
+	SetCenter(Vector2(v.x + f, v.y));
+}

@@ -4,9 +4,10 @@
 
 Stage::Stage(Camera& camera) :_cameraRef(camera)
 {
-	_pos = Vector2(-100, 400);
+	_pos = Vector2(0, 410);
 	_collider = Collider(this, ct_stage, col_stage);
-	_collider.SetRect(Rect(_pos, 640, 200));
+	_collider.SetRect(Rect(_pos, 640, 50));
+	_collider.SetCenter_Cam(_pos, _cameraRef.OffsetX());
 }
 
 
@@ -35,6 +36,7 @@ Stage::OnCollided(std::shared_ptr<GameObject> obj)
 void 
 Stage::Draw()
 {
+
 	_collider.Draw();
 }
 
@@ -48,4 +50,11 @@ void
 Stage::Reject(Vector2 vec)
 {
 
+}
+
+void
+Stage::Update()
+{
+	//_pos.x = _cameraRef.OffsetX();//この行必要ない？
+	_collider.SetCenter_Cam(_pos, _cameraRef.OffsetX());
 }

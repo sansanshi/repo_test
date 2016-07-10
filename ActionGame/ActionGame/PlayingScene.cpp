@@ -33,6 +33,7 @@ PlayingScene::Update()
 		
 	}*/
 
+	_stage.Update();
 	
 	_enemyFac.Update();
 
@@ -51,7 +52,7 @@ PlayingScene::Update()
 	if (CollisionDetector::IsHit(_player.GetCollider(), _stage.GetCollider()))//プレイヤーの押し戻し
 	{
 		Vector2 vec=CollisionDetector::RejectVec(&_player.GetCollider(), &_stage.GetCollider());
-		_player.Reject(vec);
+		_player.Reject(vec);//ここのRejectの中で上に押し戻した場合stateをwalkにするっていう処理をしてるからGrabbedから変わってる
 	}
 
 	for (auto& enemy : _enemyFac.GetEnemies())//エネミーとステージの当たり判定（押し戻し）
@@ -69,7 +70,7 @@ PlayingScene::Update()
 		if (CollisionDetector::IsHit(enemy->GetCollider(), _player.GetAttackCol()))
 		{
 			enemy->OnCollided(&(_player.GetAttackCol()));
-			_camera.InvokeQuake(5.0f);
+			_camera.InvokeQuake(3.0f);
 		}
 	}
 

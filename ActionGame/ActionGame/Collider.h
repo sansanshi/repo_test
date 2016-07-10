@@ -47,5 +47,7 @@ public:
 
 	void ToDisable();
 	void ToEnable();
+
+	void SetCenter_Cam(Vector2, float);//カメラから見た座標（カメラのoffsetを考慮した座標）にセット
 };
 
