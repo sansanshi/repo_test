@@ -39,7 +39,7 @@ KnifeMan::OnCollided(Collider* col)
 		Player* p = dynamic_cast<Player*>(col->_gameObject);
 		
 		_walkFrame = 0;
-		_isCollidable = false;//‚±‚ê‚µ‚Æ‚©‚È‚¢‚Æ“–‚½‚Á‚Ä‚¢‚éŠÔ‰½“x‚àOnCollided‚ªŒÄ‚Î‚ê‚é		
+		_collider.ToDisable();//_isCollidable = false;//‚±‚ê‚µ‚Æ‚©‚È‚¢‚Æ“–‚½‚Á‚Ä‚¢‚éŠÔ‰½“x‚àOnCollided‚ªŒÄ‚Î‚ê‚é		
 	}
 }
 void
@@ -81,7 +81,7 @@ KnifeMan::Kill()
 {
 	_velocity.x = _isLeft ? 3.0f : -3.0f;
 	_velocity.y = -3.0f;
-	_isCollidable = false;
+	_collider.ToDisable();//_isCollidable = false;
 	_isDead = true;
 	_pFunc = &KnifeMan::DeadUpdate;
 }

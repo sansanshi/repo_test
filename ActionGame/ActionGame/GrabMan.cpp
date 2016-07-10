@@ -14,6 +14,28 @@ GrabMan::GrabMan(Vector2 pos, int handle, int deadHandle, Player& player, Camera
 	_handle = handle;
 	_deadhandle = deadHandle;
 	_walkFrame = 0;
+	_state = state_far;
+
+	_pfuncMap[state_far] = &GrabMan::FarUpdate;
+	_pfuncMap[state_near] = &GrabMan::NearUpdate;
+	_pfuncMap[state_dead] = &GrabMan::DeadUpdate;
+	_pfuncMap[state_grab] = &GrabMan::GrabUpdate;
+	_pfuncMap[state_arial] = &GrabMan::ArialUpdate;
+
+
+	_drawFuncMap[state_far] = &GrabMan::DrawFar;
+	_drawFuncMap[state_near] = &GrabMan::DrawNear;
+	_drawFuncMap[state_dead] = &GrabMan::DrawDead;
+	_drawFuncMap[state_arial] = &GrabMan::DrawArial;
+	_drawFuncMap[state_grab] = &GrabMan::DrawGrab;
+
+	_stateFrame[state_far] = 0;
+	_stateFrame[state_near] = 0;
+	_stateFrame[state_dead] = 0;
+	_stateFrame[state_arial ] = 0;
+	_stateFrame[state_grab] = 0;
+
+
 
 	_isGrabbing = false;
 	_isNear = false;
@@ -33,33 +55,29 @@ void
 GrabMan::OnCollided(Collider* col)
 {
 	if (col->Type() == col_attack&&col->CharaType()==ct_player){
-		_pFunc = &GrabMan::DeadUpdate;
-		_walkFrame = 0;
+		ChangeState(state_dead);
 	}
 	if (col->Type() == col_default&&col->CharaType() == ct_player){
 		
 		Player* p = dynamic_cast<Player*>(col->_gameObject);
 		p->Grabbed(this);
 		_isGrabbing = true;
-		_pFunc = &GrabMan::GrabUpdate;
-		_walkFrame = 0;
-		_isCollidable = false;//‚±‚ê‚µ‚Æ‚©‚È‚¢‚Æ“–‚½‚Á‚Ä‚¢‚éŠÔ‰½“x‚àOnCollided‚ªŒÄ‚Î‚ê‚é		
+		ChangeState(state_grab);
+		_collider.ToDisable();//_isCollidable = false;//‚±‚ê‚µ‚Æ‚©‚È‚¢‚Æ“–‚½‚Á‚Ä‚¢‚éŠÔ‰½“x‚àOnCollided‚ªŒÄ‚Î‚ê‚é		
 	}
 }
 void
 GrabMan::OnCollided(GameObject* obj)
 {
 	if (obj->ColType() == col_attack&&obj->CharaType() == ct_player){
-		_pFunc = &GrabMan::DeadUpdate;
-		_walkFrame = 0;
+		ChangeState(state_dead);
 	}
 	if (obj->ColType() == col_default&&obj->CharaType() == ct_player){
 		Player* p = dynamic_cast<Player*>(obj);
 		p->Grabbed(this);
 		_isGrabbing = true;
-		_pFunc = &GrabMan::GrabUpdate;
-		_walkFrame = 0;
-		_isCollidable = false;
+		ChangeState(state_grab);
+		_collider.ToDisable();//_isCollidable = false;
 	}
 }
 
@@ -86,22 +104,25 @@ GrabMan::Update()
 {
 	_cOffsetX = _cameraRef.OffsetX();
 	(this->*_pFunc)();
+	++_stateFrame[_state];
 }
 
 void 
 GrabMan::Draw()
 {
-	if (!_isDead)
-	{
-		int graphNum = 0;//
-		if (_isNear) graphNum = 16 * (((_walkFrame % 20) / 10) + 2);
-		else graphNum = 16 * ((_walkFrame % 20) / 10);
+	(this->*_drawFuncMap[_state])();
+	_collider.Draw();
+	//if (!_isDead)
+	//{
+	//	int graphNum = 0;//
+	//	if (_isNear) graphNum = 16 * (((_walkFrame % 20) / 10) + 2);
+	//	else graphNum = 16 * ((_walkFrame % 20) / 10);
 
-		if (_isGrabbing)DrawCameraGraph(_pos.x,_pos.y,16*4,0,16,40,8,20,3.0,0,_handle,true,_isLeft);//DrawRectExtendGraph(_pos.x, _pos.y, _pos.x + 64, _pos.y + 128, 16 * 4, 0, 16, 40, _handle, true);
-		else DrawCameraGraph(_pos.x,_pos.y,graphNum,0,16,40,8,20,3.0,0,_handle,true,_isLeft);//DrawRectExtendGraph(_pos.x, _pos.y, _pos.x + 64, _pos.y + 128, 16 * ((_walkFrame % 50) / 10), 0, 16, 40, _handle, true);
-		_collider.Draw();
-	}
-	else DrawCameraGraph(_pos.x, _pos.y,0, 0, 26, 40,13,20, 3.0f, 90, _deadhandle, true,_isLeft);
+	//	if (_isGrabbing)DrawCameraGraph(_pos.x,_pos.y,16*4,0,16,40,8,20,3.0,0,_handle,true,_isLeft);//DrawRectExtendGraph(_pos.x, _pos.y, _pos.x + 64, _pos.y + 128, 16 * 4, 0, 16, 40, _handle, true);
+	//	else DrawCameraGraph(_pos.x,_pos.y,graphNum,0,16,40,8,20,3.0,0,_handle,true,_isLeft);//DrawRectExtendGraph(_pos.x, _pos.y, _pos.x + 64, _pos.y + 128, 16 * ((_walkFrame % 50) / 10), 0, 16, 40, _handle, true);
+	//	_collider.Draw();
+	//}
+	//else DrawCameraGraph(_pos.x, _pos.y,0, 0, 26, 40,13,20, 3.0f, 90, _deadhandle, true,_isLeft);
 }
 
 void
@@ -109,9 +130,9 @@ GrabMan::Kill()
 {
 	_velocity.x = _isLeft ? 3.0f : -3.0f;
 	_velocity.y = -3.0f;
-	_isCollidable = false;
+	_collider.ToDisable();//_isCollidable = false;
 	_isDead = true;
-	_pFunc = &GrabMan::DeadUpdate;
+	ChangeState(state_dead);
 }
 
 void
@@ -137,11 +158,10 @@ GrabMan::FarUpdate()
 	_collider.SetCenter(_pos + Vector2(_cOffsetX, 0));//_collider.pos = _pos;
 	_walkFrame++;
 	_isLeft = _velocity.x < 0;
-	//‚±‚Ì‚Ö‚ñ‚â‚Á‚Ä‚é
+	
 	if (fabs(vec.x) <= 128)
 	{
-		_pFunc = &GrabMan::NearUpdate;
-		_isNear = true;
+		ChangeState(state_near);
 	}
 }
 void
@@ -150,12 +170,54 @@ GrabMan::DeadUpdate()
 	//DrawString(200, 200, "deadupdate", 0xffffff);
 	_pos += _velocity;
 	_velocity.y +=0.5f;
+	if (_pos.y > 500) _isAvailable = false;
 }
 void 
 GrabMan::GrabUpdate()
 {
 	
 }
+
+void
+GrabMan::ArialUpdate()
+{
+
+}
+
+void
+GrabMan::ChangeState(State state)
+{
+	_stateFrame[_state] = 0;
+	_state = state;
+	_pFunc = _pfuncMap[_state];
+}
+
+void
+GrabMan::DrawFar()
+{
+	DrawCameraGraph(_pos.x, _pos.y, 16 * ((_stateFrame[state_far] % 20) / 10), 0, 16, 40, 8, 20, 3.0, 0, _handle, true, _isLeft);
+}
+void 
+GrabMan::DrawNear()
+{
+	DrawCameraGraph(_pos.x, _pos.y, 16 * (((_stateFrame[state_near] % 20) / 10)+2), 0, 16, 40, 8, 20, 3.0, 0, _handle, true, _isLeft);
+}
+void
+GrabMan::DrawDead()
+{
+	DrawCameraGraph(_pos.x, _pos.y, 0, 0, 26, 40, 13, 20, 3.0f, 90, _deadhandle, true, _isLeft);
+}
+void 
+GrabMan::DrawGrab()
+{
+	DrawCameraGraph(_pos.x, _pos.y, 16 * 4, 0, 16, 40, 8, 20, 3.0, 0, _handle, true, _isLeft);
+}
+void
+GrabMan::DrawArial()
+{
+	DrawCameraGraph(_pos.x, _pos.y, 0, 0, 16, 40, 8, 20, 3.0, 0, _handle, true, _isLeft);
+}
+
 
 void
 GrabMan::DrawCameraGraph(int x, int y, int srcX, int srcY, int width, int height, int cx, int cy, double extRate, double angle, int handle, int transFlag, int turnFlag)

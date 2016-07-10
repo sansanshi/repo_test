@@ -44,5 +44,8 @@ public:
 	CharacterType CharaType(){ return _charaType; }
 	bool IsAvailable(){ return _isAvailable; }
 	bool IsCollidable(){ return _isCollidable; }
+
+	void ToDisable();
+	void ToEnable();
 };
 

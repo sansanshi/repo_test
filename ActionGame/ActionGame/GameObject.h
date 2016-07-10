@@ -8,7 +8,7 @@ private:
 protected:
 	Collider _collider;
 	bool _isAvailable;
-	bool _isCollidable;
+	//bool _isCollidable;
 public:
 	GameObject();
 	~GameObject();
@@ -21,7 +21,7 @@ public:
 	ColliderType ColType(){ return _collider.Type(); }
 	CharacterType CharaType(){ return _collider.CharaType(); }
 	bool IsAvailable(){ return _isAvailable; }
-	bool IsCollidable(){ return _isCollidable; }
+
 
 	virtual void Reject(Vector2)=0;//âüÇµñﬂÇµä÷êî
 };

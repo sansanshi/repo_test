@@ -8,6 +8,7 @@ enum State
 	state_far,
 	state_grab,
 	state_arial,
+	state_dead,
 
 };
 class Player;
@@ -36,6 +37,16 @@ private:
 	void NearUpdate();
 	void FarUpdate();
 	void GrabUpdate();
+	void ArialUpdate();
+
+	void DrawNear();
+	void DrawFar();
+	void DrawGrab();
+	void DrawArial();
+	void DrawDead();
+
+	void ChangeState(State);
+
 
 	bool _isNear;//プレイヤーに近いか（NearUpdate）に入ったか
 	bool _isGrabbing;//プレイヤーをつかんでいるか

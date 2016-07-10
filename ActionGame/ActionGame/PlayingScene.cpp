@@ -41,9 +41,9 @@ PlayingScene::Update()
 	
 	for (auto& enemy : _enemyFac.GetEnemies())//エネミーとプレイヤーのあたり判定
 	{
-		if (!enemy->IsCollidable() || !_player.IsAvailable()) continue;
+		if (!enemy->GetCollider().IsCollidable() || !_player.IsAvailable()) continue;
 		
-		CollisionDetector::HitCheck(&_player, enemy);//ここ
+		CollisionDetector::HitCheck(&_player, enemy);
 	}
 
 	if (CollisionDetector::IsHit(_player.GetCollider(), _stage.GetCollider()))//プレイヤーの押し戻し
@@ -54,7 +54,7 @@ PlayingScene::Update()
 
 	for (auto& enemy : _enemyFac.GetEnemies())
 	{
-		if (enemy->IsCollidable()) continue;//当たり判定falseだったら判定せず次へ
+		if (!enemy->GetCollider().IsCollidable()) continue;//当たり判定falseだったら判定せず次へ
 		if (CollisionDetector::IsHit(enemy->GetCollider(), _stage.GetCollider()))//エネミーの押し戻し
 		{
 			Vector2 vec = CollisionDetector::RejectVec(&enemy->GetCollider(), &_stage.GetCollider());

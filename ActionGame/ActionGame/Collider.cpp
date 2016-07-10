@@ -22,3 +22,14 @@ Collider::SetRect(Rect rc)
 	width = rc.width;
 	height = rc.height;
 }
+
+void
+Collider::ToDisable()
+{
+	_isCollidable = false;
+}
+void
+Collider::ToEnable()
+{
+	_isCollidable = true;
+}
