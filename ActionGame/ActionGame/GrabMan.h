@@ -31,6 +31,9 @@ private:
 	int _handle;
 	int _deadhandle;
 
+	int _hpMax;
+	int _hp;
+
 	Player& _playerRef;
 
 	void DeadUpdate();
@@ -73,5 +76,7 @@ public:
 
 	bool IsGrabbing(){ return _isGrabbing; }
 	void Reject(Vector2);
+
+	void Damage(int value);
 };
 

@@ -23,7 +23,8 @@ enum PlayerState{
 	ps_CrouchPunch,
 	ps_Kamae,
 	ps_CrouchKamae,
-	ps_grabbed,
+	ps_Grabbed,
+	ps_Dead,
 };
 
 class Player:public GameObject//:public Collider
@@ -43,6 +44,7 @@ private:
 
 	int _hpMax;
 	int _hp;
+	int _attackDamage;
 
 	void(Player::*_pFunc)();//メンバ関数ポインタ
 	void KickUpdate();
@@ -132,7 +134,10 @@ public:
 	/*押し戻し処理*/
 	void Reject(Vector2);
 
-	float GetPercentageHp(){ return _hp / _hpMax; }
+	float GetPercentageHp(){ return (float)_hp / (float)_hpMax; }
+
+	void Killed();
+	int GetAttackDmg(){ return _attackDamage; }
 };
 
 

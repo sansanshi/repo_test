@@ -3,6 +3,7 @@
 #include"Dxlib.h"
 #include<math.h>
 #include"Camera.h"
+#include"CollisionDetector.h"
 
 GrabMan::GrabMan(Vector2 pos, int& handle, int& deadHandle, Player& player, Camera& camera) :_playerRef(player), _cameraRef(camera)
 {
@@ -17,6 +18,9 @@ GrabMan::GrabMan(Vector2 pos, int& handle, int& deadHandle, Player& player, Came
 	_deadhandle = deadHandle;
 	_walkFrame = 0;
 	_state = state_far;
+
+	_hpMax = 5;
+	_hp = _hpMax;
 
 	_pfuncMap[state_far] = &GrabMan::FarUpdate;
 	_pfuncMap[state_near] = &GrabMan::NearUpdate;
@@ -57,7 +61,10 @@ void
 GrabMan::OnCollided(Collider* col)
 {
 	if (col->Type() == col_attack&&col->CharaType()==ct_player){
-		ChangeState(state_dead);
+		Vector2 vec = (_pos-_playerRef.GetCenter()).Normalize();
+		Reject(Vector2(vec.x * 10, 0));
+		Player* p=dynamic_cast<Player*>(col->_gameObject);
+		Damage(p->GetAttackDmg());
 	}
 	if (col->Type() == col_default&&col->CharaType() == ct_player){
 		
@@ -72,7 +79,7 @@ void
 GrabMan::OnCollided(GameObject* obj)
 {
 	if (obj->ColType() == col_attack&&obj->CharaType() == ct_player){
-		ChangeState(state_dead);
+		//ChangeState(state_dead);
 	}
 	if (obj->ColType() == col_default&&obj->CharaType() == ct_player){
 		Player* p = dynamic_cast<Player*>(obj);
@@ -177,7 +184,7 @@ GrabMan::DeadUpdate()
 void 
 GrabMan::GrabUpdate()
 {
-	
+	_playerRef.Damage(1);
 }
 
 void
@@ -239,12 +246,20 @@ GrabMan::Shaked()
 void
 GrabMan::Reject(Vector2 vec)
 {
-	//_pos += vec;
-	//_collider.SetCenter(_pos + Vector2(_cameraRef.OffsetX(), 0));
-	//if (_velocity.y > 0.0f&&vec.y < 0.0f)//ãŒü‚«‚É‰Ÿ‚µ•Ô‚³‚ê‚½ê‡
-	//{
-	//	ChangeState(ps_Walk);
-	//	_velocity.Init();
-	//	_acceleration.Init();
-	//}
+	_pos += vec;
+	_collider.SetCenter(_pos + Vector2(_cameraRef.OffsetX(), 0));
+	if (_velocity.y > 0.0f&&vec.y < 0.0f)//ãŒü‚«‚É‰Ÿ‚µ•Ô‚³‚ê‚½ê‡
+	{
+		ChangeState(state_far);
+		_velocity.Init();
+	}
+}
+
+void
+GrabMan::Damage(int value)
+{
+	_hp = max(_hp - value, 0);
+	if (_hp <= 0) Kill();
+
+
 }

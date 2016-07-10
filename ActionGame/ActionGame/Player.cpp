@@ -29,8 +29,9 @@ Player::Player(Camera& camera, Stage& stage) :_cameraRef(camera), _stageRef(stag
 	_shakeCnt = 0;
 	_isGrabbed = false;
 
-	_hpMax = 100;
+	_hpMax = 600;
 	_hp = _hpMax;
+	_attackDamage = 2;
 
 	_handleMap[ps_Neutral] = LoadGraph("img/neutral.png");
 	_handleMap[ps_Jump] = LoadGraph("img/jump.png");
@@ -43,7 +44,8 @@ Player::Player(Camera& camera, Stage& stage) :_cameraRef(camera), _stageRef(stag
 	_handleMap[ps_CrouchPunch] = LoadGraph("img/crouch_punch_.png");
 	_handleMap[ps_Kamae] = LoadGraph("img/kamae.png");
 	_handleMap[ps_CrouchKamae] = LoadGraph("img/crouch_kamae_.png");
-	_handleMap[ps_grabbed] = LoadGraph("img/walk_.png");
+	_handleMap[ps_Grabbed] = LoadGraph("img/walk_.png");
+	_handleMap[ps_Dead] = LoadGraph("img/damage_bottom.png");
 
 	_pFuncMap[ps_Neutral] = &Player::WalkUpdate;
 	_pFuncMap[ps_Walk] = &Player::WalkUpdate;
@@ -56,7 +58,7 @@ Player::Player(Camera& camera, Stage& stage) :_cameraRef(camera), _stageRef(stag
 	_pFuncMap[ps_CrouchPunch] = &Player::CrouchPunchUpdate;
 	_pFuncMap[ps_Kamae] = &Player::KamaeUpdate;
 	_pFuncMap[ps_CrouchKamae] = &Player::CrouchKamaeUpdate;
-	_pFuncMap[ps_grabbed] = &Player::GrabbedUpdate;
+	_pFuncMap[ps_Grabbed] = &Player::GrabbedUpdate;
 
 	_stateFrame[ps_Neutral] = 0;
 	_stateFrame[ps_Walk] = 0;
@@ -69,13 +71,14 @@ Player::Player(Camera& camera, Stage& stage) :_cameraRef(camera), _stageRef(stag
 	_stateFrame[ps_CrouchPunch] = 0;
 	_stateFrame[ps_Kamae] = 0;
 	_stateFrame[ps_CrouchKamae] = 0;
-	_stateFrame[ps_grabbed] = 0;
+	_stateFrame[ps_Grabbed] = 0;
+
 
 	std::map<PlayerState, int>::iterator it = _stateFrame.begin();//mapのfirstはconstらしいので無理っぽい
 	for (int i = 0; it != _stateFrame.end();)
 	{
 		//(*it).first = static_cast<PlayerState>(i);
-		(*it).second = 1;
+		(*it).second = 0;
 		++it;
 	}
 
@@ -91,7 +94,7 @@ Player::Player(Camera& camera, Stage& stage) :_cameraRef(camera), _stageRef(stag
 	_drawFuncMap[ps_CrouchPunch] = &Player::DrawCrouchPunch;
 	_drawFuncMap[ps_Kamae] = &Player::DrawKamae;
 	_drawFuncMap[ps_CrouchKamae] = &Player::DrawCrouchKamae;
-	_drawFuncMap[ps_grabbed] = &Player::DrawWalk;
+	_drawFuncMap[ps_Grabbed] = &Player::DrawWalk;
 
 	//attackCol 幅高さ決める　　プレイヤーのセンターからoffset isRightでoffset.xを変える
 	_attackCol= Collider(this, ct_player, col_attack);
@@ -208,7 +211,7 @@ Player::KickUpdate()
 {
 	_attackColOffset = _isRight ? Vector2(64+_cOffsetX, -30) : Vector2(-64+_cOffsetX, -30);
 	_attackCol.SetCenter(_pos + _attackColOffset);
-	if (_stateFrame[ps_Kick]++ > 20)
+	if (_stateFrame[ps_Kick] > 10)
 	{
 		//_pFunc = &Player::WalkUpdate;
 		ChangeState(ps_Walk);
@@ -246,10 +249,11 @@ Player::JumpUpdate()
 void
 Player::PunchUpdate()
 {
+	if (_stateFrame[ps_Punch] > 0)_attackCol.ToDisable();
 	_attackColOffset = _isRight ? Vector2(42+_cOffsetX, -25) : Vector2(-42+_cOffsetX, -25);
 	_attackCol.SetCenter(_pos + _attackColOffset);
 	
-	if (_stateFrame[ps_Punch]++ > 20) 
+	if (_stateFrame[ps_Punch] > 10) 
 	{
 		//_pFunc = &Player::WalkUpdate;
 		ChangeState(ps_Walk);
@@ -294,9 +298,8 @@ Player::WalkUpdate()
 	}
 	if (_key[KEY_INPUT_Z])
 	{
-		//_pFunc = &Player::PunchUpdate;
 		ChangeState(ps_Punch);
-		_cameraRef.InvokeQuake(10.0f);
+		//_cameraRef.InvokeQuake(10.0f);
 		
 	}
 	if (_key[KEY_INPUT_X])
@@ -350,6 +353,8 @@ Player::JumpKickUpdate()
 void
 Player::CrouchUpdate()
 {
+	if (_stateFrame[ps_CrouchPunch] > 0) _attackCol.ToDisable();
+
 	_collider.SetCenter(_pos + Vector2(_cameraRef.OffsetX(), 20));
 	_kickInterval = max(_kickInterval - 1, 0);
 
@@ -526,6 +531,8 @@ Player::ChangeState(PlayerState state)
 	_stateFrame[_state] = 0;//	今までのステートのフレームは0にする
 	_state = state;
 	_pFunc = _pFuncMap[_state];
+	if (_state == ps_CrouchKick || _state == ps_CrouchPunch || _state == ps_JumpKick || _state == ps_Punch || _state == ps_Kick) _attackCol.ToEnable();
+	else _attackCol.ToDisable();
 }
 
 void
@@ -537,7 +544,7 @@ Player::DrawCameraGraph(int x,int y,int srcX,int srcY,int width,int height,int c
 void
 Player::Damage(int value)
 {
-	_hp -= value;
+	_hp =max(_hp-value,0);
 	if (_hp <= 0) _isAvailable = false;
 }
 
@@ -545,7 +552,7 @@ void
 Player::Grabbed(GrabMan* enemy)
 {
 	_grabbingEnemies.push_back(enemy);
-	ChangeState(ps_grabbed);
+	ChangeState(ps_Grabbed);
 	_collider.SetCenter(_pos + Vector2(_cameraRef.OffsetX(), 0));;
 	_collider.width = 32;
 	_collider.height = 128;
@@ -567,4 +574,10 @@ Player::Reject(Vector2 vec)
 		_velocity.Init();
 		_acceleration.Init();
 	}
+}
+
+void
+Player::Killed()
+{
+
 }

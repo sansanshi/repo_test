@@ -9,7 +9,8 @@ PlayingScene::PlayingScene() : _player(_camera,_stage), _camera(_player), _enemy
 {
 	_groundZero = 360.0f;
 	_stageGrHandle = LoadGraph("img/stage.png");
-	Rect _hpBarRect = Rect(Vector2(50, 400), 400, 80);//HPバー表示用の矩形　描画にこれのLeft()とか使う
+	_hpBarRect = Rect(Vector2(50, 20), 400, 20);//HPバー表示用の矩形　描画にこれのLeft()とか使う
+	_hpBarHandle = LoadGraph("img/meter_bar.png");
 
 	_camera.SetUp();
 }
@@ -53,13 +54,22 @@ PlayingScene::Update()
 		_player.Reject(vec);
 	}
 
-	for (auto& enemy : _enemyFac.GetEnemies())
+	for (auto& enemy : _enemyFac.GetEnemies())//エネミーとステージの当たり判定（押し戻し）
 	{
 		if (!enemy->GetCollider().IsCollidable()) continue;//当たり判定falseだったら判定せず次へ
 		if (CollisionDetector::IsHit(enemy->GetCollider(), _stage.GetCollider()))//エネミーの押し戻し
 		{
 			Vector2 vec = CollisionDetector::RejectVec(&enemy->GetCollider(), &_stage.GetCollider());
 			enemy->Reject(vec);
+		}
+	}
+	for (auto& enemy : _enemyFac.GetEnemies())//エネミーとプレイヤーの攻撃の当たり判定
+	{
+		if (!enemy->GetCollider().IsCollidable()||!_player.GetAttackCol().IsCollidable()) continue;//エネミーもしくはプレイヤーの攻撃のColliderが無効だったら判定はしない
+		if (CollisionDetector::IsHit(enemy->GetCollider(), _player.GetAttackCol()))
+		{
+			enemy->OnCollided(&(_player.GetAttackCol()));
+			_camera.InvokeQuake(5.0f);
 		}
 	}
 
@@ -87,8 +97,8 @@ PlayingScene::Update()
 	_player.Draw();
 	_stage.Draw();
 
-	DrawExtendGraph(_chargeMeter.pos.x + _chargeMeter.barOffset.x, _chargeMeter.pos.y + _chargeMeter.barOffset.y,
-		_chargeMeter.pos.x + _chargeMeter.barOffset.x + 256 * _chargeCnt / _chargeMax, _chargeMeter.pos.y + _chargeMeter.barOffset.y + 10, _chargeMeter.barHandle, false);//バー表示 長いので2行
+	DrawExtendGraph(_hpBarRect.Left(),_hpBarRect.Top() ,
+		_hpBarRect.Left() + _hpBarRect.width * _player.GetPercentageHp(), _hpBarRect.Bottom(), _hpBarHandle, false);//バー表示 長いので2行
 
 }
 

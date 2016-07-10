@@ -1,32 +1,6 @@
-﻿2016/07/10 19:41:24 にビルドを開始しました。
+﻿2016/07/10 22:01:29 にビルドを開始しました。
      1>ノード 2 上のプロジェクト "C:\works\local_repo\ActionGame\ActionGame\ActionGame.vcxproj" (Build ターゲット)。
-     1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IDxlib /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Player.cpp
-         Player.cpp
-     1>c:\works\local_repo\actiongame\actiongame\geometry.h(63): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\works\local_repo\actiongame\actiongame\geometry.h(64): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\works\local_repo\actiongame\actiongame\geometry.h(65): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\works\local_repo\actiongame\actiongame\geometry.h(66): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\works\local_repo\actiongame\actiongame\player.cpp(201): warning C4244: '=' : 'double' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\works\local_repo\actiongame\actiongame\player.cpp(313): warning C4244: '=' : 'double' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\works\local_repo\actiongame\actiongame\player.cpp(342): warning C4244: '=' : 'double' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\works\local_repo\actiongame\actiongame\player.cpp(378): warning C4244: '=' : 'double' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\works\local_repo\actiongame\actiongame\player.cpp(430): warning C4800: 'char' : ブール値を 'true' または 'false' に強制的に設定します (警告の処理)
-     1>c:\works\local_repo\actiongame\actiongame\player.cpp(431): warning C4800: 'char' : ブール値を 'true' または 'false' に強制的に設定します (警告の処理)
-     1>c:\works\local_repo\actiongame\actiongame\player.cpp(466): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\works\local_repo\actiongame\actiongame\player.cpp(471): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\works\local_repo\actiongame\actiongame\player.cpp(476): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\works\local_repo\actiongame\actiongame\player.cpp(482): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\works\local_repo\actiongame\actiongame\player.cpp(487): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\works\local_repo\actiongame\actiongame\player.cpp(492): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\works\local_repo\actiongame\actiongame\player.cpp(500): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\works\local_repo\actiongame\actiongame\player.cpp(505): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\works\local_repo\actiongame\actiongame\player.cpp(510): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\works\local_repo\actiongame\actiongame\player.cpp(515): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\works\local_repo\actiongame\actiongame\player.cpp(520): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\works\local_repo\actiongame\actiongame\player.cpp(534): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\works\local_repo\actiongame\actiongame\player.cpp(553): warning C4244: '=' : 'double' から 'float' への変換です。データが失われる可能性があります。
-       Link:
+     1>Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\works\local_repo\ActionGame\Debug\ActionGame.exe" /INCREMENTAL /NOLOGO /LIBPATH:Dxlib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\works\local_repo\ActionGame\Debug\ActionGame.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\works\local_repo\ActionGame\Debug\ActionGame.lib" /MACHINE:X86 Debug\BatMan.obj
          Debug\Block.obj
          Debug\BlockFactory.obj
@@ -53,4 +27,4 @@
 
 ビルドに成功しました。
 
-経過時間 00:00:00.92
+経過時間 00:00:00.22
