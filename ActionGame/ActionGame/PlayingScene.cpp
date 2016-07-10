@@ -9,6 +9,7 @@ PlayingScene::PlayingScene() : _player(_camera,_stage), _camera(_player), _enemy
 {
 	_groundZero = 360.0f;
 	_stageGrHandle = LoadGraph("img/stage.png");
+	Rect _hpBarRect = Rect(Vector2(50, 400), 400, 80);//HPバー表示用の矩形　描画にこれのLeft()とか使う
 
 	_camera.SetUp();
 }
@@ -85,5 +86,9 @@ PlayingScene::Update()
 	_enemyFac.Draw();
 	_player.Draw();
 	_stage.Draw();
+
+	DrawExtendGraph(_chargeMeter.pos.x + _chargeMeter.barOffset.x, _chargeMeter.pos.y + _chargeMeter.barOffset.y,
+		_chargeMeter.pos.x + _chargeMeter.barOffset.x + 256 * _chargeCnt / _chargeMax, _chargeMeter.pos.y + _chargeMeter.barOffset.y + 10, _chargeMeter.barHandle, false);//バー表示 長いので2行
+
 }
 

@@ -18,6 +18,8 @@ private:
 	BlockFactory _blockFac;
 	Stage _stage;
 
+	int _hpBarHandle;
+	Rect _hpBarRect;
 	
 public:
 	PlayingScene();

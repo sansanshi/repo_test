@@ -9,6 +9,7 @@
 Player::Player(Camera& camera, Stage& stage) :_cameraRef(camera), _stageRef(stage)
 {
 	_collider = Collider(this, ct_player, col_default);
+	_collider.ToEnable();
 
 	_jumpPower = 6.0f;
 	_pFunc = &Player::JumpUpdate;
@@ -93,6 +94,8 @@ Player::Player(Camera& camera, Stage& stage) :_cameraRef(camera), _stageRef(stag
 	_drawFuncMap[ps_grabbed] = &Player::DrawWalk;
 
 	//attackCol 幅高さ決める　　プレイヤーのセンターからoffset isRightでoffset.xを変える
+	_attackCol= Collider(this, ct_player, col_attack);
+	_attackCol.ToEnable();
 	_attackCol.width = 20;
 	_attackCol.height = 20;
 	_attackColOffset = _isRight ? Vector2(44, 10) : Vector2(-44, 10);
@@ -543,6 +546,13 @@ Player::Grabbed(GrabMan* enemy)
 {
 	_grabbingEnemies.push_back(enemy);
 	ChangeState(ps_grabbed);
+	_collider.SetCenter(_pos + Vector2(_cameraRef.OffsetX(), 0));;
+	_collider.width = 32;
+	_collider.height = 128;
+	if (_collider.Bottom() >= 400.0f) {
+		_pos.y = 400.0 - _collider.height / 2;
+		_collider.SetCenter(_pos + Vector2(_cameraRef.OffsetX(), 0));;
+	}
 
 }
 

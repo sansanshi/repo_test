@@ -4,11 +4,13 @@
 #include<math.h>
 #include"Camera.h"
 
-GrabMan::GrabMan(Vector2 pos, int handle, int deadHandle, Player& player, Camera& camera) :_playerRef(player), _cameraRef(camera)
+GrabMan::GrabMan(Vector2 pos, int& handle, int& deadHandle, Player& player, Camera& camera) :_playerRef(player), _cameraRef(camera)
 {
 	_collider = Collider(this, ct_grabMan, col_default);
+	_collider.ToEnable();
 	_pos = pos;
 	_collider.SetRect(Rect(_pos, 29, 128));
+	_collider.SetCenter(_pos + Vector2(_cameraRef.OffsetX(),0));
 	_velocity = Vector2(0, 0);
 	_pFunc = &GrabMan::FarUpdate;
 	_handle = handle;
@@ -48,7 +50,7 @@ GrabMan::GrabMan(Vector2 pos, int handle, int deadHandle, Player& player, Camera
 
 GrabMan::~GrabMan()
 {
-	DeleteGraph(_handle);
+	//DeleteGraph(_handle);//こいつがhandleを解放する必要はない　というかファクトリからの参照なのでここで解放すると_handleは完全に解放されてしまう
 }
 
 void

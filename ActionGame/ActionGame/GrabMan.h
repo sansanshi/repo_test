@@ -59,7 +59,7 @@ private:
 	int _shakedCnt;
 
 public:
-	GrabMan(Vector2 pos,int handle,int deadHandle,Player& player,Camera& camera);
+	GrabMan(Vector2 pos,int& handle,int& deadHandle,Player& player,Camera& camera);
 	~GrabMan();
 	void Update();
 	void OnCollided(Collider*);

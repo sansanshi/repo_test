@@ -85,7 +85,7 @@ private:
 	void DrawCrouchKamae();
 
 	Rect _attackRect;
-	Collider _attackCol=Collider(this,ct_player,col_attack);
+	Collider _attackCol;
 	Vector2 _attackColOffset;
 
 	Camera& _cameraRef;
@@ -131,6 +131,8 @@ public:
 
 	/*‰Ÿ‚µ–ß‚µˆ—*/
 	void Reject(Vector2);
+
+	float GetPercentageHp(){ return _hp / _hpMax; }
 };
 
 
