@@ -59,23 +59,31 @@ Fragment::Fall(){
 
 }
 
-FragmentDrawer::FragmentDrawer(const char* filePath) : BaseDrawer(filePath),
+FragmentDrawer::FragmentDrawer(const char* filePath) : BaseDrawer(filePath),//ファイルパス貰ったらその画像でバラバラにするための画像を作成（_capHandleに入れる）
 _breaking(false),
 _capHandle(0)
 {
 	SetUseDivGraphFlag(FALSE);
 	CreateVertices(8, 6, 640, 480);
 	_capHandle = MakeGraph(640, 480);
+}
+FragmentDrawer::FragmentDrawer(int handle) : BaseDrawer(handle),//ファイルパス貰ったらその画像でバラバラにするための画像を作成（_capHandleに入れる）
+_breaking(false),
+_capHandle(0)
+{
+	SetUseDivGraphFlag(FALSE);
+	int sizeX, sizeY;
+	GetGraphSize(handle, &sizeX, &sizeY);
+	CreateVertices(3, 4, sizeX, sizeY);
+	_capHandle = handle;
 }
 
-FragmentDrawer::FragmentDrawer(void) : BaseDrawer(),
-_breaking(false),
-_capHandle(0)
-{
+FragmentDrawer::FragmentDrawer(void) : BaseDrawer(), _breaking(false), _capHandle(0)//これどこかから呼ばれてるか分からん
+{//→解決　GrabmanのコンストラクタでFragmentDrawerの実体を定義してるのでGrabmanが作られた時点でFragmentDrawerのデフォルトコンストラクタが走る
 	SetUseDivGraphFlag(FALSE);
 	CreateVertices(8, 6, 640, 480);
 	_capHandle = MakeGraph(640, 480);
-}
+}//Grabmanのコンストラクタで初期化子を使うかポインタ型で定義することで解決
 
 
 
@@ -92,6 +100,11 @@ FragmentDrawer::Break(){
 void
 FragmentDrawer::Capture(){
 	int r = DxLib::GetDrawScreenGraph(0, 0, 640, 480, _capHandle);
+}
+void
+FragmentDrawer::CreateGraph(int handle)//一応作ったけどコンストラクタで_capHandle設定してるから使わないかも
+{
+	_capHandle = handle;
 }
 
 void
@@ -114,8 +127,8 @@ FragmentDrawer::Draw(){
 
 void
 FragmentDrawer::CreateVertices(int divx, int divy, int screenW, int screenH){
-	_fragments.resize(divx*divy * 2);//四角形→三角形に分割してるので*2
-	_vertices.resize(divx*divy * 6);//2つの三角形になった→四角形1個で頂点6つになっているので*6
+	_fragments.resize(divx*divy * 2);//四角形→三角形に分割してるのでfragment（三角形の欠片？）の数は分割数（四角形の数）*2
+	_vertices.resize(divx*divy * 6);//四角形が2つの三角形になった→四角形1個で頂点6つになっているので*6
 	for (int j = 0; j<divy; ++j){
 		float top = (screenH / divy)*j;
 		float bottom = (screenH / divy)*(j + 1);
@@ -131,12 +144,15 @@ FragmentDrawer::CreateVertices(int divx, int divy, int screenW, int screenH){
 
 			//上半分
 			_vertices[headidx + 0].r = _vertices[headidx + 0].g = _vertices[headidx + 0].b = _vertices[headidx + 0].a = 255;
+			_vertices[headidx + 0].g = _vertices[headidx + 0].b = 0;//試しに頂点カラーを赤にしてみる
 			_vertices[headidx + 0].x = left; _vertices[headidx + 0].y = top;
 			_vertices[headidx + 0].u = leftu; _vertices[headidx + 0].v = topv;
 			_vertices[headidx + 1].r = _vertices[headidx + 1].g = _vertices[headidx + 1].b = _vertices[headidx + 1].a = 255;
+			_vertices[headidx + 1].g = _vertices[headidx + 1].b = 0;
 			_vertices[headidx + 1].x = right; _vertices[headidx + 1].y = top;
 			_vertices[headidx + 1].u = rightu; _vertices[headidx + 1].v = topv;
 			_vertices[headidx + 2].r = _vertices[headidx + 2].g = _vertices[headidx + 2].b = _vertices[headidx + 2].a = 255;
+			_vertices[headidx + 2].g = _vertices[headidx + 2].b = 0;
 			_vertices[headidx + 2].x = left; _vertices[headidx + 2].y = bottom;
 			_vertices[headidx + 2].u = leftu; _vertices[headidx + 2].v = bottomv;
 			int fragHeadIdx = (i + divx*j) * 2;

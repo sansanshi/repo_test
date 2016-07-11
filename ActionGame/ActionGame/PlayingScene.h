@@ -22,7 +22,7 @@ private:
 	int _hpBarHandle;
 	Rect _hpBarRect;
 
-	FragmentDrawer _fragDrawer;
+	//FragmentDrawer _fragDrawer;
 	
 public:
 	PlayingScene();

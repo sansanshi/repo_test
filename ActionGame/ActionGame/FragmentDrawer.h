@@ -26,6 +26,7 @@ public:
 	BaseDrawer(){};
 	~BaseDrawer(){};
 	BaseDrawer(const char* filePath){};
+	BaseDrawer(int handle){};
 	void Draw(){};
 };
 
@@ -41,9 +42,11 @@ public:
 	FragmentDrawer();
 	~FragmentDrawer();
 	FragmentDrawer(const char* filePath);
-	void SetUseDivGraphFlag(bool flag){ _breaking = flag; }
+	FragmentDrawer(int handle);
+	//void SetUseDivGraphFlag(bool flag){ _breaking = flag; }//Ç±ÇÍóvÇÁÇ»Ç©Ç¡ÇΩÅ@DxLibÇ…íËã`çœÇ›
 	void Break();
 	void CreateVertices(int divx, int divy, int screenW, int screenH);
 	void Capture();
+	void CreateGraph(int handle);
 	void Draw();
 };

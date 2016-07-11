@@ -5,7 +5,8 @@
 #include"Camera.h"
 #include"CollisionDetector.h"
 
-GrabMan::GrabMan(Vector2 pos, int& handle, int& deadHandle, Player& player, Camera& camera) :_playerRef(player), _cameraRef(camera)
+GrabMan::GrabMan(Vector2 pos, int& handle, int& deadHandle, Player& player, Camera& camera) 
+	:_playerRef(player), _cameraRef(camera),_fragDrawer(deadHandle)//この時点でFragmentDrawerの引数なしコンストラクタ呼ばれてる
 {
 	_collider = Collider(this, ct_grabMan, col_default);
 	_collider.ToEnable();
@@ -50,6 +51,8 @@ GrabMan::GrabMan(Vector2 pos, int& handle, int& deadHandle, Player& player, Came
 	_isLeft = false;
 
 	_shakedCnt = 0;
+
+	//_fragDrawer = new FragmentDrawer(_deadhandle);
 }
 
 
@@ -122,17 +125,8 @@ GrabMan::Draw()
 {
 	(this->*_drawFuncMap[_state])();
 	_collider.Draw();
-	//if (!_isDead)
-	//{
-	//	int graphNum = 0;//
-	//	if (_isNear) graphNum = 16 * (((_walkFrame % 20) / 10) + 2);
-	//	else graphNum = 16 * ((_walkFrame % 20) / 10);
-
-	//	if (_isGrabbing)DrawCameraGraph(_pos.x,_pos.y,16*4,0,16,40,8,20,3.0,0,_handle,true,_isLeft);//DrawRectExtendGraph(_pos.x, _pos.y, _pos.x + 64, _pos.y + 128, 16 * 4, 0, 16, 40, _handle, true);
-	//	else DrawCameraGraph(_pos.x,_pos.y,graphNum,0,16,40,8,20,3.0,0,_handle,true,_isLeft);//DrawRectExtendGraph(_pos.x, _pos.y, _pos.x + 64, _pos.y + 128, 16 * ((_walkFrame % 50) / 10), 0, 16, 40, _handle, true);
-	//	_collider.Draw();
-	//}
-	//else DrawCameraGraph(_pos.x, _pos.y,0, 0, 26, 40,13,20, 3.0f, 90, _deadhandle, true,_isLeft);
+	
+	_fragDrawer.Draw();
 }
 
 void
@@ -143,6 +137,7 @@ GrabMan::Kill()
 	_collider.ToDisable();//_isCollidable = false;
 	_isDead = true;
 	ChangeState(state_dead);
+	_fragDrawer.Break();
 }
 
 void

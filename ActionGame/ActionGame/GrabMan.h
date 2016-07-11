@@ -1,6 +1,7 @@
 #pragma once
 #include "Enemy.h"
 #include<map>
+#include"FragmentDrawer.h"
 enum State
 {
 	state_none,
@@ -61,6 +62,8 @@ private:
 	float _cOffsetX;
 
 	int _shakedCnt;
+
+	FragmentDrawer _fragDrawer;
 
 public:
 	GrabMan(Vector2 pos,int& handle,int& deadHandle,Player& player,Camera& camera);
