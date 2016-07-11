@@ -1,173 +1,14 @@
-﻿2016/07/11 10:28:25 にビルドを開始しました。
+﻿2016/07/11 12:43:33 にビルドを開始しました。
      1>ノード 2 上のプロジェクト "C:\Users\student\Desktop\1401349work\repo_test\ActionGame\ActionGame\ActionGame.vcxproj" (Build ターゲット)。
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IDxlib /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt BatMan.cpp Block.cpp BlockFactory.cpp Camera.cpp Collider.cpp CollisionDetector.cpp Enemy.cpp EnemyBullet.cpp EnemyBulletFactory.cpp EnemyFactory.cpp GameMain.cpp GameObject.cpp Geometry.cpp GrabMan.cpp KnifeMan.cpp main.cpp MovableBlock.cpp Player.cpp PlayingScene.cpp Scene.cpp Stage.cpp
-         Stage.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IDxlib /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Fragment.cpp
+         Fragment.cpp
      1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(63): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
      1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(64): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
      1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(65): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
      1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(66): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\stage.cpp(46): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-         Scene.cpp
-         PlayingScene.cpp
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(63): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(64): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(65): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(66): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\collisiondetector.h(69): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\collisiondetector.h(73): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\collisiondetector.h(95): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\collisiondetector.h(96): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\collisiondetector.h(97): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\collisiondetector.h(98): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\collisiondetector.h(100): warning C4244: '=' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\collisiondetector.h(101): warning C4244: '=' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\playingscene.cpp(41): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\playingscene.cpp(42): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\playingscene.cpp(102): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-         Player.cpp
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(63): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(64): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(65): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(66): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\player.cpp(204): warning C4244: '=' : 'double' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\player.cpp(343): warning C4244: '=' : 'double' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\player.cpp(381): warning C4244: '=' : 'double' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\player.cpp(433): warning C4800: 'char' : ブール値を 'true' または 'false' に強制的に設定します (警告の処理)
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\player.cpp(434): warning C4800: 'char' : ブール値を 'true' または 'false' に強制的に設定します (警告の処理)
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\player.cpp(469): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\player.cpp(474): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\player.cpp(479): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\player.cpp(485): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\player.cpp(490): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\player.cpp(495): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\player.cpp(503): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\player.cpp(508): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\player.cpp(513): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\player.cpp(518): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\player.cpp(523): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\player.cpp(544): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\player.cpp(564): warning C4244: '=' : 'double' から 'float' への変換です。データが失われる可能性があります。
-         MovableBlock.cpp
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(63): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(64): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(65): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(66): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-         main.cpp
-         KnifeMan.cpp
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(63): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(64): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(65): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(66): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\knifeman.cpp(76): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\knifeman.cpp(93): warning C4244: '=' : 'int' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\knifeman.cpp(97): warning C4244: '初期化中' : 'int' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\knifeman.cpp(107): warning C4244: '=' : 'int' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\knifeman.cpp(131): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-         GrabMan.cpp
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(63): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(64): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(65): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(66): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\collisiondetector.h(69): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\collisiondetector.h(73): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\collisiondetector.h(95): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\collisiondetector.h(96): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\collisiondetector.h(97): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\collisiondetector.h(98): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\collisiondetector.h(100): warning C4244: '=' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\collisiondetector.h(101): warning C4244: '=' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\grabman.cpp(152): warning C4244: '=' : 'int' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\grabman.cpp(156): warning C4244: '初期化中' : 'int' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\grabman.cpp(166): warning C4244: '=' : 'int' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\grabman.cpp(210): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\grabman.cpp(215): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\grabman.cpp(220): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\grabman.cpp(225): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\grabman.cpp(230): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\grabman.cpp(237): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-         Geometry.cpp
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(63): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(64): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(65): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(66): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.cpp(8): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.cpp(14): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.cpp(26): warning C4172: ローカル変数またはテンポラリのアドレスを返します。
-         GameObject.cpp
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(63): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(64): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(65): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(66): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-         GameMain.cpp
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(63): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(64): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(65): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(66): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-         EnemyFactory.cpp
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(63): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(64): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(65): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(66): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-         EnemyBulletFactory.cpp
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(63): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(64): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(65): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(66): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-         EnemyBullet.cpp
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(63): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(64): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(65): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(66): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\enemybullet.cpp(26): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-         Enemy.cpp
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(63): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(64): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(65): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(66): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-         CollisionDetector.cpp
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(63): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(64): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(65): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(66): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\collisiondetector.h(69): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\collisiondetector.h(73): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\collisiondetector.h(95): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\collisiondetector.h(96): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\collisiondetector.h(97): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\collisiondetector.h(98): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\collisiondetector.h(100): warning C4244: '=' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\collisiondetector.h(101): warning C4244: '=' : 'float' から 'int' への変換です。データが失われる可能性があります。
-         Collider.cpp
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(63): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(64): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(65): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(66): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-         Camera.cpp
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(63): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(64): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(65): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(66): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\camera.cpp(26): warning C4244: '=' : 'int' から 'float' への変換です。データが失われる可能性があります。
-         BlockFactory.cpp
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(63): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(64): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(65): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(66): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-         Block.cpp
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(63): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(64): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(65): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(66): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-         コードを生成中...
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\enemyfactory.cpp(58): warning C4715: 'EnemyFactory::Create' : 値を返さないコントロール パスがあります。
-         コンパイル中...
-         BatMan.cpp
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(63): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(64): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(65): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\geometry.h(66): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-         コードを生成中...
+     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\fragment.cpp(118): warning C4244: '初期化中' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349work\repo_test\actiongame\actiongame\fragment.cpp(119): warning C4244: '初期化中' : 'int' から 'float' への変換です。データが失われる可能性があります。
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\student\Desktop\1401349work\repo_test\ActionGame\Debug\ActionGame.exe" /INCREMENTAL /NOLOGO /LIBPATH:Dxlib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\student\Desktop\1401349work\repo_test\ActionGame\Debug\ActionGame.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\student\Desktop\1401349work\repo_test\ActionGame\Debug\ActionGame.lib" /MACHINE:X86 Debug\BatMan.obj
          Debug\Block.obj
@@ -179,6 +20,7 @@
          Debug\EnemyBullet.obj
          Debug\EnemyBulletFactory.obj
          Debug\EnemyFactory.obj
+         Debug\Fragment.obj
          Debug\GameMain.obj
          Debug\GameObject.obj
          Debug\Geometry.obj
@@ -196,4 +38,4 @@
 
 ビルドに成功しました。
 
-経過時間 00:00:14.31
+経過時間 00:00:01.56

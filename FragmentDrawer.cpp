@@ -28,17 +28,17 @@ Fragment::Fall(){
 	//平行移動に始まり平行移動に終わる()
 	for(int i=0;i<3;++i){
 		DxLib::VERTEX& vert=*(headVert+i);
-		vert.x-=center.x;
+		vert.x-=center.x;//原点中心になるように平行移動
 		vert.y-=center.y;
 		//コブラのマシンはサイコガン
 
-		float x=vert.x*cos(angleVel) - vert.y*sin(angleVel);
+		float x=vert.x*cos(angleVel) - vert.y*sin(angleVel);//回転計算
 		float y=vert.x*sin(angleVel) + vert.y*cos(angleVel);
-		vert.x=x;
+		vert.x=x;//計算によって求めた回転後座標に移動
 		vert.y=y;
-		vert.x*=0.985f;
+		vert.x*=0.985f;//少しずつ小さくしてる？
 		vert.y*=0.985f;
-		vert.x+=center.x;
+		vert.x+=center.x;//原点中心にしてたので元の位置に戻す
 		vert.y+=center.y;
 		
 		//落下
@@ -107,8 +107,8 @@ FragmentDrawer::Draw(){
 
 void
 FragmentDrawer::CreateVertices(int divx,int divy,int screenW,int screenH){
-	_fragments.resize(divx*divy*2);
-	_vertices.resize(divx*divy*6);
+	_fragments.resize(divx*divy*2);//四角形→三角形に分割してるので*2
+	_vertices.resize(divx*divy*6);//2つの三角形になった→四角形1個で頂点6つになっているので*6
 	for(int j=0; j<divy; ++j){
 		float top = (screenH/divy)*j;
 		float bottom = (screenH/divy)*(j+1);
