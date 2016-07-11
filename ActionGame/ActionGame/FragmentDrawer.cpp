@@ -1,5 +1,6 @@
 #include "FragmentDrawer.h"
 #include <math.h>
+#include<assert.h>
 
 Fragment::Fragment() {
 
@@ -63,8 +64,8 @@ _breaking(false),
 _capHandle(0)
 {
 	SetUseDivGraphFlag(FALSE);
-	CreateVertices(8, 6, 800, 600);
-	_capHandle = MakeGraph(800, 600);
+	CreateVertices(8, 6, 640, 480);
+	_capHandle = MakeGraph(640, 480);
 }
 
 FragmentDrawer::FragmentDrawer(void) : BaseDrawer(),
@@ -72,8 +73,8 @@ _breaking(false),
 _capHandle(0)
 {
 	SetUseDivGraphFlag(FALSE);
-	CreateVertices(8, 6, 800, 600);
-	_capHandle = MakeGraph(800, 600);
+	CreateVertices(8, 6, 640, 480);
+	_capHandle = MakeGraph(640, 480);
 }
 
 
@@ -90,7 +91,7 @@ FragmentDrawer::Break(){
 
 void
 FragmentDrawer::Capture(){
-	int r = DxLib::GetDrawScreenGraph(0, 0, 800, 600, _capHandle);
+	int r = DxLib::GetDrawScreenGraph(0, 0, 640, 480, _capHandle);
 }
 
 void
@@ -103,6 +104,7 @@ FragmentDrawer::Draw(){
 		for (; it != _fragments.end(); ++it){
 			it->Fall();
 		}
+
 	}
 	else{
 		BaseDrawer::Draw();

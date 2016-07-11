@@ -1,11 +1,12 @@
 #include "PlayingScene.h"
 #include<DxLib.h>
 #include"CollisionDetector.h"
+#include<assert.h>
 
 //凝ったタイトル作る
 //死んだら最初から始まる
 
-PlayingScene::PlayingScene() : _player(_camera,_stage), _camera(_player), _enemyFac(_player, _camera), _blockFac(_player), _stage(_camera)
+PlayingScene::PlayingScene() : _player(_camera, _stage), _camera(_player), _enemyFac(_player, _camera), _blockFac(_player), _stage(_camera), _fragDrawer()
 {
 	_groundZero = 360.0f;
 	_stageGrHandle = LoadGraph("img/stage.png");
@@ -71,6 +72,8 @@ PlayingScene::Update()
 		{
 			enemy->OnCollided(&(_player.GetAttackCol()));
 			_camera.InvokeQuake(3.0f);
+			_fragDrawer.Capture();//バラバラテスト
+			_fragDrawer.Break();
 		}
 	}
 
@@ -97,6 +100,8 @@ PlayingScene::Update()
 	_enemyFac.Draw();
 	_player.Draw();
 	_stage.Draw();
+
+	_fragDrawer.Draw();
 
 	DrawExtendGraph(_hpBarRect.Left(),_hpBarRect.Top() ,
 		_hpBarRect.Left() + _hpBarRect.width * _player.GetPercentageHp(), _hpBarRect.Bottom(), _hpBarHandle, false);//バー表示 長いので2行
