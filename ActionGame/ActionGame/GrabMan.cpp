@@ -97,7 +97,7 @@ GrabMan::OnCollided(GameObject* obj)
 void
 GrabMan::OnCollided(std::shared_ptr<GameObject> obj)
 {
-
+	
 }
 
 

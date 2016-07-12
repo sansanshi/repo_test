@@ -6,7 +6,7 @@ class Fragment
 {
 private:
 	Vector2 _velocity;
-	Vector2 _center;
+	Vector2 _center;//‚±‚ê‚Í”j•Ğ‚Ì’†SÀ•W‚Å‚ ‚Á‚Ä•`‰æêŠ‚Æ‚©‚Å‚Í‚È‚¢
 	Vector2 _accel;
 	float _angleVel;
 public:

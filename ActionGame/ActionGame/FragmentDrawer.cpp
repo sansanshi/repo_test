@@ -33,12 +33,19 @@ Fragment::Fall(){
 	//平行移動に始まり平行移動に終わる()
 	for (int i = 0; i<3; ++i){
 		DxLib::VERTEX& vert = *(_headVert + i);
+		DxLib::VERTEX v = *(_headVert+i);
+
 		vert.x -= _center.x;//原点中心になるように平行移動
 		vert.y -= _center.y;
+		
 		//コブラのマシンはサイコガン
-
-		float x = vert.x*cos(_angleVel) - vert.y*sin(_angleVel);//回転計算
-		float y = vert.x*sin(_angleVel) + vert.y*cos(_angleVel);
+		v.x = v.x*2.0f + v.y*0.f;//拡大計算
+		v.y = v.x*0.0f + v.y*2.0f;
+		float x = v.x*cos(_angleVel) - v.y*sin(_angleVel);//回転計算
+		float y = v.x*sin(_angleVel) + v.y*cos(_angleVel);
+		//x *= 2.0f;
+		//y *= 2.0f;
+		
 		vert.x = x;//計算によって求めた回転後座標に移動
 		vert.y = y;
 		vert.x *= 0.985f;//少しずつ小さくしてる？
