@@ -26,21 +26,26 @@ Fragment::CalculateCenter(){
 }
 void
 Fragment::Fall(){
+	Vector2 temp[3];
 
 	_velocity.x += _accel.x;
 	_velocity.y += _accel.y;
 	//まず回転(重心中心)
 	//平行移動に始まり平行移動に終わる()
 	for (int i = 0; i<3; ++i){
-		DxLib::VERTEX& vert = *(_headVert + i);
+		DxLib::VERTEX& vert = *(_headVert + i);//このvertはinput/outputみたいな扱いにして下のvを動かして最後にvert=vとかしてみる
 		DxLib::VERTEX v = *(_headVert+i);
 
 		vert.x -= _center.x;//原点中心になるように平行移動
 		vert.y -= _center.y;
+		v.x -= _center.x;
+		v.y -= _center.y;
+		//この辺でスケールを1に出来ればいける
+		//元の状態のvertの情報がほしい
 		
 		//コブラのマシンはサイコガン
-		v.x = v.x*2.0f + v.y*0.f;//拡大計算
-		v.y = v.x*0.0f + v.y*2.0f;
+		//v.x = v.x*5.0f + v.y*0.f;//拡大計算//毎フレーム拡大がかかってるっぽい
+		//v.y = v.x*0.0f + v.y*5.0f;
 		float x = v.x*cos(_angleVel) - v.y*sin(_angleVel);//回転計算
 		float y = v.x*sin(_angleVel) + v.y*cos(_angleVel);
 		//x *= 2.0f;
@@ -54,16 +59,26 @@ Fragment::Fall(){
 		vert.y += _center.y;
 
 		//落下
-		vert.x += _velocity.x;
-		vert.y += _velocity.y;
+		//vert.x += _velocity.x;
+		//vert.y += _velocity.y;
 
 		//透明度UP
 		vert.a -= 1;
 
+		temp[i].x = vert.x;
+		temp[i].y = vert.y;
+
 	}
 	CalculateCenter();
 
-
+	/*for (int i = 0; i < 3; i++){
+		DrawLine(temp[i].x, temp[i].y, temp[(i + 1)%3].x, temp[(i + 1)%3].y, 0xffffff);
+	}*/
+	for (int i = 0; i < 3; i++){//ここはできてるっぽい
+		DxLib::VERTEX v = identityVert[i];
+		DxLib::VERTEX v_ = identityVert[(i+1)%3];
+		DrawLine(v.x, v.y, v_.x, v_.y, 0xffffff);
+	}
 }
 
 FragmentDrawer::FragmentDrawer(const char* filePath) : BaseDrawer(filePath),//ファイルパス貰ったらその画像でバラバラにするための画像を作成（_capHandleに入れる）
@@ -162,9 +177,13 @@ FragmentDrawer::CreateVertices(int divx, int divy, int screenW, int screenH){
 			_vertices[headidx + 2].g = _vertices[headidx + 2].b = 0;
 			_vertices[headidx + 2].x = left; _vertices[headidx + 2].y = bottom;
 			_vertices[headidx + 2].u = leftu; _vertices[headidx + 2].v = bottomv;
-			int fragHeadIdx = (i + divx*j) * 2;
+			int fragHeadIdx = (i + divx*j) * 2;//上半分→下半分で、1つ横の上半分は＋1ではないので＊2
 			_fragments[fragHeadIdx]._headVert = &_vertices[headidx + 0];
 			_fragments[fragHeadIdx].CalculateCenter();
+			for (int i = 0; i < 3; i++)//何もしてない頂点情報を保存テスト
+			{
+				_fragments[fragHeadIdx].identityVert[i] = _vertices[headidx + 0 + i];
+			}
 
 			//下半分
 			_vertices[headidx + 3].r = _vertices[headidx + 3].g = _vertices[headidx + 3].b = _vertices[headidx + 3].a = 255;
@@ -178,6 +197,11 @@ FragmentDrawer::CreateVertices(int divx, int divy, int screenW, int screenH){
 			_vertices[headidx + 5].u = rightu; _vertices[headidx + 5].v = bottomv;
 			_fragments[fragHeadIdx + 1]._headVert = &_vertices[headidx + 3];
 			_fragments[fragHeadIdx + 1].CalculateCenter();
+			for (int i = 0; i < 3; i++)//何もしてない頂点情報を保存テスト
+			{
+				_fragments[fragHeadIdx+1].identityVert[i] = _vertices[headidx + 3 + i];
+			}
+
 		}
 	}
 }

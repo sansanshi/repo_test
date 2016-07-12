@@ -15,6 +15,7 @@ public:
 	~Fragment();
 	void CalculateCenter();
 	void Fall();
+	DxLib::VERTEX identityVert[3];//‰½‚à‚µ‚Ä‚È‚¢iŠg‘å‚Æ‚©‰ñ“]‚Æ‚©j’¸“_î•ñ‚ğ•Û‘¶
 };
 
 
