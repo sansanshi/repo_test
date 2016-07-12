@@ -137,7 +137,12 @@ GrabMan::Kill()
 	_collider.ToDisable();//_isCollidable = false;
 	_isDead = true;
 	ChangeState(state_dead);
+	
+	//_fragDrawer.TurnUV();//uv’l‚ÌU‚¾‚¯”½“]
+	//_fragDrawer.FragmentTranslation(_pos);
+	_fragDrawer.FragmentScalling();
 	_fragDrawer.Break();
+	//_fragDrawer.SetPos(_pos);
 }
 
 void

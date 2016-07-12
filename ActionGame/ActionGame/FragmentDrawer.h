@@ -16,6 +16,10 @@ public:
 	void CalculateCenter();
 	void Fall();
 	DxLib::VERTEX identityVert[3];//‰½‚à‚µ‚Ä‚È‚¢iŠg‘å‚Æ‚©‰ñ“]‚Æ‚©j’¸“_î•ñ‚ğ•Û‘¶
+	DxLib::VERTEX expansionVert[3];//Šg‘åŒã‚Ì’¸“_î•ñ
+	void Scalling();
+	void SetCenter(Vector2);
+	void Translation(Vector2 vec);
 };
 
 
@@ -50,4 +54,9 @@ public:
 	void Capture();
 	void CreateGraph(int handle);
 	void Draw();
+	void FragmentScalling();//”j•Ğ‚Ì’¸“_‚ğŠg‘å
+	void FragmentTranslation(Vector2 vec);
+
+	void TurnUV();
+	void SetPos(Vector2);
 };

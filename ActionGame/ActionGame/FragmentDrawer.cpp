@@ -33,34 +33,42 @@ Fragment::Fall(){
 	//まず回転(重心中心)
 	//平行移動に始まり平行移動に終わる()
 	for (int i = 0; i<3; ++i){
-		DxLib::VERTEX& vert = *(_headVert + i);//このvertはinput/outputみたいな扱いにして下のvを動かして最後にvert=vとかしてみる
-		DxLib::VERTEX v = *(_headVert+i);
+		DxLib::VERTEX& vert = *(_headVert + i);//このvertはinput/outputみたいな扱いにして下のvを動かして最後にvert=vとかしてみる//ここに入ってきた時のvertは拡大されてるはず
+		DxLib::VERTEX v = identityVert[i];//*(_headVert+i);
 
 		vert.x -= _center.x;//原点中心になるように平行移動
 		vert.y -= _center.y;
-		v.x -= _center.x;
-		v.y -= _center.y;
+		//v.x -= _center.x;
+		//v.y -= _center.y;
 		//この辺でスケールを1に出来ればいける
-		//元の状態のvertの情報がほしい
+		//元の状態のvertの情報がほしい←identityVertに取れたっぽい
 		
 		//コブラのマシンはサイコガン
 		//v.x = v.x*5.0f + v.y*0.f;//拡大計算//毎フレーム拡大がかかってるっぽい
 		//v.y = v.x*0.0f + v.y*5.0f;
-		float x = v.x*cos(_angleVel) - v.y*sin(_angleVel);//回転計算
-		float y = v.x*sin(_angleVel) + v.y*cos(_angleVel);
-		//x *= 2.0f;
-		//y *= 2.0f;
+		float x = vert.x*cos(_angleVel) - vert.y*sin(_angleVel);//回転計算
+		float y = vert.x*sin(_angleVel) + vert.y*cos(_angleVel);//ここでv.x使ってるのに上でv.x=~~ってしてるのおかしい
+		//v.x *= 2.0f;
+		//v.y *= 2.0f;
+		//v.x += _center.x;
+		//v.y += _center.y;
 		
 		vert.x = x;//計算によって求めた回転後座標に移動
 		vert.y = y;
-		vert.x *= 0.985f;//少しずつ小さくしてる？
-		vert.y *= 0.985f;
+		//vert = v;
+		//vert.x *= 0.985f;//少しずつ小さくしてる？
+		//vert.y *= 0.985f;
 		vert.x += _center.x;//原点中心にしてたので元の位置に戻す
 		vert.y += _center.y;
+		
+		//vert.x = expansionVert[i].x + x;
+		//vert.y = expansionVert[i].y + y;
 
 		//落下
 		//vert.x += _velocity.x;
 		//vert.y += _velocity.y;
+		//vert.x = 200 + expansionVert[i].x;//expansionVertは多分いらない ここに入ってきたときのvertはexpansionVertと同じ
+		//vert.y = 200 + expansionVert[i].y;
 
 		//透明度UP
 		vert.a -= 1;
@@ -79,6 +87,60 @@ Fragment::Fall(){
 		DxLib::VERTEX v_ = identityVert[(i+1)%3];
 		DrawLine(v.x, v.y, v_.x, v_.y, 0xffffff);
 	}
+}
+void
+Fragment::Scalling()//毎フレームこれ呼んでると動かない（中で座標を弄ってるので
+{
+	Vector2 temp[3];
+
+	_velocity.x += _accel.x;
+	_velocity.y += _accel.y;
+	//まず回転(重心中心)
+	//平行移動に始まり平行移動に終わる()
+	for (int i = 0; i<3; ++i){
+		DxLib::VERTEX& vert = *(_headVert + i);//このvertはinput/outputみたいな扱いにして下のvを動かして最後にvert=vとかしてみる
+		DxLib::VERTEX v = identityVert[i];//*(_headVert+i);
+
+		//vert.x -= _center.x;//原点中心になるように平行移動
+		//vert.y -= _center.y;
+		v.x -= _center.x;
+		v.y -= _center.y;
+		//この辺でスケールを1に出来ればいける
+		//元の状態のvertの情報がほしい←identityVertに取れたっぽい
+
+		//コブラのマシンはサイコガン
+		//float tempx = identityVert[i].x - _center.x;
+		//float tempy = identityVert[i].y - _center.y;
+		float x = v.x*2.0f + v.y*0.f;//拡大計算//毎フレーム拡大がかかってるっぽい
+		float y = v.x*0.0f + v.y*2.0f;
+		
+		x += _center.x*2.0f;//ここで詰まってた　拡大後には中心座標*拡大倍率を＋する
+		y += _center.y*2.0f;
+
+		vert.x = x;//計算によって求めた回転後座標に移動
+		vert.y = y;
+		//vert = v;
+		//vert.x *= 0.985f;//少しずつ小さくしてる？
+		//vert.y *= 0.985f;
+		//vert.x += _center.x;//原点中心にしてたので元の位置に戻す
+		//vert.y += _center.y;
+		expansionVert[i] = vert;
+		
+
+		temp[i].x = vert.x;
+		temp[i].y = vert.y;
+
+	}
+	CalculateCenter();
+
+	for (int i = 0; i < 3; i++){
+	DrawLine(temp[i].x, temp[i].y, temp[(i + 1)%3].x, temp[(i + 1)%3].y, 0xffffff);
+	}
+	//for (int i = 0; i < 3; i++){//ここはできてるっぽい
+	//	DxLib::VERTEX v = identityVert[i];
+	//	DxLib::VERTEX v_ = identityVert[(i + 1) % 3];
+	//	DrawLine(v.x, v.y, v_.x, v_.y, 0xffffff);
+	//}
 }
 
 FragmentDrawer::FragmentDrawer(const char* filePath) : BaseDrawer(filePath),//ファイルパス貰ったらその画像でバラバラにするための画像を作成（_capHandleに入れる）
@@ -138,6 +200,7 @@ FragmentDrawer::Draw(){
 		std::vector<Fragment>::iterator it = _fragments.begin();
 		for (; it != _fragments.end(); ++it){
 			it->Fall();
+			//it->Scalling();
 		}
 
 	}
@@ -204,4 +267,75 @@ FragmentDrawer::CreateVertices(int divx, int divy, int screenW, int screenH){
 
 		}
 	}
+}
+
+void
+FragmentDrawer::FragmentScalling()
+{
+	std::vector<Fragment>::iterator it = _fragments.begin();
+	for (; it != _fragments.end();)
+	{
+		it->Scalling();
+		it++;
+	}
+}
+
+void
+FragmentDrawer::TurnUV()
+{
+	std::vector<DxLib::VERTEX>::iterator it = _vertices.begin();
+	for (; it != _vertices.end();)
+	{
+		it->u = static_cast<float>(1.0f - it->u);
+		it++;
+	}
+}
+
+void
+FragmentDrawer::SetPos(Vector2 pos)
+{
+	std::vector<Fragment>::iterator it = _fragments.begin();
+	for (; it != _fragments.end();)
+	{
+		it->SetCenter(pos);
+		it++;
+	}
+}
+
+void
+Fragment::SetCenter(Vector2 pos)
+{
+	_center += pos;
+}
+
+void 
+FragmentDrawer::FragmentTranslation(Vector2 vec)
+{
+	std::vector<Fragment>::iterator it = _fragments.begin();
+	for (; it != _fragments.end();)
+	{
+		it->SetCenter(vec);
+		it++;
+	}
+}
+
+void
+Fragment::Translation(Vector2 vec)
+{
+	for (int i = 0; i<3; ++i){
+		DxLib::VERTEX& vert = *(_headVert + i);//このvertはinput/outputみたいな扱いにして下のvを動かして最後にvert=vとかしてみる//ここに入ってきた時のvertは拡大されてるはず
+		DxLib::VERTEX v = identityVert[i];//*(_headVert+i);
+
+		vert.x -= _center.x;//原点中心になるように平行移動
+		vert.y -= _center.y;
+		
+		
+		vert.x += vec.x;//原点中心にしてたので元の位置に戻す
+		vert.y += vec.y;
+
+	
+	}
+	CalculateCenter();
+
+	
 }

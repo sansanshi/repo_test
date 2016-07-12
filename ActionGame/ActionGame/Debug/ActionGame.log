@@ -1,22 +1,16 @@
-﻿2016/07/12 23:09:07 にビルドを開始しました。
+﻿2016/07/13 2:51:13 にビルドを開始しました。
      1>ノード 2 上のプロジェクト "C:\works\local_repo\ActionGame\ActionGame\ActionGame.vcxproj" (Build ターゲット)。
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IDxlib /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt EnemyFactory.cpp FragmentDrawer.cpp GameMain.cpp GrabMan.cpp Player.cpp PlayingScene.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IDxlib /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt FragmentDrawer.cpp
          FragmentDrawer.cpp
      1>c:\works\local_repo\actiongame\actiongame\geometry.h(63): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
      1>c:\works\local_repo\actiongame\actiongame\geometry.h(64): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
      1>c:\works\local_repo\actiongame\actiongame\geometry.h(65): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
      1>c:\works\local_repo\actiongame\actiongame\geometry.h(66): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\works\local_repo\actiongame\actiongame\fragmentdrawer.cpp(80): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\works\local_repo\actiongame\actiongame\fragmentdrawer.cpp(155): warning C4244: '初期化中' : 'int' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\works\local_repo\actiongame\actiongame\fragmentdrawer.cpp(156): warning C4244: '初期化中' : 'int' から 'float' への変換です。データが失われる可能性があります。
-         コードを生成中...
-         スキップ中... (関連する変更は検出されませんでした)
-         PlayingScene.cpp
-         Player.cpp
-         GrabMan.cpp
-         GameMain.cpp
-         EnemyFactory.cpp
+     1>c:\works\local_repo\actiongame\actiongame\fragmentdrawer.cpp(88): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\works\local_repo\actiongame\actiongame\fragmentdrawer.cpp(137): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\works\local_repo\actiongame\actiongame\fragmentdrawer.cpp(218): warning C4244: '初期化中' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>c:\works\local_repo\actiongame\actiongame\fragmentdrawer.cpp(219): warning C4244: '初期化中' : 'int' から 'float' への変換です。データが失われる可能性があります。
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\works\local_repo\ActionGame\Debug\ActionGame.exe" /INCREMENTAL /NOLOGO /LIBPATH:Dxlib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\works\local_repo\ActionGame\Debug\ActionGame.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\works\local_repo\ActionGame\Debug\ActionGame.lib" /MACHINE:X86 Debug\BatMan.obj
          Debug\Block.obj
@@ -45,4 +39,4 @@
 
 ビルドに成功しました。
 
-経過時間 00:00:00.86
+経過時間 00:00:00.74
