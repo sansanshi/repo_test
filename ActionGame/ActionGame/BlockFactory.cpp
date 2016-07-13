@@ -8,6 +8,8 @@
 BlockFactory::BlockFactory(Player& player) :_player(player)
 {
 	_imgMap[bt_movable] = LoadGraph("img/movableBlock.png");
+	_imgMap[bt_vmovable] = LoadGraph("img/vmovableBlock.png");
+	_imgMap[bt_normal] = LoadGraph("img/normalBlock.png");
 }
 
 
@@ -27,7 +29,7 @@ BlockFactory::CreateBlock(BlockType bt, Vector2 pos)
 		//ret.reset(new NormalBlock(bt, pos));
 		break;
 	case bt_movable:
-		ret.reset(new MovableBlock());
+		ret.reset(new MovableBlock(pos,_imgMap[bt]));
 		break;
 	case bt_vmovable:
 		break;
