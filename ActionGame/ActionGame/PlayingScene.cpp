@@ -56,6 +56,19 @@ PlayingScene::Update()
 		_player.Reject(vec);//ここのRejectの中で上に押し戻した場合stateをwalkにするっていう処理をしてるからGrabbedから変わってる
 	}
 
+	for (auto& enemy : _enemyFac.GetEnemies())//エネミー同士のあたり判定
+	{
+		if (!enemy->GetCollider().IsCollidable() ) continue;//エネミーもしくはプレイヤーの攻撃のColliderが無効だったら判定はしない
+		for (auto& enemy2 : _enemyFac.GetEnemies()){
+			if (enemy2 == enemy) continue;//自分自身とのあたり判定は飛ばす
+			//if (!enemy2->GetCollider().IsCollidable()) continue;
+			if (CollisionDetector::IsHit(enemy->GetCollider(), enemy2->GetCollider()))
+			{
+				enemy->OnCollided(&(enemy2->GetCollider()));
+			}
+		}
+	}
+
 	for (auto& enemy : _enemyFac.GetEnemies())//エネミーとステージの当たり判定（押し戻し）
 	{
 		if (!enemy->GetCollider().IsCollidable()) continue;//当たり判定falseだったら判定せず次へ

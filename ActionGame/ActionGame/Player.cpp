@@ -449,13 +449,22 @@ Player::GrabbedUpdate()
 			grabman->Shaked();
 		}
 	}
-
+	int num = _grabbingEnemies.size();
 	//不要なもの削除ループ
 	_grabbingEnemies.remove_if(
 		[](GrabMan* e){//ラムダ式が使われている
 		return !e->IsGrabbing();
 	});
 
+	if (num > _grabbingEnemies.size())
+	{
+		std::list<GrabMan*>::iterator it = _grabbingEnemies.begin();
+		for (; it != _grabbingEnemies.end();)
+		{
+			(*it)->GrabRelease();
+			++it;
+		}
+	}
 
 	if (_grabbingEnemies.size() == 0){
 		ChangeState(ps_Walk);

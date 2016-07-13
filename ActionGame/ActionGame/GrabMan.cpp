@@ -78,6 +78,17 @@ GrabMan::OnCollided(Collider* col)
 		ChangeState(state_grab);
 		_collider.ToDisable();//_isCollidable = false;//これしとかないと当たっている間何度もOnCollidedが呼ばれる		
 	}
+	if (col->Type() == col_default&&col->CharaType() == ct_grabMan)
+	{
+		GrabMan* grabman = dynamic_cast<GrabMan*>(col->_gameObject);
+		if (grabman->IsGrabbing())
+		{
+			_playerRef.Grabbed(this);
+			_isGrabbing = true;
+			ChangeState(state_grab);
+			_collider.ToDisable();//_isCollidable = false;//これしとかないと当たっている間何度もOnCollidedが呼ばれる		
+		}
+	}
 }
 void
 GrabMan::OnCollided(GameObject* obj)
@@ -116,8 +127,9 @@ void
 GrabMan::Update()
 {
 	_cOffsetX = _cameraRef.OffsetX();
-	(this->*_pFunc)();
 	++_stateFrame[_state];
+	(this->*_pFunc)();
+	
 }
 
 void 
@@ -126,7 +138,7 @@ GrabMan::Draw()
 	(this->*_drawFuncMap[_state])();
 	_collider.Draw();
 	
-	_fragDrawer.Draw();
+	
 }
 
 void
@@ -138,11 +150,10 @@ GrabMan::Kill()
 	_isDead = true;
 	ChangeState(state_dead);
 	
-	//_fragDrawer.TurnUV();//uv値のUだけ反転
-	//_fragDrawer.FragmentTranslation(_pos);
-	_fragDrawer.FragmentScalling();
-	_fragDrawer.Break();
-	//_fragDrawer.SetPos(_pos);
+	_isLeft?_fragDrawer.TurnUV() : 0 ;//uv値のUだけ反転
+	_fragDrawer.FragmentScalling(3.0f);//Scallingの方を先にする
+	_fragDrawer.FragmentTranslation(Vector2(_collider.Left(),_collider.Top()));
+	_fragDrawer.Break(Vector2(6.0f,0.0f));
 }
 
 void
@@ -175,12 +186,13 @@ GrabMan::FarUpdate()
 	}
 }
 void
-GrabMan::DeadUpdate()
+GrabMan::DeadUpdate()//バラバラ描画をしておきたいのでタイマー制にする
 {
+	if (_stateFrame[state_dead]>120) _isAvailable = false;
 	//DrawString(200, 200, "deadupdate", 0xffffff);
-	_pos += _velocity;
-	_velocity.y +=0.5f;
-	if (_pos.y > 500) _isAvailable = false;
+	//_pos += _velocity;
+	//_velocity.y +=0.5f;
+	//if (_pos.y > 500) _isAvailable = false;
 }
 void 
 GrabMan::GrabUpdate()
@@ -217,7 +229,8 @@ GrabMan::DrawNear()
 void
 GrabMan::DrawDead()
 {
-	DrawCameraGraph(_pos.x, _pos.y, 0, 0, 26, 40, 13, 20, 3.0f, 90, _deadhandle, true, _isLeft);
+	//バラバラ描画
+	_fragDrawer.Draw();//DrawCameraGraph(_pos.x, _pos.y, 0, 0, 26, 40, 13, 20, 3.0f, 90, _deadhandle, true, _isLeft);
 }
 void 
 GrabMan::DrawGrab()
@@ -266,4 +279,12 @@ GrabMan::Damage(int value)
 	if (_hp <= 0) Kill();
 
 
+}
+
+void
+GrabMan::GrabRelease()
+{
+	_isGrabbing = false;
+	ChangeState(state_near);
+	_collider.ToEnable();
 }
