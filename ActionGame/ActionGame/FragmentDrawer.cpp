@@ -11,7 +11,8 @@ Fragment::Fragment() {
 	_center.y = 0.f;
 	_accel.x = 0.04f*static_cast<float>(rand() % 20 - 10) - 0.1f;
 	_accel.y = 0.3f;
-	_angleVel = 0.015f*static_cast<float>(rand() % 20 - 10);
+	_angleVel = 0.0015f*static_cast<float>(rand() % 20 - 10);
+	_fallTimer = 0;
 }
 
 Fragment::~Fragment()
@@ -27,9 +28,10 @@ Fragment::CalculateCenter(){
 void
 Fragment::Fall(){
 	Vector2 temp[3];
+	++_fallTimer;
 
-	_velocity.x += _accel.x;
-	_velocity.y += _accel.y;
+	_fallTimer>5 ? _velocity.x += _accel.x:0;
+	_fallTimer > 5 ? _velocity.y += _accel.y:0;
 	//まず回転(重心中心)
 	//平行移動に始まり平行移動に終わる()
 	for (int i = 0; i<3; ++i){
@@ -56,8 +58,8 @@ Fragment::Fall(){
 		vert.x = x;//計算によって求めた回転後座標に移動
 		vert.y = y;
 		//vert = v;
-		//vert.x *= 0.985f;//少しずつ小さくしてる？
-		//vert.y *= 0.985f;
+		vert.x *= 0.985f;//少しずつ小さくしてる？
+		vert.y *= 0.985f;
 		vert.x += _center.x;//原点中心にしてたので元の位置に戻す
 		vert.y += _center.y;
 		
@@ -65,8 +67,8 @@ Fragment::Fall(){
 		//vert.y = expansionVert[i].y + y;
 
 		//落下
-		//vert.x += _velocity.x;
-		//vert.y += _velocity.y;
+		_fallTimer>5 ? vert.x += _velocity.x : 0 ;
+		_fallTimer>5 ? vert.y += _velocity.y : 0 ;
 		//vert.x = 200 + expansionVert[i].x;//expansionVertは多分いらない ここに入ってきたときのvertはexpansionVertと同じ
 		//vert.y = 200 + expansionVert[i].y;
 
@@ -79,18 +81,18 @@ Fragment::Fall(){
 	}
 	CalculateCenter();
 
-	/*for (int i = 0; i < 3; i++){
-		DrawLine(temp[i].x, temp[i].y, temp[(i + 1)%3].x, temp[(i + 1)%3].y, 0xffffff);
-	}*/
-	for (int i = 0; i < 3; i++){//ここはできてるっぽい
-		DxLib::VERTEX v = identityVert[i];
-		DxLib::VERTEX v_ = identityVert[(i+1)%3];
-		DrawLine(v.x, v.y, v_.x, v_.y, 0xffffff);
+	for (int i = 0; i < 3; i++){
+		//DrawLine(temp[i].x, temp[i].y, temp[(i + 1)%3].x, temp[(i + 1)%3].y, 0xffffff);
 	}
+	//for (int i = 0; i < 3; i++){//ここはできてるっぽい
+	//	DxLib::VERTEX v = identityVert[i];
+	//	DxLib::VERTEX v_ = identityVert[(i+1)%3];
+	//	DrawLine(v.x, v.y, v_.x, v_.y, 0xffffff);
+	//}
 }
 void
-Fragment::Scalling()//毎フレームこれ呼んでると動かない（中で座標を弄ってるので
-{
+Fragment::Scalling(float size)//毎フレームこれ呼んでると動かない（中で座標を弄ってるので
+{//この中でidentityVertを使って計算してるので前のTranslationの結果が反映されてない
 	Vector2 temp[3];
 
 	_velocity.x += _accel.x;
@@ -111,11 +113,11 @@ Fragment::Scalling()//毎フレームこれ呼んでると動かない（中で座標を弄ってるので
 		//コブラのマシンはサイコガン
 		//float tempx = identityVert[i].x - _center.x;
 		//float tempy = identityVert[i].y - _center.y;
-		float x = v.x*2.0f + v.y*0.f;//拡大計算//毎フレーム拡大がかかってるっぽい
-		float y = v.x*0.0f + v.y*2.0f;
+		float x = v.x*size + v.y*0.f;//拡大計算//毎フレーム拡大がかかってるっぽい
+		float y = v.x*0.0f + v.y*size;
 		
-		x += _center.x*2.0f;//ここで詰まってた　拡大後には中心座標*拡大倍率を＋する
-		y += _center.y*2.0f;
+		x += _center.x*size;//ここで詰まってた　拡大後には中心座標*拡大倍率を＋する
+		y += _center.y*size;
 
 		vert.x = x;//計算によって求めた回転後座標に移動
 		vert.y = y;
@@ -180,6 +182,22 @@ void
 FragmentDrawer::Break(){
 	_breaking = true;
 }
+void
+FragmentDrawer::Break(Vector2 power)
+{
+	_breaking = true;
+	std::vector<Fragment>::iterator it = _fragments.begin();
+	for (; it != _fragments.end();)
+	{
+		it->AddPower(power);
+		it++;
+	}
+}
+void
+Fragment::AddPower(Vector2 power)
+{
+	_velocity += power;
+}
 
 void
 FragmentDrawer::Capture(){
@@ -233,11 +251,11 @@ FragmentDrawer::CreateVertices(int divx, int divy, int screenW, int screenH){
 			_vertices[headidx + 0].x = left; _vertices[headidx + 0].y = top;
 			_vertices[headidx + 0].u = leftu; _vertices[headidx + 0].v = topv;
 			_vertices[headidx + 1].r = _vertices[headidx + 1].g = _vertices[headidx + 1].b = _vertices[headidx + 1].a = 255;
-			_vertices[headidx + 1].g = _vertices[headidx + 1].b = 0;
+			//_vertices[headidx + 1].g = _vertices[headidx + 1].b = 0;
 			_vertices[headidx + 1].x = right; _vertices[headidx + 1].y = top;
 			_vertices[headidx + 1].u = rightu; _vertices[headidx + 1].v = topv;
 			_vertices[headidx + 2].r = _vertices[headidx + 2].g = _vertices[headidx + 2].b = _vertices[headidx + 2].a = 255;
-			_vertices[headidx + 2].g = _vertices[headidx + 2].b = 0;
+			//_vertices[headidx + 2].g = _vertices[headidx + 2].b = 0;
 			_vertices[headidx + 2].x = left; _vertices[headidx + 2].y = bottom;
 			_vertices[headidx + 2].u = leftu; _vertices[headidx + 2].v = bottomv;
 			int fragHeadIdx = (i + divx*j) * 2;//上半分→下半分で、1つ横の上半分は＋1ではないので＊2
@@ -250,12 +268,14 @@ FragmentDrawer::CreateVertices(int divx, int divy, int screenW, int screenH){
 
 			//下半分
 			_vertices[headidx + 3].r = _vertices[headidx + 3].g = _vertices[headidx + 3].b = _vertices[headidx + 3].a = 255;
+			_vertices[headidx + 3].g = _vertices[headidx + 3].b = 0;//頂点カラーを赤に
 			_vertices[headidx + 3].x = right; _vertices[headidx + 3].y = top;
 			_vertices[headidx + 3].u = rightu; _vertices[headidx + 3].v = topv;
 			_vertices[headidx + 4].r = _vertices[headidx + 4].g = _vertices[headidx + 4].b = _vertices[headidx + 4].a = 255;
 			_vertices[headidx + 4].x = left; _vertices[headidx + 4].y = bottom;
 			_vertices[headidx + 4].u = leftu; _vertices[headidx + 4].v = bottomv;
 			_vertices[headidx + 5].r = _vertices[headidx + 5].g = _vertices[headidx + 5].b = _vertices[headidx + 5].a = 255;
+			_vertices[headidx + 5].g = _vertices[headidx + 5].b = 0;//頂点カラーを赤に
 			_vertices[headidx + 5].x = right; _vertices[headidx + 5].y = bottom;
 			_vertices[headidx + 5].u = rightu; _vertices[headidx + 5].v = bottomv;
 			_fragments[fragHeadIdx + 1]._headVert = &_vertices[headidx + 3];
@@ -270,12 +290,12 @@ FragmentDrawer::CreateVertices(int divx, int divy, int screenW, int screenH){
 }
 
 void
-FragmentDrawer::FragmentScalling()
+FragmentDrawer::FragmentScalling(float size)
 {
 	std::vector<Fragment>::iterator it = _fragments.begin();
 	for (; it != _fragments.end();)
 	{
-		it->Scalling();
+		it->Scalling(size);
 		it++;
 	}
 }
@@ -314,28 +334,30 @@ FragmentDrawer::FragmentTranslation(Vector2 vec)
 	std::vector<Fragment>::iterator it = _fragments.begin();
 	for (; it != _fragments.end();)
 	{
-		it->SetCenter(vec);
+		it->Translation(vec);
 		it++;
 	}
 }
 
 void
-Fragment::Translation(Vector2 vec)
+Fragment::Translation(Vector2 pos)
 {
 	for (int i = 0; i<3; ++i){
 		DxLib::VERTEX& vert = *(_headVert + i);//このvertはinput/outputみたいな扱いにして下のvを動かして最後にvert=vとかしてみる//ここに入ってきた時のvertは拡大されてるはず
-		DxLib::VERTEX v = identityVert[i];//*(_headVert+i);
+		//DxLib::VERTEX v = identityVert[i];//*(_headVert+i);
 
-		vert.x -= _center.x;//原点中心になるように平行移動
+		vert.x -= _center.x;//posの位置に座標を設定する関数なので一旦中心を0,0に持っていく
 		vert.y -= _center.y;
 		
 		
-		vert.x += vec.x;//原点中心にしてたので元の位置に戻す
-		vert.y += vec.y;
+		vert.x += pos.x+_center.x;//原点中心にしてたので元の位置に戻す
+		vert.y += pos.y + _center.y;
 
 	
 	}
 	CalculateCenter();
-
+	Vector2 temp;
+	temp = _center;
+	int a;
 	
 }

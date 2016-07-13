@@ -7,6 +7,7 @@ class Block
 
 public:
 	Block();
+	Block(BlockType, Vector2);
 	~Block();
 	Rect& GetRect();
 

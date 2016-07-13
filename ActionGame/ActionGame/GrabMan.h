@@ -82,5 +82,7 @@ public:
 	void Reject(Vector2);
 
 	void Damage(int value);
+	void GrabRelease();
+
 };
 
