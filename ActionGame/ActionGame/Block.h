@@ -19,5 +19,7 @@ public:
 
 	virtual void OnCollided(Player& player)=0;
 	//virtual void OnCollided(GameObject* obj) = 0;
+	virtual void Draw() = 0;
+
 };
 

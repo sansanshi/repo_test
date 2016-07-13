@@ -5,11 +5,11 @@
 Fragment::Fragment() {
 
 	_headVert = NULL;
-	_velocity.x = 1.5f;
+	_velocity.x = 0.0f;
 	_velocity.y = -3.0f - 0.1f*static_cast<float>(rand() % 20 - 10);
 	_center.x = 0.f;
 	_center.y = 0.f;
-	_accel.x = 0.04f*static_cast<float>(rand() % 20 - 10) - 0.1f;
+	_accel.x = 0.04f*static_cast<float>(rand() % 21 - 10) ;//rand()%20-10=-10~9
 	_accel.y = 0.3f;
 	_angleVel = 0.0015f*static_cast<float>(rand() % 20 - 10);
 	_fallTimer = 0;
@@ -67,8 +67,8 @@ Fragment::Fall(){
 		//vert.y = expansionVert[i].y + y;
 
 		//—Ž‰º
-		_fallTimer>5 ? vert.x += _velocity.x : 0 ;
-		_fallTimer>5 ? vert.y += _velocity.y : 0 ;
+		_fallTimer>3 ? vert.x += _velocity.x : 0 ;
+		_fallTimer>3 ? vert.y += _velocity.y : 0 ;
 		//vert.x = 200 + expansionVert[i].x;//expansionVert‚Í‘½•ª‚¢‚ç‚È‚¢ ‚±‚±‚É“ü‚Á‚Ä‚«‚½‚Æ‚«‚Ìvert‚ÍexpansionVert‚Æ“¯‚¶
 		//vert.y = 200 + expansionVert[i].y;
 

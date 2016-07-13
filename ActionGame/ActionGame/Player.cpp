@@ -28,6 +28,7 @@ Player::Player(Camera& camera, Stage& stage) :_cameraRef(camera), _stageRef(stag
 	_kickInterval = 0;
 	_shakeCnt = 0;
 	_isGrabbed = false;
+	_prevRejectY = false;
 
 	_hpMax = 600;
 	_hp = _hpMax;
@@ -264,6 +265,11 @@ Player::PunchUpdate()
 void
 Player::WalkUpdate()
 {
+	if (_prevRejectY == false)//playingSceneの方でUpdate→ステージとの押し戻し　の順で処理していること前提の処理
+	{
+		ChangeState(ps_Jump);
+	}
+	_prevRejectY = false;
 	_velocity.y = 5.0f;//これやってるの危ないかも
 
 	_walkFrame=vx!=0?_walkFrame+1:0;
@@ -579,13 +585,13 @@ Player::Grabbed(GrabMan* enemy)
 void 
 Player::Reject(Vector2 vec)
 {
+	vec.y < 0 ? _prevRejectY = true : 0;
 	_pos += vec;
 	_collider.SetCenter(_pos + Vector2(_cameraRef.OffsetX(), 0));
-	if (_state==ps_Jump||_state==ps_JumpKick)//上向きに押し返された場合←ここやめたほうがいいかも
+	if ((_state==ps_Jump||_state==ps_JumpKick)&&vec.y<0)//ジャンプｏｒジャンプキック状態で上向きに押し返された場合←ここやめたほうがいいかも
 	{
 		ChangeState(ps_Walk);
 		_velocity.Init();
-		_acceleration.Init();
 	}
 }
 

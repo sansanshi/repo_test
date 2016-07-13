@@ -19,7 +19,7 @@ GrabMan::GrabMan(Vector2 pos, int& handle, int& deadHandle, Player& player, Came
 	_handle = handle;
 	_deadhandle = deadHandle;
 	_walkFrame = 0;
-	_state = state_far;
+	_state = state_arial;
 
 	_hpMax = 2;
 	_hp = _hpMax;
@@ -152,13 +152,14 @@ GrabMan::Kill()
 	
 	_isLeft?_fragDrawer.TurnUV() : 0 ;//uv’l‚ÌU‚¾‚¯”½“]
 	_fragDrawer.FragmentScalling(3.0f);//Scalling‚Ì•û‚ðæ‚É‚·‚é
-	_fragDrawer.FragmentTranslation(Vector2(_collider.Left(),_collider.Top()));
+	_fragDrawer.FragmentTranslation(Vector2(_collider.Left()-32,_collider.Top()));
 	_fragDrawer.Break(Vector2(6.0f,0.0f));
 }
 
 void
 GrabMan::NearUpdate()
 {
+	_velocity.y = 3.0f;
 	Vector2 vec = (_playerRef.GetCollider().Center() - _collider.Center());//normalize‚Å•Ï‚È’l‚É‚È‚Á‚Ä‚é
 	_velocity.x = vec.x > 0 ? 2 : -2;
 	_pos += _velocity;
@@ -173,6 +174,7 @@ GrabMan::NearUpdate()
 void 
 GrabMan::FarUpdate()
 {
+	_velocity.y = 3.0f;
 	Vector2 vec = (_playerRef.GetCollider().Center() - _collider.Center());//normalize‚Å•Ï‚È’l‚É‚È‚Á‚Ä‚é
 	_velocity.x = vec.x > 0 ? 2 : -2;
 	_pos += _velocity;
@@ -264,7 +266,7 @@ GrabMan::Reject(Vector2 vec)
 {
 	_pos += vec;
 	_collider.SetCenter(_pos + Vector2(_cameraRef.OffsetX(), 0));
-	if (_velocity.y > 0.0f&&vec.y < 0.0f)//ãŒü‚«‚É‰Ÿ‚µ•Ô‚³‚ê‚½ê‡
+	if (_state==state_arial&&_velocity.y > 0.0f&&vec.y < 0.0f)//‹ó’†ó‘Ô‚©‚çãŒü‚«‚É‰Ÿ‚µ•Ô‚³‚ê‚½ê‡
 	{
 		ChangeState(state_far);
 		_velocity.Init();
