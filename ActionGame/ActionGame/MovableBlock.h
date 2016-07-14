@@ -11,7 +11,7 @@ private:
 	Camera& _cameraRef;
 	
 public:
-	MovableBlock(Vector2 pos,int handle,Camera& camera);
+	MovableBlock(Vector2 pos,int& handle,Camera& camera);
 	~MovableBlock();
 
 	void OnCollided(Player& player);

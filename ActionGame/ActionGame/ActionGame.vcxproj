@@ -100,10 +100,12 @@
     <ClCompile Include="KnifeMan.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MovableBlock.cpp" />
+    <ClCompile Include="NormalBlock.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayingScene.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Stage.cpp" />
+    <ClCompile Include="VMovableBlock.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BatMan.h" />
@@ -123,10 +125,12 @@
     <ClInclude Include="GrabMan.h" />
     <ClInclude Include="KnifeMan.h" />
     <ClInclude Include="MovableBlock.h" />
+    <ClInclude Include="NormalBlock.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayingScene.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Stage.h" />
+    <ClInclude Include="VMovableBlock.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

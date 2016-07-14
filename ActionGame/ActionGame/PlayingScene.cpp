@@ -37,6 +37,7 @@ PlayingScene::Update()
 	_stage.Update();
 	
 	_enemyFac.Update();
+	_blockFac.Update();
 
 
 	DrawExtendGraph(0 + _camera.OffsetX()-640, 0, 640 + _camera.OffsetX(), 480, _stageGrHandle, false);
@@ -85,6 +86,7 @@ PlayingScene::Update()
 		{
 			enemy->OnCollided(&(_player.GetAttackCol()));
 			_camera.InvokeQuake(3.0f);
+			_blockFac.CreateBlock(bt_movable, enemy->GetPos());//
 			//_fragDrawer.Capture();//バラバラテスト
 			//_fragDrawer.Break();
 		}
@@ -113,6 +115,7 @@ PlayingScene::Update()
 	_enemyFac.Draw();
 	_player.Draw();
 	_stage.Draw();
+	_blockFac.Draw();
 
 	//_fragDrawer.Draw();
 

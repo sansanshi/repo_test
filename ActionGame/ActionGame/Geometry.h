@@ -23,14 +23,14 @@ struct Vector2{
 	{
 		return Vector2(x / f, y / f);
 	}
-	Vector2 operator *(const float& f)const
+	Vector2 operator *(float f)
 	{
 		Vector2 r;
 		r.x = x*f;
 		r.y = y*f;
 		return Vector2(x*f, y*f);
 	}
-	Vector2 operator *(const int& i)//intとfloatはオペレータで変換してくれないので別々に作る
+	Vector2 operator *(int i)//intとfloatはオペレータで変換してくれないので別々に作る
 	{
 		return Vector2(x*i, y*i);
 	}

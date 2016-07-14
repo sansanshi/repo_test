@@ -265,11 +265,7 @@ Player::PunchUpdate()
 void
 Player::WalkUpdate()
 {
-	if (_prevRejectY == false)//playingSceneの方でUpdate→ステージとの押し戻し　の順で処理していること前提の処理
-	{
-		ChangeState(ps_Jump);
-	}
-	_prevRejectY = false;
+	
 	_velocity.y = 5.0f;//これやってるの危ないかも
 
 	_walkFrame=vx!=0?_walkFrame+1:0;
@@ -320,6 +316,14 @@ Player::WalkUpdate()
 	_velocity += _acceleration;
 
 	_collider.SetCenter(_pos+Vector2(_cameraRef.OffsetX(),0));
+
+
+	if (_prevRejectY == false)//playingSceneの方でUpdate→ステージとの押し戻し　の順で処理していること前提の処理
+	{
+		ChangeState(ps_Jump);
+		_velocity.x = 0.f;
+	}
+	_prevRejectY = false;
 }
 
 void 
@@ -585,7 +589,7 @@ Player::Grabbed(GrabMan* enemy)
 void 
 Player::Reject(Vector2 vec)
 {
-	vec.y < 0 ? _prevRejectY = true : 0;
+	vec.y < 0 ? _prevRejectY = true : 0;//Updateの方で、この関数が前フレームに呼ばれたか
 	_pos += vec;
 	_collider.SetCenter(_pos + Vector2(_cameraRef.OffsetX(), 0));
 	if ((_state==ps_Jump||_state==ps_JumpKick)&&vec.y<0)//ジャンプｏｒジャンプキック状態で上向きに押し返された場合←ここやめたほうがいいかも

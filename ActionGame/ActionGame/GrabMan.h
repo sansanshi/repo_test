@@ -65,6 +65,8 @@ private:
 
 	FragmentDrawer _fragDrawer;
 
+	bool _prevRejectY;
+
 public:
 	GrabMan(Vector2 pos,int& handle,int& deadHandle,Player& player,Camera& camera);
 	~GrabMan();

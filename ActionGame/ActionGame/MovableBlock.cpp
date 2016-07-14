@@ -3,7 +3,7 @@
 #include<DxLib.h>
 #include"Camera.h"
 
-MovableBlock::MovableBlock(Vector2 pos, int handle, Camera& camera) :_timer(0), n(0), _cameraRef(camera)
+MovableBlock::MovableBlock(Vector2 pos, int& handle, Camera& camera) :_timer(0), n(0), _cameraRef(camera)
 {
 	_pos = pos;
 	_handle = handle;
@@ -11,7 +11,7 @@ MovableBlock::MovableBlock(Vector2 pos, int handle, Camera& camera) :_timer(0), 
 	_rc.height = 32;
 	_rc.SetCenter(_pos);
 	_vel.Init();
-	_vel.x = 3.0f;
+	//_vel.x = 3.0f;
 }
 
 
@@ -30,9 +30,9 @@ MovableBlock::Update()
 	++_timer;
 	n = (n + 1 )%(30*2);
 	int m = abs(n - 30);
-	_vel.x = m;
+	_vel.x = m-15;
 
-	_pos += _vel;
+	_pos += _vel*0.5f;
 	_rc.SetCenter(_pos);
 }
 

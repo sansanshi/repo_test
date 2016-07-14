@@ -15,6 +15,9 @@ BlockFactory::BlockFactory(Player& player, Camera& camera) :_player(player), _ca
 
 BlockFactory::~BlockFactory()
 {
+	for (auto& h : _imgMap){//イメージハンドルの削除
+		DeleteGraph(h.second);
+	}
 }
 
 void
@@ -30,10 +33,33 @@ BlockFactory::CreateBlock(BlockType bt, Vector2 pos)
 		break;
 	case bt_movable:
 		ret.reset(new MovableBlock(pos,_imgMap[bt],_cameraRef));
+		_blocks.push_back(ret);
 		break;
 	case bt_vmovable:
 		break;
 	default:
 		break;
+	}
+}
+
+void
+BlockFactory::Draw()
+{
+	std::vector<std::shared_ptr<Block>>::iterator it = _blocks.begin();
+	for (; it != _blocks.end();)
+	{
+		(*it)->Draw();
+		++it;
+	}
+}
+
+void
+BlockFactory::Update()
+{
+	std::vector<std::shared_ptr<Block>>::iterator it = _blocks.begin();
+	for (; it != _blocks.end();)
+	{
+		(*it)->Update();
+		++it;
 	}
 }

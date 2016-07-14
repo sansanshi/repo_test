@@ -29,5 +29,6 @@ public:
 	void Update();
 
 	std::vector<std::shared_ptr<Block>>& GetBlocks(){ return _blocks; }
+	void Draw();
 };
 

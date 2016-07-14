@@ -8,6 +8,7 @@
 GrabMan::GrabMan(Vector2 pos, int& handle, int& deadHandle, Player& player, Camera& camera) 
 	:_playerRef(player), _cameraRef(camera),_fragDrawer(deadHandle)//この時点でFragmentDrawerの引数なしコンストラクタ呼ばれてる
 {
+	_prevRejectY = false;
 	_collider = Collider(this, ct_grabMan, col_default);
 	_collider.ToEnable();
 	_pos = pos;
@@ -159,6 +160,8 @@ GrabMan::Kill()
 void
 GrabMan::NearUpdate()
 {
+	
+
 	_velocity.y = 3.0f;
 	Vector2 vec = (_playerRef.GetCollider().Center() - _collider.Center());//normalizeで変な値になってる
 	_velocity.x = vec.x > 0 ? 2 : -2;
@@ -169,11 +172,17 @@ GrabMan::NearUpdate()
 	_walkFrame++;
 	_isLeft = _velocity.x < 0;
 	
-
+	if (!_prevRejectY)
+	{
+		ChangeState(state_arial);
+		_velocity.x = 0.f;
+	}
+	_prevRejectY = false;
 }
 void 
 GrabMan::FarUpdate()
 {
+	
 	_velocity.y = 3.0f;
 	Vector2 vec = (_playerRef.GetCollider().Center() - _collider.Center());//normalizeで変な値になってる
 	_velocity.x = vec.x > 0 ? 2 : -2;
@@ -186,6 +195,13 @@ GrabMan::FarUpdate()
 	{
 		ChangeState(state_near);
 	}
+
+	if (!_prevRejectY)
+	{
+		ChangeState(state_arial);
+		_velocity.x = 0.f;
+	}
+	_prevRejectY = false;
 }
 void
 GrabMan::DeadUpdate()//バラバラ描画をしておきたいのでタイマー制にする
@@ -264,6 +280,7 @@ GrabMan::Shaked()
 void
 GrabMan::Reject(Vector2 vec)
 {
+	vec.y<0 ? _prevRejectY = true : 0;
 	_pos += vec;
 	_collider.SetCenter(_pos + Vector2(_cameraRef.OffsetX(), 0));
 	if (_state==state_arial&&_velocity.y > 0.0f&&vec.y < 0.0f)//空中状態から上向きに押し返された場合
