@@ -1,6 +1,9 @@
 #pragma once
 #include"Collider.h"
 #include<memory>
+
+#define GRAVITY 3.0f
+
 class GameObject
 {
 private:

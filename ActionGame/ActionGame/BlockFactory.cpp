@@ -5,7 +5,7 @@
 #include<Dxlib.h>
 
 
-BlockFactory::BlockFactory(Player& player) :_player(player)
+BlockFactory::BlockFactory(Player& player, Camera& camera) :_player(player), _cameraRef(camera)
 {
 	_imgMap[bt_movable] = LoadGraph("img/movableBlock.png");
 	_imgMap[bt_vmovable] = LoadGraph("img/vmovableBlock.png");
@@ -29,7 +29,7 @@ BlockFactory::CreateBlock(BlockType bt, Vector2 pos)
 		//ret.reset(new NormalBlock(bt, pos));
 		break;
 	case bt_movable:
-		ret.reset(new MovableBlock(pos,_imgMap[bt]));
+		ret.reset(new MovableBlock(pos,_imgMap[bt],_cameraRef));
 		break;
 	case bt_vmovable:
 		break;

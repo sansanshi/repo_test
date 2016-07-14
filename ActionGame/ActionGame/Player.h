@@ -41,6 +41,7 @@ private:
 	float _jumpPower;
 	int _shakeCnt;
 	bool _isGrabbed;
+	bool _prevRejectY;//前フレームでＹ方向（上向き）に押し戻されたか
 
 	int _hpMax;
 	int _hp;
