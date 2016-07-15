@@ -2,22 +2,23 @@
 #include "Enemy.h"
 #include<map>
 #include"FragmentDrawer.h"
-enum State
-{
-	state_none,
-	state_near,
-	state_far,
-	state_grab,
-	state_arial,
-	state_dead,
 
-};
 class Player;
 class Camera;
 class GrabMan :
 	public Enemy
 {
 private:
+	enum State
+	{
+		state_none,
+		state_near,
+		state_far,
+		state_grab,
+		state_arial,
+		state_dead,
+
+	};
 	int _walkFrame;
 	State _state;
 	typedef void(GrabMan::*func_void)();
@@ -50,7 +51,7 @@ private:
 	void DrawArial();
 	void DrawDead();
 
-	void ChangeState(State);
+	void ChangeState(GrabMan::State);
 
 
 	bool _isNear;//プレイヤーに近いか（NearUpdate）に入ったか
@@ -76,7 +77,6 @@ public:
 	void OnCollided(std::shared_ptr<GameObject>);
 	void Draw();
 	void Kill();
-	void ChangeState();
 	void DrawCameraGraph(int x, int y, int srcX, int srcY, int width, int height, int cx, int cy, double extRate, double angle, int handle, int transFlag, int turnFlag);
 	void Shaked();//掴み状態でプレイヤーにシェイクされた
 

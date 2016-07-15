@@ -4,7 +4,7 @@
 #include"KnifeMan.h"
 #include"Player.h"
 
-EnemyFactory::EnemyFactory(Player& player,Camera& camera) :_playerRef(player), _cameraRef(camera)
+EnemyFactory::EnemyFactory(Player& player, Camera& camera, EnemyBulletFactory& ebulletFac) :_playerRef(player), _cameraRef(camera), _ebulletFac(ebulletFac)
 {
 	_enemyImgMap[et_grabman] = LoadGraph("img/grabman_.png");
 	_enemyImgMap[et_knifeman] = LoadGraph("img/knifeman_.png");
@@ -12,6 +12,7 @@ EnemyFactory::EnemyFactory(Player& player,Camera& camera) :_playerRef(player), _
 	
 	_enemydeadImgMap[et_grabman] = LoadGraph("img/grabman_dead.png");
 	_enemydeadImgMap[et_knifeman] = LoadGraph("img/knifeman_dead.png");
+	_enemydeadImgMap[et_batman] = LoadGraph("img/boss1_.png");
 	_timer = 0;
 }
 
@@ -43,7 +44,7 @@ EnemyFactory::Create(EnemyType et, Vector2& pos)
 		return _enemies.back();
 		break;
 	case et_knifeman:
-		ret.reset(new KnifeMan(pos, _enemyImgMap[et], _enemydeadImgMap[et], _playerRef,_cameraRef));
+		ret.reset(new KnifeMan(pos, _enemyImgMap[et], _enemydeadImgMap[et], _playerRef,_cameraRef,_ebulletFac));
 		_enemies.push_back(ret);
 		return _enemies.back();
 		break;
@@ -63,7 +64,7 @@ EnemyFactory::Update()
 {
 	_timer++;
 	if (_timer % 60 == 0){
-		Create(et_grabman, _playerRef.GetPos() + Vector2(300, 0));
+		Create(et_knifeman, _playerRef.GetPos() + Vector2(300, 0));
 		Vector2 pos = _playerRef.GetPos() + Vector2(300, 0);
 		int a = 0;
 	}

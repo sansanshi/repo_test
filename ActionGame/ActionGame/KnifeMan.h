@@ -2,31 +2,34 @@
 #include "Enemy.h"
 #include<map>
 #include"FragmentDrawer.h"
-enum State
-{
-	state_none,
-	state_near,
-	state_far,
-	state_arial,
-	state_underThrow,
-	state_overThrow,
-	state_preUnderThrow,
-	state_preOverThrow,
-	state_dead,
-
-};
+class EnemyBulletFactory;
 class Player;
 class Camera;
 class KnifeMan :
 	public Enemy
 {
 private:
+	enum State
+	{
+		state_none,
+		state_near,
+		state_far,
+		state_arial,
+		state_underThrow,
+		state_overThrow,
+		state_preUnderThrow,
+		state_preOverThrow,
+		state_dead,
+		state_wait,
+
+	};
+
 	int _walkFrame;
 	State _state;
 	typedef void(KnifeMan::*func_void)();
-	std::map<State, func_void> _pfuncMap;
-	std::map<State, func_void> _drawFuncMap;
-	std::map<State, int> _stateFrame;
+	std::map<KnifeMan::State, func_void> _pfuncMap;
+	std::map<KnifeMan::State, func_void> _drawFuncMap;
+	std::map<KnifeMan::State, int> _stateFrame;
 
 	void(KnifeMan::*_pFunc)();
 	void AliveUpdate();
@@ -49,6 +52,7 @@ private:
 	void UnderThrowUpdate();
 	void PreOverThrowUpdate();
 	void PreUnderThrowUpdate();
+	void WaitUpdate();
 
 
 	void DrawNear();
@@ -59,8 +63,9 @@ private:
 	void DrawUnderThrow();
 	void DrawPreOverThrow();
 	void DrawPreUnderThrow();
+	void DrawWait();
 
-	void ChangeState(State);
+	void ChangeState(KnifeMan::State);
 
 
 	bool _isNear;//プレイヤーに近いか（NearUpdate）に入ったか
@@ -76,8 +81,12 @@ private:
 
 	bool _prevRejectY;
 
+	EnemyBulletFactory& _ebulletFac;
+	Vector2 _overThrowOffset;
+	Vector2 _underThrowOffset;
+
 public:
-	KnifeMan(Vector2 pos, int& handle, int& deadHandle, Player& player, Camera& camera);
+	KnifeMan(Vector2 pos, int& handle, int& deadHandle, Player& player, Camera& camera,EnemyBulletFactory&);
 	~KnifeMan();
 	void Update();
 	void OnCollided(Collider*);
@@ -85,7 +94,6 @@ public:
 	void OnCollided(std::shared_ptr<GameObject>);
 	void Draw();
 	void Kill();
-	void ChangeState();
 	void DrawCameraGraph(int x, int y, int srcX, int srcY, int width, int height, int cx, int cy, double extRate, double angle, int handle, int transFlag, int turnFlag);
 
 
@@ -93,5 +101,6 @@ public:
 
 	void Damage(int value);
 
+	
 };
 

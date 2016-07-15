@@ -4,10 +4,12 @@
 #include<math.h>
 #include"Camera.h"
 #include"CollisionDetector.h"
+#include"EnemyBulletFactory.h"
 
-KnifeMan::KnifeMan(Vector2 pos, int& handle, int& deadHandle, Player& player, Camera& camera)
-:_playerRef(player), _cameraRef(camera), _fragDrawer(deadHandle)//この時点でFragmentDrawerの引数なしコンストラクタ呼ばれてる
+KnifeMan::KnifeMan(Vector2 pos, int& handle, int& deadHandle, Player& player, Camera& camera,EnemyBulletFactory& ebulletFac)
+:_playerRef(player), _cameraRef(camera), _fragDrawer(deadHandle),_ebulletFac(ebulletFac)//この時点でFragmentDrawerの引数なしコンストラクタ呼ばれてる
 {
+	_isAvailable = true;
 	_prevRejectY = false;
 	_collider = Collider(this, ct_knifeMan, col_default);
 	_collider.ToEnable();
@@ -25,34 +27,37 @@ KnifeMan::KnifeMan(Vector2 pos, int& handle, int& deadHandle, Player& player, Ca
 	_hpMax = 2;
 	_hp = _hpMax;
 
-	_pfuncMap[state_far] = &KnifeMan::FarUpdate;
-	_pfuncMap[state_near] = &KnifeMan::NearUpdate;
-	_pfuncMap[state_dead] = &KnifeMan::DeadUpdate;
-	_pfuncMap[state_underThrow] = &KnifeMan::UnderThrowUpdate;
-	_pfuncMap[state_overThrow] = &KnifeMan::OverThrowUpdate;
-	_pfuncMap[state_preUnderThrow] = &KnifeMan::PreUnderThrowUpdate;
-	_pfuncMap[state_preOverThrow] = &KnifeMan::PreOverThrowUpdate;
-	_pfuncMap[state_arial] = &KnifeMan::ArialUpdate;
+	_pfuncMap[KnifeMan::state_far] = &KnifeMan::FarUpdate;
+	_pfuncMap[KnifeMan::state_near] = &KnifeMan::NearUpdate;
+	_pfuncMap[KnifeMan::state_dead] = &KnifeMan::DeadUpdate;
+	_pfuncMap[KnifeMan::state_underThrow] = &KnifeMan::UnderThrowUpdate;
+	_pfuncMap[KnifeMan::state_overThrow] = &KnifeMan::OverThrowUpdate;
+	_pfuncMap[KnifeMan::state_preUnderThrow] = &KnifeMan::PreUnderThrowUpdate;
+	_pfuncMap[KnifeMan::state_preOverThrow] = &KnifeMan::PreOverThrowUpdate;
+	_pfuncMap[KnifeMan::state_arial] = &KnifeMan::ArialUpdate;
+	_pfuncMap[KnifeMan::state_wait] = &KnifeMan::WaitUpdate;
 
 
-	_drawFuncMap[state_far] = &KnifeMan::DrawFar;
-	_drawFuncMap[state_near] = &KnifeMan::DrawNear;
-	_drawFuncMap[state_dead] = &KnifeMan::DrawDead;
-	_drawFuncMap[state_arial] = &KnifeMan::DrawArial;
-	_drawFuncMap[state_underThrow] = &KnifeMan::DrawUnderThrow;
-	_drawFuncMap[state_overThrow] = &KnifeMan::DrawOverThrow;
-	_drawFuncMap[state_preUnderThrow] = &KnifeMan::DrawPreUnderThrow;
-	_drawFuncMap[state_preOverThrow] = &KnifeMan::DrawPreOverThrow;
+	_drawFuncMap[KnifeMan::state_far] = &KnifeMan::DrawFar;
+	_drawFuncMap[KnifeMan::state_near] = &KnifeMan::DrawNear;
+	_drawFuncMap[KnifeMan::state_dead] = &KnifeMan::DrawDead;
+	_drawFuncMap[KnifeMan::state_arial] = &KnifeMan::DrawArial;
+	_drawFuncMap[KnifeMan::state_underThrow] = &KnifeMan::DrawUnderThrow;
+	_drawFuncMap[KnifeMan::state_overThrow] = &KnifeMan::DrawOverThrow;
+	_drawFuncMap[KnifeMan::state_preUnderThrow] = &KnifeMan::DrawPreUnderThrow;
+	_drawFuncMap[KnifeMan::state_preOverThrow] = &KnifeMan::DrawPreOverThrow;
+	_drawFuncMap[KnifeMan::state_wait] = &KnifeMan::DrawWait;
 
 
-	_stateFrame[state_far] = 0;
-	_stateFrame[state_near] = 0;
-	_stateFrame[state_dead] = 0;
-	_stateFrame[state_arial] = 0;
-	_stateFrame[state_underThrow] = 0;
-	_stateFrame[state_overThrow] = 0;
-	_stateFrame[state_preUnderThrow] = 0;
-	_stateFrame[state_preOverThrow] = 0;
+	_stateFrame[KnifeMan::state_far] = 0;
+	_stateFrame[KnifeMan::state_near] = 0;
+	_stateFrame[KnifeMan::state_dead] = 0;
+	_stateFrame[KnifeMan::state_arial] = 0;
+	_stateFrame[KnifeMan::state_underThrow] = 0;
+	_stateFrame[KnifeMan::state_overThrow] = 0;
+	_stateFrame[KnifeMan::state_preUnderThrow] = 0;
+	_stateFrame[KnifeMan::state_preOverThrow] = 0;
+	_stateFrame[KnifeMan::state_wait] = 0;
 
 
 
@@ -61,6 +66,8 @@ KnifeMan::KnifeMan(Vector2 pos, int& handle, int& deadHandle, Player& player, Ca
 	_isDead = false;
 	_isLeft = false;
 
+	_overThrowOffset = Vector2(0, -32);
+	_underThrowOffset = Vector2(0, 32);
 
 	//_fragDrawer = new FragmentDrawer(_deadhandle);
 }
@@ -161,6 +168,11 @@ KnifeMan::NearUpdate()
 	float colx = _collider.Left();
 	_walkFrame++;
 	_isLeft = _velocity.x < 0;
+	if (fabs(vec.x) >= 200)
+	{
+		ChangeState(state_wait);
+		_isLeft = vec.x < 0;
+	}
 
 	if (!_prevRejectY)
 	{
@@ -181,9 +193,9 @@ KnifeMan::FarUpdate()
 	_walkFrame++;
 	_isLeft = _velocity.x < 0;
 
-	if (fabs(vec.x) <= 128)
+	if (fabs(vec.x) <= 200)
 	{
-		ChangeState(state_near);
+		ChangeState(state_wait);
 	}
 
 	if (!_prevRejectY)
@@ -202,6 +214,63 @@ KnifeMan::DeadUpdate()//バラバラ描画をしておきたいのでタイマー制にする
 	//_velocity.y +=0.5f;
 	//if (_pos.y > 500) _isAvailable = false;
 }
+void
+KnifeMan::OverThrowUpdate()
+{
+	_velocity.y = 3.0f;
+	if (_stateFrame[state_overThrow] > 20)
+	{
+		fabs((_playerRef.GetCollider().Center() - _collider.Center()).x) > 200.0f ? ChangeState(state_far): ChangeState(state_near);
+	}
+	_pos += _velocity;
+	_collider.SetCenter_Cam(_pos, _cameraRef.OffsetX());
+}
+void
+KnifeMan::UnderThrowUpdate()
+{
+	_velocity.y = 3.0f;
+	if (_stateFrame[state_underThrow] > 20)
+	{
+		fabs((_playerRef.GetCollider().Center() - _collider.Center()).x) > 200.0f ? ChangeState(state_far) : ChangeState(state_near);
+	}
+	_pos += _velocity;
+	_collider.SetCenter_Cam(_pos, _cameraRef.OffsetX());
+}
+void
+KnifeMan::PreOverThrowUpdate()
+{
+	if (_stateFrame[state_preOverThrow] > 30)
+	{
+		ChangeState(state_overThrow);
+		_ebulletFac.Create(_pos + _overThrowOffset, Vector2(-4.0f,0.f));
+	}
+	_velocity.y = 3.0f;
+	_pos += _velocity;
+	_collider.SetCenter_Cam(_pos, _cameraRef.OffsetX());
+}
+void
+KnifeMan::PreUnderThrowUpdate()
+{
+	if (_stateFrame[state_preUnderThrow] > 30)
+	{
+		ChangeState(state_underThrow);
+		_ebulletFac.Create(_pos + _underThrowOffset, Vector2(-4.0f, 0.f));
+	}
+	_velocity.y = 3.0f;
+	_pos += _velocity;
+	_collider.SetCenter_Cam(_pos, _cameraRef.OffsetX());
+}
+void
+KnifeMan::WaitUpdate()
+{
+	if (_stateFrame[state_wait] > 30)
+	{
+		rand() % 2 == 0 ? ChangeState(state_preOverThrow) : ChangeState(state_preUnderThrow);
+	}
+	_velocity.y = 3.0f;
+	_pos += _velocity;
+	_collider.SetCenter_Cam(_pos, _cameraRef.OffsetX());
+}
 
 
 void
@@ -210,25 +279,29 @@ KnifeMan::ArialUpdate()
 	_velocity += _acceleration;
 	_pos += _velocity;
 	_collider.SetCenter_Cam(_pos, _cameraRef.OffsetX());
+
+	if (_pos.y > 500)Kill();
 }
 
 void
-KnifeMan::ChangeState(State state)
+KnifeMan::ChangeState(KnifeMan::State state)
 {
 	_stateFrame[_state] = 0;
 	_state = state;
 	_pFunc = _pfuncMap[_state];
+	_velocity.x = 0.f;
+	if(_state == state_wait) _isLeft = (_playerRef.GetCollider().Center()-_collider.Center()).x < 0;
 }
 
 void
 KnifeMan::DrawFar()
 {
-	DrawCameraGraph(_pos.x, _pos.y, 16 * ((_stateFrame[state_far] % 20) / 10), 0, 16, 40, 8, 20, 3.0, 0, _handle, true, _isLeft);
+	DrawCameraGraph(_pos.x, _pos.y, 32 * ((_stateFrame[state_far] % 20) / 10), 0, 32, 48, 16, 24, 3.0, 0, _handle, true, _isLeft);
 }
 void
 KnifeMan::DrawNear()
 {
-	DrawCameraGraph(_pos.x, _pos.y, 16 * (((_stateFrame[state_near] % 20) / 10) + 2), 0, 16, 40, 8, 20, 3.0, 0, _handle, true, _isLeft);
+	DrawCameraGraph(_pos.x, _pos.y, 32 * ((_stateFrame[state_near] % 20) / 10), 0, 32, 48, 16, 24, 3.0, 0, _handle, true, _isLeft);
 }
 void
 KnifeMan::DrawDead()
@@ -240,9 +313,35 @@ KnifeMan::DrawDead()
 void
 KnifeMan::DrawArial()
 {
-	DrawCameraGraph(_pos.x, _pos.y, 0, 0, 16, 40, 8, 20, 3.0, 0, _handle, true, _isLeft);
+	DrawCameraGraph(_pos.x, _pos.y, 0, 0, 32, 48, 16, 24, 3.0, 0, _handle, true, _isLeft);
+}
+void
+KnifeMan::DrawOverThrow()
+{
+	DrawCameraGraph(_pos.x, _pos.y, 32*3, 0, 32, 48, 16, 24, 3.0, 0, _handle, true, _isLeft);
+}
+void
+KnifeMan::DrawUnderThrow()
+{
+	DrawCameraGraph(_pos.x, _pos.y, 32 * 5, 0, 32, 48, 16, 24, 3.0, 0, _handle, true, _isLeft);
+}
+void
+KnifeMan::DrawPreOverThrow()
+{
+	DrawCameraGraph(_pos.x, _pos.y, 32 * 2, 0, 32, 48, 16, 24, 3.0, 0, _handle, true, _isLeft);
 }
 
+void
+KnifeMan::DrawPreUnderThrow()
+{
+	DrawCameraGraph(_pos.x, _pos.y, 32 * 4, 0, 32, 48, 16, 24, 3.0, 0, _handle, true, _isLeft);
+}
+
+void
+KnifeMan::DrawWait()
+{
+	DrawCameraGraph(_pos.x, _pos.y, 0, 0, 32, 48, 16, 24, 3.0, 0, _handle, true, _isLeft);
+}
 
 void
 KnifeMan::DrawCameraGraph(int x, int y, int srcX, int srcY, int width, int height, int cx, int cy, double extRate, double angle, int handle, int transFlag, int turnFlag)

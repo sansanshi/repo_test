@@ -33,6 +33,7 @@ Player::Player(Camera& camera, Stage& stage) :_cameraRef(camera), _stageRef(stag
 	_hpMax = 600;
 	_hp = _hpMax;
 	_attackDamage = 1;
+	_walkSpd = 4.0f;
 
 	_handleMap[ps_Neutral] = LoadGraph("img/neutral.png");
 	_handleMap[ps_Jump] = LoadGraph("img/jump.png");
@@ -266,7 +267,7 @@ void
 Player::WalkUpdate()
 {
 	
-	_velocity.y = 5.0f;//‚±‚ê‚â‚Á‚Ä‚é‚ÌŠë‚È‚¢‚©‚à
+	_velocity.y = 3.0f;//‚±‚ê‚â‚Á‚Ä‚é‚ÌŠë‚È‚¢‚©‚à
 
 	_walkFrame=vx!=0?_walkFrame+1:0;
 	_kickInterval = max(_kickInterval-1, 0);
@@ -310,7 +311,7 @@ Player::WalkUpdate()
 		if(_kickInterval==0)ChangeState(ps_Kamae);
 	}
 
-	_velocity.x = vx*2.0f;
+	_velocity.x = vx*_walkSpd;
 
 	_pos += _velocity;
 	_velocity += _acceleration;
@@ -361,9 +362,10 @@ Player::JumpKickUpdate()
 void
 Player::CrouchUpdate()
 {
+	_velocity.y = 3.0f;
 	if (_stateFrame[ps_CrouchPunch] > 0) _attackCol.ToDisable();
 
-	_collider.SetCenter(_pos + Vector2(_cameraRef.OffsetX(), 20));
+	
 	_kickInterval = max(_kickInterval - 1, 0);
 
 	
@@ -387,11 +389,14 @@ Player::CrouchUpdate()
 		_collider.SetCenter(_pos+Vector2(_cameraRef.OffsetX(),0));;
 		_collider.width = 32;
 		_collider.height = 128;
-		if (_collider.Bottom() >= 400.0f) {
+		/*if (_collider.Bottom() >= 400.0f) {
 			_pos.y = 400.0 - _collider.height / 2;
 			_collider.SetCenter(_pos+Vector2(_cameraRef.OffsetX(),0));;
-		}
+		}*/
 	};
+	_pos += _velocity;
+	_collider.SetCenter(_pos + Vector2(_cameraRef.OffsetX(), 0));
+
 }
 void 
 Player::CrouchKickUpdate()
@@ -579,10 +584,10 @@ Player::Grabbed(GrabMan* enemy)
 	_collider.SetCenter(_pos + Vector2(_cameraRef.OffsetX(), 0));;
 	_collider.width = 32;
 	_collider.height = 128;
-	if (_collider.Bottom() >= 400.0f) {
+	/*if (_collider.Bottom() >= 400.0f) {
 		_pos.y = 400.0 - _collider.height / 2;
 		_collider.SetCenter(_pos + Vector2(_cameraRef.OffsetX(), 0));;
-	}
+	}*/
 
 }
 

@@ -22,6 +22,7 @@ _enmies.remove_if(
 class Enemy;
 class Player;
 class Camera;
+class EnemyBulletFactory;
 
 enum EnemyType{
 	et_none,
@@ -41,9 +42,10 @@ private:
 	Player& _playerRef;
 	int _timer;
 	Camera& _cameraRef;
+	EnemyBulletFactory& _ebulletFac;
 
 public:
-	EnemyFactory(  Player& player,Camera& camera);
+	EnemyFactory(  Player& player,Camera& camera,EnemyBulletFactory& );
 	//EnemyFactory();
 	~EnemyFactory();
 	//ìGÇÃê∂ê¨

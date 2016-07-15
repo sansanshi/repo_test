@@ -6,7 +6,7 @@
 //凝ったタイトル作る
 //死んだら最初から始まる
 
-PlayingScene::PlayingScene() : _player(_camera, _stage), _camera(_player), _enemyFac(_player, _camera), _blockFac(_player,_camera), _stage(_camera)/*, _fragDrawer()*/
+PlayingScene::PlayingScene() : _player(_camera, _stage), _camera(_player), _enemyFac(_player, _camera,_ebulletFac), _blockFac(_player,_camera), _stage(_camera),_ebulletFac(_camera)/*, _fragDrawer()*/
 {
 	_groundZero = 360.0f;
 	_stageGrHandle = LoadGraph("img/stage.png");
@@ -38,7 +38,7 @@ PlayingScene::Update()
 	
 	_enemyFac.Update();
 	_blockFac.Update();
-
+	_ebulletFac.Update();
 
 	DrawExtendGraph(0 + _camera.OffsetX()-640, 0, 640 + _camera.OffsetX(), 480, _stageGrHandle, false);
 	DrawExtendGraph(0+_camera.OffsetX(), 0,640+_camera.OffsetX(),480, _stageGrHandle, false);
@@ -50,6 +50,14 @@ PlayingScene::Update()
 		
 		CollisionDetector::HitCheck(&_player, enemy);
 	}
+
+	for (auto& ebullet : _ebulletFac.GetEnemyBullets())//エネミーの弾とプレイヤーのあたり判定
+	{
+		if (!ebullet->GetCollider().IsCollidable() || !_player.IsAvailable()) continue;
+
+		if(CollisionDetector::IsHit(_player.GetCollider(),ebullet->GetCollider())) ebullet->OnCollided(&(_player.GetCollider()));
+	}
+
 
 	if (CollisionDetector::IsHit(_player.GetCollider(), _stage.GetCollider()))//プレイヤーの押し戻し
 	{
@@ -116,6 +124,7 @@ PlayingScene::Update()
 	_player.Draw();
 	_stage.Draw();
 	_blockFac.Draw();
+	_ebulletFac.Draw();
 
 	//_fragDrawer.Draw();
 

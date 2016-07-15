@@ -1,5 +1,6 @@
 #pragma once
 #include"GameObject.h"
+class Camera;
 class EnemyBullet:public GameObject
 {
 private:
@@ -8,9 +9,10 @@ private:
 	Vector2 _velocity;
 
 	bool _isLeft;
+	Camera& _cameraRef;
 
 public:
-	EnemyBullet(Vector2 pos,Vector2 velocity,int handle);
+	EnemyBullet(Vector2 pos,Vector2 velocity,int handle,Camera& camera);
 	~EnemyBullet();
 	void Update();
 
@@ -20,6 +22,7 @@ public:
 
 	void Draw();
 	void Reject(Vector2);
+	void DrawCameraGraph(int x, int y, int srcX, int srcY, int width, int height, int cx, int cy, double extRate, double angle, int handle, int transFlag, int turnFlag);
 };
 
 /*std::string str;

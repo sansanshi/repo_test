@@ -46,6 +46,7 @@ private:
 	int _hpMax;
 	int _hp;
 	int _attackDamage;
+	float _walkSpd;
 
 	void(Player::*_pFunc)();//メンバ関数ポインタ
 	void KickUpdate();

@@ -10,6 +10,10 @@ private:
 	int _handle;
 	Camera& _cameraRef;
 
+	Vector2 _vel;
+	int n;
+	int m;
+
 public:
 	Stage(Camera&);
 	~Stage();

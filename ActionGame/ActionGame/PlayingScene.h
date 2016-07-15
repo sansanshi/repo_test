@@ -8,6 +8,7 @@
 #include"BlockFactory.h"
 #include"Stage.h"
 #include"FragmentDrawer.h"
+#include"EnemyBulletFactory.h"
 class PlayingScene:public Scene
 {
 private:
@@ -18,6 +19,7 @@ private:
 	EnemyFactory _enemyFac;
 	BlockFactory _blockFac;
 	Stage _stage;
+	EnemyBulletFactory _ebulletFac;
 
 	int _hpBarHandle;
 	Rect _hpBarRect;
