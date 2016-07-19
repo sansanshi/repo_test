@@ -93,11 +93,24 @@ PlayingScene::Update()
 		if (CollisionDetector::IsHit(enemy->GetCollider(), _player.GetAttackCol()))
 		{
 			enemy->OnCollided(&(_player.GetAttackCol()));
-			_camera.InvokeQuake(3.0f);
+			_camera.InvokeQuake(4.0f);
 			_blockFac.CreateBlock(bt_movable, enemy->GetPos());//
 			//_fragDrawer.Capture();//バラバラテスト
 			//_fragDrawer.Break();
 		}
+	}
+	
+	for (auto& enemy : _enemyFac.GetEnemies())
+	{
+		if (!enemy->CharaType() == ct_batman) continue;
+		if (!_player.IsAvailable() || !enemy->GetAttackCol().IsCollidable())
+		{
+			if (CollisionDetector::IsHit(_player.GetCollider(), enemy->GetAttackCol()))
+			{
+				_player.OnCollided(&(enemy->GetAttackCol()));
+			}
+		}
+		
 	}
 
 	//Collider col = _player.GetAttackCol();

@@ -148,9 +148,9 @@ Player::SetPos(Vector2 pos)
 void
 Player::OnCollided(Collider* col)
 {
-	if (col->CharaType() == ct_grabMan)
+	if (col->Type()==col_attack)
 	{
-		
+		Damage(3);
 	}
 }
 void

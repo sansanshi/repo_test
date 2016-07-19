@@ -6,6 +6,7 @@ enum CharacterType{
 	ct_player,
 	ct_grabMan,
 	ct_knifeMan,
+	ct_batman,
 	ct_stage,
 
 };

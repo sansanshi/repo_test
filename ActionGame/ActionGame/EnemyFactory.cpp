@@ -3,6 +3,7 @@
 #include"GrabMan.h"
 #include"KnifeMan.h"
 #include"Player.h"
+#include"BatMan.h"
 
 EnemyFactory::EnemyFactory(Player& player, Camera& camera, EnemyBulletFactory& ebulletFac) :_playerRef(player), _cameraRef(camera), _ebulletFac(ebulletFac)
 {
@@ -49,8 +50,9 @@ EnemyFactory::Create(EnemyType et, Vector2& pos)
 		return _enemies.back();
 		break;
 	case et_batman:
-		/*_enemies.push_back(new (pos, _enemyImgMap[et], _expHandle, _bgChips, _bgScroll, _eBulletFactory, _playerPos));
-		return _enemies.back();*/
+		ret.reset(new BatMan(pos, _enemyImgMap[et], _enemydeadImgMap[et], _playerRef, _cameraRef));
+		_enemies.push_back(ret);
+		return _enemies.back();
 		break;
 	default:
 		return nullptr;
@@ -64,7 +66,7 @@ EnemyFactory::Update()
 {
 	_timer++;
 	if (_timer % 60 == 0){
-		Create(et_knifeman, _playerRef.GetPos() + Vector2(300, 0));
+		Create(et_batman, _playerRef.GetPos() + Vector2(300, 0));
 		Vector2 pos = _playerRef.GetPos() + Vector2(300, 0);
 		int a = 0;
 	}

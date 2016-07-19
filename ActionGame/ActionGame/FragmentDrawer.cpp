@@ -135,9 +135,9 @@ Fragment::Scalling(float size)//毎フレームこれ呼んでると動かない（中で座標を弄っ
 	}
 	CalculateCenter();
 
-	for (int i = 0; i < 3; i++){
+	/*for (int i = 0; i < 3; i++){
 	DrawLine(temp[i].x, temp[i].y, temp[(i + 1)%3].x, temp[(i + 1)%3].y, 0xffffff);
-	}
+	}*/
 	//for (int i = 0; i < 3; i++){//ここはできてるっぽい
 	//	DxLib::VERTEX v = identityVert[i];
 	//	DxLib::VERTEX v_ = identityVert[(i + 1) % 3];
