@@ -154,7 +154,7 @@ GrabMan::Kill()
 	_isLeft?_fragDrawer.TurnUV() : 0 ;//uv’l‚ÌU‚¾‚¯”½“]
 	_fragDrawer.FragmentScalling(3.0f);//Scalling‚Ì•û‚ğæ‚É‚·‚é
 	_fragDrawer.FragmentTranslation(Vector2(_collider.Left()-32,_collider.Top()));
-	_fragDrawer.Break(Vector2(6.0f,0.0f));
+	_isLeft ? _fragDrawer.Break(Vector2(6.0f, 0.0f)) : _fragDrawer.Break(Vector2(-6.0f, 0.f));
 }
 
 void

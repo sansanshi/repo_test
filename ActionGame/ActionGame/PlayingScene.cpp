@@ -2,6 +2,7 @@
 #include<DxLib.h>
 #include"CollisionDetector.h"
 #include<assert.h>
+#include"GameMain.h"
 
 //凝ったタイトル作る
 //死んだら最初から始まる
@@ -14,6 +15,8 @@ PlayingScene::PlayingScene() : _player(_camera, _stage), _camera(_player), _enem
 	_hpBarHandle = LoadGraph("img/meter_bar.png");
 
 	_camera.SetUp();
+
+	rect = Rect(Vector2(960, 380), 500, 100);
 }
 
 
@@ -40,8 +43,10 @@ PlayingScene::Update()
 	_blockFac.Update();
 	_ebulletFac.Update();
 
-	DrawExtendGraph(0 + _camera.OffsetX()-640, 0, 640 + _camera.OffsetX(), 480, _stageGrHandle, false);
-	DrawExtendGraph(0+_camera.OffsetX(), 0,640+_camera.OffsetX(),480, _stageGrHandle, false);
+	DrawExtendGraph(0 + _camera.OffsetX()-640, 0, 0 + _camera.OffsetX(), 480, _stageGrHandle, false);
+	DrawExtendGraph(0 + _camera.OffsetX(), 0,640+_camera.OffsetX(),480, _stageGrHandle, false);
+	DrawExtendGraph(0 + _camera.OffsetX()+640, 0, 640 + _camera.OffsetX()+640, 480, _stageGrHandle, false);
+	//DrawExtendGraph()
 
 	
 	for (auto& enemy : _enemyFac.GetEnemies())//エネミーとプレイヤーのあたり判定
@@ -103,7 +108,7 @@ PlayingScene::Update()
 	for (auto& enemy : _enemyFac.GetEnemies())
 	{
 		if (!enemy->CharaType() == ct_batman) continue;
-		if (!_player.IsAvailable() || !enemy->GetAttackCol().IsCollidable())
+		if (_player.IsAvailable() && enemy->GetAttackCol().IsCollidable())
 		{
 			if (CollisionDetector::IsHit(_player.GetCollider(), enemy->GetAttackCol()))
 			{
@@ -133,6 +138,9 @@ PlayingScene::Update()
 	//	if(enemy.IsCollidable())_player.OnCollided(&enemy);
 	//}
 
+
+	DrawBox(rect.Left() + _camera.OffsetX(), rect.Top(), rect.Right() + _camera.OffsetX(), rect.Bottom(), 0x000000, true);
+
 	_enemyFac.Draw();
 	_player.Draw();
 	_stage.Draw();
@@ -144,5 +152,8 @@ PlayingScene::Update()
 	DrawExtendGraph(_hpBarRect.Left(),_hpBarRect.Top() ,
 		_hpBarRect.Left() + _hpBarRect.width * _player.GetPercentageHp(), _hpBarRect.Bottom(), _hpBarHandle, false);//バー表示 長いので2行
 
+	_player.IsDead() ? GameMain::Instance().ChangeScene(new PlayingScene()):0;//プレイヤーが死んでたらシーンをロード（sceneをdeleteしてるので処理の一番最後に置く）
+
 }
+
 

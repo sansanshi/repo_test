@@ -14,6 +14,8 @@ private:
 	int n;
 	int m;
 
+	Rect rect;
+
 public:
 	Stage(Camera&);
 	~Stage();

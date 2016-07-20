@@ -13,7 +13,7 @@ EnemyFactory::EnemyFactory(Player& player, Camera& camera, EnemyBulletFactory& e
 	
 	_enemydeadImgMap[et_grabman] = LoadGraph("img/grabman_dead.png");
 	_enemydeadImgMap[et_knifeman] = LoadGraph("img/knifeman_dead.png");
-	_enemydeadImgMap[et_batman] = LoadGraph("img/boss1_.png");
+	_enemydeadImgMap[et_batman] = LoadGraph("img/boss1_dead.png");
 	_timer = 0;
 }
 

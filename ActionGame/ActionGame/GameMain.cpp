@@ -3,6 +3,7 @@
 #include<math.h>
 
 #include "PlayingScene.h"
+#include"TitleScene.h"
 
 GameMain::GameMain()
 {
@@ -14,7 +15,7 @@ GameMain::GameMain()
 	SetDrawScreen(DX_SCREEN_BACK);
 	_scene = nullptr;
 
-	ChangeScene(new PlayingScene());
+	ChangeScene(new TitleScene());
 }
 
 

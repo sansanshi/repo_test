@@ -30,7 +30,10 @@ Camera::SetUp()
 float 
 Camera::OffsetX()
 {
-	return -_playerRef.GetCenter().x + _rc.width / 2+_quakeOffset.x;//return _rc.Left();
+	float r = -_playerRef.GetCenter().x + _rc.width / 2 + _quakeOffset.x;
+	r = max(r, -640);
+	r = min(r, 640);
+	return r;//-_playerRef.GetCenter().x + _rc.width / 2+_quakeOffset.x;//return _rc.Left();
 }
 
 //void

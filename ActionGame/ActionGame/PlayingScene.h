@@ -24,6 +24,8 @@ private:
 	int _hpBarHandle;
 	Rect _hpBarRect;
 
+	Rect rect;//ŒŠŠJ‚¯‚é—p‚Ìrect
+
 	//FragmentDrawer _fragDrawer;
 	
 public:

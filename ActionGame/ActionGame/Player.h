@@ -5,6 +5,7 @@
 #include<map>
 #include<list>
 #include<memory>
+#include"FragmentDrawer.h"
 
 class Camera;
 class Enemy;
@@ -62,6 +63,7 @@ private:
 	void KamaeUpdate();
 	void CrouchKamaeUpdate();
 	void GrabbedUpdate();
+	void DeadUpdate();
 
 	int _walkFrame;
 	int _kickingFrame;
@@ -87,6 +89,7 @@ private:
 	void DrawCrouchPunch();
 	void DrawKamae();
 	void DrawCrouchKamae();
+	void DrawDead();
 
 	Rect _attackRect;
 	Collider _attackCol;
@@ -98,6 +101,11 @@ private:
 	std::list<GrabMan*> _grabbingEnemies;//プレイヤーを掴んでいるエネミーのリスト
 
 	Stage& _stageRef;
+
+	FragmentDrawer *_fragDrawer;
+	int _deadHandle;
+	bool _isDead;
+
 
 public:
 	Player(Camera&,Stage&);
@@ -140,6 +148,7 @@ public:
 
 	void Killed();
 	int GetAttackDmg(){ return _attackDamage; }
+	bool IsDead(){ return _isDead; }
 };
 
 

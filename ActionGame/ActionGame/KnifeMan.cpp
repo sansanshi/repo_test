@@ -151,7 +151,7 @@ KnifeMan::Kill()
 	_isLeft ? _fragDrawer.TurnUV() : 0;//uv’l‚ÌU‚¾‚¯”½“]
 	_fragDrawer.FragmentScalling(3.0f);//Scalling‚Ì•û‚ğæ‚É‚·‚é
 	_fragDrawer.FragmentTranslation(Vector2(_collider.Left() - 32, _collider.Top()));
-	_fragDrawer.Break(Vector2(6.0f, 0.0f));
+	_playerRef.GetCenter().x<_collider.Center().x ? _fragDrawer.Break(Vector2(6.0f, 0.0f)) : _fragDrawer.Break(Vector2(-6.0f, 0.f));
 }
 
 void
@@ -218,7 +218,7 @@ void
 KnifeMan::OverThrowUpdate()
 {
 	_velocity.y = 3.0f;
-	if (_stateFrame[state_overThrow] > 20)
+	if (_stateFrame[state_overThrow] > 40)
 	{
 		fabs((_playerRef.GetCollider().Center() - _collider.Center()).x) > 200.0f ? ChangeState(state_far): ChangeState(state_near);
 	}
@@ -229,7 +229,7 @@ void
 KnifeMan::UnderThrowUpdate()
 {
 	_velocity.y = 3.0f;
-	if (_stateFrame[state_underThrow] > 20)
+	if (_stateFrame[state_underThrow] > 40)
 	{
 		fabs((_playerRef.GetCollider().Center() - _collider.Center()).x) > 200.0f ? ChangeState(state_far) : ChangeState(state_near);
 	}

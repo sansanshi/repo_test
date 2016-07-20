@@ -145,6 +145,61 @@ Fragment::Scalling(float size)//毎フレームこれ呼んでると動かない（中で座標を弄っ
 	//}
 }
 
+void
+Fragment::IncrAlpha()//毎フレームこれ呼んでると動かない（中で座標を弄ってるので
+{//この中でidentityVertを使って計算してるので前のTranslationの結果が反映されてない
+	
+	//まず回転(重心中心)
+	//平行移動に始まり平行移動に終わる()
+	for (int i = 0; i<3; ++i){
+		DxLib::VERTEX& vert = *(_headVert + i);//このvertはinput/outputみたいな扱いにして下のvを動かして最後にvert=vとかしてみる
+		DxLib::VERTEX v = identityVert[i];//*(_headVert+i);
+
+		vert.a = min(vert.a + 1, 255);
+
+	}
+	CalculateCenter();
+
+}
+void
+Fragment::Transparency()//毎フレームこれ呼んでると動かない（中で座標を弄ってるので
+{//この中でidentityVertを使って計算してるので前のTranslationの結果が反映されてない
+
+	//まず回転(重心中心)
+	//平行移動に始まり平行移動に終わる()
+	for (int i = 0; i<3; ++i){
+		DxLib::VERTEX& vert = *(_headVert + i);//このvertはinput/outputみたいな扱いにして下のvを動かして最後にvert=vとかしてみる
+		DxLib::VERTEX v = identityVert[i];//*(_headVert+i);
+
+		vert.a = 0.0f;
+
+	}
+	CalculateCenter();
+
+}
+
+void
+FragmentDrawer::TransparentFragment()
+{
+	std::vector<Fragment>::iterator it = _fragments.begin();
+	for (; it != _fragments.end();)
+	{
+		it->Transparency();
+		it++;
+	}
+}
+void
+FragmentDrawer::IncrFragAlpha()
+{
+	std::vector<Fragment>::iterator it = _fragments.begin();
+	for (; it != _fragments.end();)
+	{
+		it->IncrAlpha();
+		it++;
+	}
+}
+
+
 FragmentDrawer::FragmentDrawer(const char* filePath) : BaseDrawer(filePath),//ファイルパス貰ったらその画像でバラバラにするための画像を作成（_capHandleに入れる）
 _breaking(false),
 _capHandle(0)
@@ -223,8 +278,15 @@ FragmentDrawer::Draw(){
 
 	}
 	else{
-		BaseDrawer::Draw();
+		DxLib::DrawPolygon(&_vertices[0], _vertices.size() / 3, _capHandle, true, true);
+		//BaseDrawer::Draw();
 	}
+}
+float
+FragmentDrawer::GetAlpha()
+{
+	DxLib::VERTEX& vert = *_fragments[0]._headVert;
+	return vert.a;
 }
 
 

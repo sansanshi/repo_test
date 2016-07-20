@@ -4,10 +4,12 @@
 
 Stage::Stage(Camera& camera) :_cameraRef(camera)
 {
-	_pos = Vector2(0, 320);
+	_pos = Vector2(0, 360);
 	_collider = Collider(this, ct_stage, col_stage);
-	_collider.SetRect(Rect(_pos, 640, 50));
+	_collider.SetRect(Rect(_pos, 1920, 50));
 	_collider.SetCenter_Cam(_pos, _cameraRef.OffsetX());
+	
+	
 }
 
 
@@ -60,6 +62,6 @@ Stage::Update()
 	int m = abs(n - 30);
 	_vel.y = m - 15;
 
-	_pos += _vel*0.1f;
+	_pos += _vel*0.05f;
 	_collider.SetCenter_Cam(_pos, _cameraRef.OffsetX());
 }

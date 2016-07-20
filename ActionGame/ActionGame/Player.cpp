@@ -13,7 +13,7 @@ Player::Player(Camera& camera, Stage& stage) :_cameraRef(camera), _stageRef(stag
 
 	_jumpPower = 6.0f;
 	_pFunc = &Player::JumpUpdate;
-	_pos = Vector2(0, 0);
+	_pos = Vector2(640, 0);
 	_velocity = Vector2(0, 0);
 	_acceleration = Vector2(0, 0.2f);
 	 _collider.SetRect(Rect(_pos,32, 128));
@@ -33,7 +33,7 @@ Player::Player(Camera& camera, Stage& stage) :_cameraRef(camera), _stageRef(stag
 	_hpMax = 600;
 	_hp = _hpMax;
 	_attackDamage = 1;
-	_walkSpd = 4.0f;
+	_walkSpd = 5.0f;
 
 	_handleMap[ps_Neutral] = LoadGraph("img/neutral.png");
 	_handleMap[ps_Jump] = LoadGraph("img/jump.png");
@@ -61,6 +61,7 @@ Player::Player(Camera& camera, Stage& stage) :_cameraRef(camera), _stageRef(stag
 	_pFuncMap[ps_Kamae] = &Player::KamaeUpdate;
 	_pFuncMap[ps_CrouchKamae] = &Player::CrouchKamaeUpdate;
 	_pFuncMap[ps_Grabbed] = &Player::GrabbedUpdate;
+	_pFuncMap[ps_Dead] = &Player::DeadUpdate;
 
 	_stateFrame[ps_Neutral] = 0;
 	_stateFrame[ps_Walk] = 0;
@@ -74,6 +75,7 @@ Player::Player(Camera& camera, Stage& stage) :_cameraRef(camera), _stageRef(stag
 	_stateFrame[ps_Kamae] = 0;
 	_stateFrame[ps_CrouchKamae] = 0;
 	_stateFrame[ps_Grabbed] = 0;
+	_stateFrame[ps_Dead] = 0;
 
 
 	std::map<PlayerState, int>::iterator it = _stateFrame.begin();//mapのfirstはconstらしいので無理っぽい
@@ -97,6 +99,7 @@ Player::Player(Camera& camera, Stage& stage) :_cameraRef(camera), _stageRef(stag
 	_drawFuncMap[ps_Kamae] = &Player::DrawKamae;
 	_drawFuncMap[ps_CrouchKamae] = &Player::DrawCrouchKamae;
 	_drawFuncMap[ps_Grabbed] = &Player::DrawWalk;
+	_drawFuncMap[ps_Dead] = &Player::DrawDead;
 
 	//attackCol 幅高さ決める　　プレイヤーのセンターからoffset isRightでoffset.xを変える
 	_attackCol= Collider(this, ct_player, col_attack);
@@ -104,6 +107,13 @@ Player::Player(Camera& camera, Stage& stage) :_cameraRef(camera), _stageRef(stag
 	_attackCol.width = 20;
 	_attackCol.height = 20;
 	_attackColOffset = _isRight ? Vector2(44, 10) : Vector2(-44, 10);
+
+	_deadHandle = LoadGraph("img/damage_top.png");
+	_fragDrawer = new FragmentDrawer(_deadHandle);
+	_fragDrawer->FragmentScalling(3.0f);
+
+	_isAvailable = true;
+	_isDead = false;
 }
 
 
@@ -120,10 +130,11 @@ Player::~Player()
 void
 Player::Update()
 {
+	_stateFrame[_state]++;
 	_cOffsetX = _cameraRef.OffsetX();
 	(this->*_pFunc)();//this->pFuncMap[_state]とかにすると毎回mapを見るので無駄？
 	//if (_pos.y >= _groundZero&&_velocity.y > 0){}//地面についたかどうか
-	_stateFrame[_state]++;
+	
 }
 
 void
@@ -151,6 +162,7 @@ Player::OnCollided(Collider* col)
 	if (col->Type()==col_attack)
 	{
 		Damage(3);
+		
 	}
 }
 void
@@ -246,6 +258,7 @@ Player::JumpUpdate()
 	//	_acceleration = Vector2(0, 0);
 	//}
 	
+	if (_pos.y >= 550) Damage(100);
 }
 
 void
@@ -397,6 +410,19 @@ Player::CrouchUpdate()
 	_pos += _velocity;
 	_collider.SetCenter(_pos + Vector2(_cameraRef.OffsetX(), 0));
 
+}
+void
+Player::DeadUpdate()
+{
+	if (_stateFrame[ps_Dead] >= 60)
+	{
+		_isDead = true;
+	}
+}
+void
+Player::DrawDead()
+{
+	_fragDrawer->Draw();
 }
 void 
 Player::CrouchKickUpdate()
@@ -572,7 +598,15 @@ void
 Player::Damage(int value)
 {
 	_hp =max(_hp-value,0);
-	if (_hp <= 0) _isAvailable = false;
+	if (_hp <= 0){
+		_isAvailable = false;
+
+		ChangeState(ps_Dead);
+		_isRight ? _fragDrawer->TurnUV() : 0;//uv値のUだけ反転
+		_fragDrawer->FragmentScalling(3.0f);//Scallingの方を先にする
+		_fragDrawer->FragmentTranslation(Vector2(_collider.Left() - 32, _collider.Top()));
+		_fragDrawer->Break();
+	}
 }
 
 void

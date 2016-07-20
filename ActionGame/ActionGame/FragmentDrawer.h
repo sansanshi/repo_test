@@ -22,6 +22,9 @@ public:
 	void SetCenter(Vector2);
 	void Translation(Vector2 vec);
 	void AddPower(Vector2 power);
+	void Transparency();
+	void IncrAlpha();
+	void DecrAlpha();
 };
 
 
@@ -62,4 +65,8 @@ public:
 
 	void TurnUV();
 	void SetPos(Vector2);
+
+	void TransparentFragment();
+	void IncrFragAlpha();
+	float GetAlpha();//とりあえず一番最初の頂点からアルファ値持ってくる
 };
