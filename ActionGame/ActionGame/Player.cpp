@@ -162,7 +162,7 @@ Player::OnCollided(Collider* col)
 	if (col->Type()==col_attack)
 	{
 		Damage(3);
-		
+		col->ToDisable();
 	}
 }
 void
@@ -264,6 +264,7 @@ Player::JumpUpdate()
 void
 Player::PunchUpdate()
 {
+	_velocity.y = 3.0f;
 	if (_stateFrame[ps_Punch] > 0)_attackCol.ToDisable();
 	_attackColOffset = _isRight ? Vector2(42+_cOffsetX, -25) : Vector2(-42+_cOffsetX, -25);
 	_attackCol.SetCenter(_pos + _attackColOffset);
@@ -273,6 +274,9 @@ Player::PunchUpdate()
 		//_pFunc = &Player::WalkUpdate;
 		ChangeState(ps_Walk);
 	}
+
+	_pos += _velocity;
+	_collider.SetCenter(_pos + Vector2(_cameraRef.OffsetX(), 0));
 }
 
 
@@ -298,13 +302,7 @@ Player::WalkUpdate()
 		vx = -1;
 		_isRight = false;
 	}
-	if (_key[KEY_INPUT_DOWN])
-	{
-		ChangeState(ps_Crouch);
-		_collider.width = 48;
-		_collider.height = 82;
-		_collider.SetCenter(_pos + Vector2(0, 20));
-	}
+	
 
 
 	if (_key[KEY_INPUT_SPACE])
@@ -331,6 +329,14 @@ Player::WalkUpdate()
 
 	_collider.SetCenter(_pos+Vector2(_cameraRef.OffsetX(),0));
 
+	if (_key[KEY_INPUT_DOWN])
+	{
+		ChangeState(ps_Crouch);
+		_collider.width = 48;
+		_collider.height = 82;
+		_collider.SetCenter(_pos + Vector2(0, 20));
+		_velocity.x = 0;
+	}
 
 	if (_prevRejectY == false)//playingSceneの方でUpdate→ステージとの押し戻し　の順で処理していること前提の処理
 	{
@@ -550,17 +556,17 @@ Player::DrawCrouch()
 	//int w, h;//画像のサイズをとってきて自動で下に合わせている
 	//GetGraphSize(_handleMap[_state], &w, &h);
 	//DrawRotaGraph2(_rect.Center().x, 400 - 3.0*(h / 2), 8, 16, 3.0, 0, _handleMap[_state], true, _isRight);
-	DrawCameraGraph(_pos.x, _pos.y, 0, 0, 16, 40, 8, 20, 3.0, 0, _handleMap[_state], true, _isRight);
+	DrawCameraGraph(_pos.x, _pos.y-16, 0, 0, 16, 40, 8, 20, 3.0, 0, _handleMap[_state], true, _isRight);
 }
 void
 Player::DrawCrouchKick()
 {
-	DrawCameraGraph(_pos.x, _pos.y, 0, 0, 50, 40, 25, 20, 3.0, 0, _handleMap[_state], true, _isRight);
+	DrawCameraGraph(_pos.x, _pos.y-16, 0, 0, 50, 40, 25, 20, 3.0, 0, _handleMap[_state], true, _isRight);
 }
 void
 Player::DrawCrouchPunch()
 {
-	DrawCameraGraph(_pos.x, _pos.y, 0, 0, 40, 40, 20, 20, 3.0, 0, _handleMap[_state], true, _isRight);
+	DrawCameraGraph(_pos.x, _pos.y-16, 0, 0, 40, 40, 20, 20, 3.0, 0, _handleMap[_state], true, _isRight);
 }
 void 
 Player::DrawKamae()
@@ -570,7 +576,7 @@ Player::DrawKamae()
 void
 Player::DrawCrouchKamae()
 {
-	DrawCameraGraph(_pos.x, _pos.y, 0, 0, 22, 40, 11, 20, 3.0, 0, _handleMap[_state], true, _isRight);
+	DrawCameraGraph(_pos.x, _pos.y-16, 0, 0, 22, 40, 11, 20, 3.0, 0, _handleMap[_state], true, _isRight);
 }
 
 void
@@ -642,4 +648,11 @@ void
 Player::Killed()
 {
 
+}
+
+void
+Player::Move(Vector2 vec)
+{
+	_pos += vec;
+	_collider.SetCenter_Cam(_pos, _cameraRef.OffsetX());
 }

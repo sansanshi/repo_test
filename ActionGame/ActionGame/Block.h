@@ -1,5 +1,14 @@
 #pragma once
 #include "Geometry.h"
+#include"Collider.h"
+enum BlockType{
+	bt_none,
+	bt_normal,//普通のブロック
+	bt_movable,//動くブロック
+	bt_vmovable,//動くブロック（縦方向)
+
+
+};
 class Player;
 class Block
 {
@@ -7,19 +16,24 @@ private:
 
 protected:
 	Vector2 _pos;
-	Rect _rc;
+	Collider _collider;
 	int _handle;
+
+	BlockType _blockType;
 
 public:
 	Block();
 	~Block();
-	Rect& GetRect(){ return _rc; }
+	Collider& GetCollider(){ return _collider; }
 
 	virtual void Update() = 0;
 
 	virtual void OnCollided(Player& player)=0;
 	//virtual void OnCollided(GameObject* obj) = 0;
 	virtual void Draw() = 0;
+
+	BlockType GetBlockType(){ return _blockType; }
+	
 
 };
 

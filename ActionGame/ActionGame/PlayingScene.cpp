@@ -3,6 +3,7 @@
 #include"CollisionDetector.h"
 #include<assert.h>
 #include"GameMain.h"
+#include"Block.h"
 
 //凝ったタイトル作る
 //死んだら最初から始まる
@@ -99,7 +100,7 @@ PlayingScene::Update()
 		{
 			enemy->OnCollided(&(_player.GetAttackCol()));
 			_camera.InvokeQuake(4.0f);
-			_blockFac.CreateBlock(bt_movable, enemy->GetPos());//
+			_blockFac.CreateBlock(bt_movable, enemy->GetPos()+Vector2(0,30));//
 			//_fragDrawer.Capture();//バラバラテスト
 			//_fragDrawer.Break();
 		}
@@ -116,6 +117,20 @@ PlayingScene::Update()
 			}
 		}
 		
+	}
+
+	for (auto& block : _blockFac.GetBlocks())
+	{
+		if (_player.IsAvailable())
+		{
+			if (CollisionDetector::IsHit(_player.GetCollider(), block->GetCollider()))
+			{
+				Vector2 vec = CollisionDetector::RejectVec(&(block->GetCollider()), &_player.GetCollider());
+				_player.Reject(vec);
+				if (block->GetBlockType()==bt_movable&&vec.y < 0.0f) block->OnCollided(_player);//上方向に押し戻されていたら←うまくいってない
+			}
+		}
+
 	}
 
 	//Collider col = _player.GetAttackCol();

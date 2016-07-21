@@ -12,7 +12,7 @@ TitleScene::TitleScene()
 	_fragDrawer = new FragmentDrawer(_handle);
 
 	_fragDrawer->FragmentScalling(0.8f);//Scalling‚Ì•û‚ğæ‚É‚·‚é
-	_fragDrawer->FragmentTranslation(Vector2(-50, 0));
+	_fragDrawer->FragmentTranslation(Vector2(-50, 40));
 
 	_fragDrawer->TransparentFragment();
 	_breakingTimer = 0;

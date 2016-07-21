@@ -4,14 +4,7 @@
 #include<vector>
 #include<map>
 
-enum BlockType{
-	bt_none,
-	bt_normal,//普通のブロック
-	bt_movable,//動くブロック
-	bt_vmovable,//動くブロック（縦方向)
-
-
-};
+#include"Block.h"
 class Block;
 class Player;
 class Camera;

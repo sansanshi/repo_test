@@ -1,6 +1,6 @@
 #include "BlockFactory.h"
 #include"Player.h"
-#include"Block.h"
+//#include"Block.h"
 #include"MovableBlock.h"
 #include<Dxlib.h>
 

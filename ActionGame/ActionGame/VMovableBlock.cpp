@@ -7,11 +7,12 @@ VMovableBlock::VMovableBlock(Vector2 pos, int& handle, Camera& camera) :_timer(0
 {
 	_pos = pos;
 	_handle = handle;
-	_rc.width = 32;
-	_rc.height = 32;
-	_rc.SetCenter(_pos);
+	_collider.width = 32;
+	_collider.height = 32;
+	_collider.SetCenter(_pos);
 	_vel.Init();
 	//_vel.x = 3.0f;
+	_blockType = bt_vmovable;
 }
 
 
@@ -33,7 +34,7 @@ VMovableBlock::Update()
 	_vel.y = m - 15;
 
 	_pos += _vel*0.5f;
-	_rc.SetCenter(_pos);
+	_collider.SetCenter(_pos);
 }
 
 void

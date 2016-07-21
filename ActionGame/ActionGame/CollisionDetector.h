@@ -66,7 +66,7 @@ public:
 		Rect temp = RectOfOverlapped(*colA, *colB);
 		if (temp.width < temp.height)//‰¡•ûŒü‚Ì‰Ÿ‚µ–ß‚µ
 		{
-			ret = colA->Left() < colB->Left() ? Vector2(-temp.width, 0) : Vector2(temp.width, 0);
+			ret = colA->Left() < colB->Left() ? Vector2(temp.width, 0) : Vector2(-temp.width, 0);
 		}
 		else//c•ûŒü‚Ì‰Ÿ‚µ–ß‚µ
 		{

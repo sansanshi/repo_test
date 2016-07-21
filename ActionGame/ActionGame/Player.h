@@ -149,6 +149,8 @@ public:
 	void Killed();
 	int GetAttackDmg(){ return _attackDamage; }
 	bool IsDead(){ return _isDead; }
+
+	void Move(Vector2 vec);
 };
 
 
