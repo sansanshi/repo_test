@@ -2,6 +2,7 @@
 #include"Player.h"
 //#include"Block.h"
 #include"MovableBlock.h"
+#include"VMovableBlock.h"
 #include<Dxlib.h>
 
 
@@ -36,6 +37,8 @@ BlockFactory::CreateBlock(BlockType bt, Vector2 pos)
 		_blocks.push_back(ret);
 		break;
 	case bt_vmovable:
+		ret.reset(new VMovableBlock(pos, _imgMap[bt], _cameraRef));
+		_blocks.push_back(ret);
 		break;
 	default:
 		break;

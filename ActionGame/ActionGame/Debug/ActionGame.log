@@ -1,15 +1,33 @@
-﻿2016/07/21 15:17:18 にビルドを開始しました。
+﻿2016/07/22 15:19:30 にビルドを開始しました。
      1>ノード 2 上のプロジェクト "C:\Users\student\Desktop\1401349澁谷\repo_test\ActionGame\ActionGame\ActionGame.vcxproj" (Build ターゲット)。
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IDxlib /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt VMovableBlock.cpp
-         VMovableBlock.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IDxlib /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt KnifeMan.cpp
+         KnifeMan.cpp
      1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\geometry.h(63): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
      1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\geometry.h(64): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
      1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\geometry.h(65): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
      1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\geometry.h(66): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\vmovableblock.cpp(34): warning C4244: '=' : 'int' から 'float' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\vmovableblock.cpp(43): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
-     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\vmovableblock.cpp(48): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\collisiondetector.h(69): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\collisiondetector.h(73): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\collisiondetector.h(95): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\collisiondetector.h(96): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\collisiondetector.h(97): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\collisiondetector.h(98): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\collisiondetector.h(100): warning C4244: '=' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\collisiondetector.h(101): warning C4244: '=' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\knifeman.cpp(153): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\knifeman.cpp(164): warning C4244: '=' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\knifeman.cpp(168): warning C4244: '初期化中' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\knifeman.cpp(190): warning C4244: '=' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\knifeman.cpp(299): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\knifeman.cpp(304): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\knifeman.cpp(316): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\knifeman.cpp(321): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\knifeman.cpp(326): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\knifeman.cpp(331): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\knifeman.cpp(337): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\knifeman.cpp(343): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\knifeman.cpp(349): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\student\Desktop\1401349澁谷\repo_test\ActionGame\Debug\ActionGame.exe" /INCREMENTAL /NOLOGO /LIBPATH:Dxlib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\student\Desktop\1401349澁谷\repo_test\ActionGame\Debug\ActionGame.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\student\Desktop\1401349澁谷\repo_test\ActionGame\Debug\ActionGame.lib" /MACHINE:X86 Debug\BatMan.obj
          Debug\Block.obj
@@ -17,6 +35,8 @@
          Debug\Camera.obj
          Debug\Collider.obj
          Debug\CollisionDetector.obj
+         Debug\Effect.obj
+         Debug\EffectFactory.obj
          Debug\Enemy.obj
          Debug\EnemyBullet.obj
          Debug\EnemyBulletFactory.obj
@@ -41,4 +61,4 @@
 
 ビルドに成功しました。
 
-経過時間 00:00:01.18
+経過時間 00:00:01.22

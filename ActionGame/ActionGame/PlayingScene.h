@@ -9,6 +9,7 @@
 #include"Stage.h"
 #include"FragmentDrawer.h"
 #include"EnemyBulletFactory.h"
+#include"EffectFactory.h"
 class PlayingScene:public Scene
 {
 private:
@@ -20,6 +21,7 @@ private:
 	BlockFactory _blockFac;
 	Stage _stage;
 	EnemyBulletFactory _ebulletFac;
+	EffectFactory _effectFac;
 
 	int _hpBarHandle;
 	Rect _hpBarRect;

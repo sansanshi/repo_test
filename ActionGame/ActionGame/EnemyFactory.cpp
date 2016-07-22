@@ -4,6 +4,7 @@
 #include"KnifeMan.h"
 #include"Player.h"
 #include"BatMan.h"
+#include<math.h>
 
 EnemyFactory::EnemyFactory(Player& player, Camera& camera, EnemyBulletFactory& ebulletFac) :_playerRef(player), _cameraRef(camera), _ebulletFac(ebulletFac)
 {
@@ -65,9 +66,16 @@ void
 EnemyFactory::Update()
 {
 	_timer++;
-	if (_timer % 60 == 0){
-		Create(et_batman, _playerRef.GetPos() + Vector2(300, 0));
-		Vector2 pos = _playerRef.GetPos() + Vector2(300, 0);
+	if (_timer % 120 == 0){
+		Vector2 offset;
+		offset = _playerRef.IsRight() ? Vector2(300, 0) : Vector2(-300, 0);
+
+		int random = std::rand();
+		random %= 100;
+		if (random<70)Create(et_grabman, _playerRef.GetPos() + offset);
+		else if (random<90)Create(et_knifeman, _playerRef.GetPos() + offset);
+		else Create(et_batman, _playerRef.GetPos() + offset);
+		Vector2 pos = _playerRef.GetPos() + offset;
 		int a = 0;
 	}
 

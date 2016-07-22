@@ -11,7 +11,7 @@ Player::Player(Camera& camera, Stage& stage) :_cameraRef(camera), _stageRef(stag
 	_collider = Collider(this, ct_player, col_default);
 	_collider.ToEnable();
 
-	_jumpPower = 6.0f;
+	_jumpPower = 10.0f;
 	_pFunc = &Player::JumpUpdate;
 	_pos = Vector2(640, 0);
 	_velocity = Vector2(0, 0);
@@ -114,6 +114,8 @@ Player::Player(Camera& camera, Stage& stage) :_cameraRef(camera), _stageRef(stag
 
 	_isAvailable = true;
 	_isDead = false;
+
+	_rejectCnt = 0;
 }
 
 
@@ -128,8 +130,9 @@ Player::~Player()
 }
 
 void
-Player::Update()
+Player::Update() 
 {
+	_rejectCnt = 0;
 	_stateFrame[_state]++;
 	_cOffsetX = _cameraRef.OffsetX();
 	(this->*_pFunc)();//this->pFuncMap[_state]とかにすると毎回mapを見るので無駄？
@@ -238,6 +241,18 @@ Player::JumpUpdate()
 {
 	_kickInterval = max(_kickInterval - 1, 0);
 	GetHitKeyStateAll(_key);
+	vx = vy = 0;
+	if (_key[KEY_INPUT_RIGHT])
+	{
+		vx = 1;
+		_isRight = true;
+	}
+	if (_key[KEY_INPUT_LEFT])
+	{
+		vx = -1;
+		_isRight = false;
+	}
+	_velocity.x = vx*3.0f;
 
 	_pos += _velocity;
 	_velocity += _acceleration;
@@ -312,15 +327,7 @@ Player::WalkUpdate()
 		//_pFunc = &Player::JumpUpdate;
 		ChangeState(ps_Jump);
 	}
-	if (_key[KEY_INPUT_Z])
-	{
-		ChangeState(ps_Punch);
-		
-	}
-	if (_key[KEY_INPUT_X])
-	{
-		if(_kickInterval==0)ChangeState(ps_Kamae);
-	}
+	
 
 	_velocity.x = vx*_walkSpd;
 
@@ -336,6 +343,17 @@ Player::WalkUpdate()
 		_collider.height = 82;
 		_collider.SetCenter(_pos + Vector2(0, 20));
 		_velocity.x = 0;
+	}
+	if (_key[KEY_INPUT_Z])
+	{
+		_velocity.x = 0;
+		ChangeState(ps_Punch);
+
+	}
+	if (_key[KEY_INPUT_X])
+	{
+		_velocity.x = 0;
+		if (_kickInterval == 0)ChangeState(ps_Kamae);
 	}
 
 	if (_prevRejectY == false)//playingSceneの方でUpdate→ステージとの押し戻し　の順で処理していること前提の処理
@@ -433,45 +451,55 @@ Player::DrawDead()
 void 
 Player::CrouchKickUpdate()
 {
+	_velocity.y = 3.0f;
 	_attackColOffset = _isRight ? Vector2(64 + _cOffsetX, 52) : Vector2(-64 + _cOffsetX, 52);
 	_attackCol.SetCenter(_pos + _attackColOffset);
 
-	_stateFrame[_state]++;
-	if (_stateFrame[_state] >= 30)
+	if (_stateFrame[_state] >= 15)
 	{
 		ChangeState(ps_Crouch);
 		_kickInterval = 30;
 	}
+
+	_pos += _velocity;
+	_collider.SetCenter(_pos + Vector2(_cameraRef.OffsetX(), 0));
 }
 void
 Player::CrouchPunchUpdate()
 {
+	_velocity.y = 3.0f;
 	_attackColOffset = _isRight ? Vector2(48 + _cOffsetX, 0) : Vector2(-48 + _cOffsetX, 0);
 	_attackCol.SetCenter(_pos + _attackColOffset);
 
 	_stateFrame[_state]++;
-	if (_stateFrame[_state] >= 30)
+	if (_stateFrame[_state] >= 15)
 	{
 		ChangeState(ps_Crouch);
 	}
+	_pos += _velocity;
+	_collider.SetCenter(_pos + Vector2(_cameraRef.OffsetX(), 0));
 }
 void 
 Player::KamaeUpdate()
 {
-	_stateFrame[_state]++;
-	if (_stateFrame[_state] >= 30)
+	_velocity.y = 3.0f;
+	if (_stateFrame[_state] >= 15)
 	{
 		ChangeState(ps_Kick);
 	}
+	_pos += _velocity;
+	_collider.SetCenter(_pos + Vector2(_cameraRef.OffsetX(), 0));
 }
 void
 Player::CrouchKamaeUpdate()
 {
-	_stateFrame[_state]++;
-	if (_stateFrame[_state] >= 20)
+	_velocity.y = 3.0f;
+	if (_stateFrame[_state] >= 10)
 	{
 		ChangeState(ps_CrouchKick);
 	}
+	_pos += _velocity;
+	_collider.SetCenter(_pos + Vector2(_cameraRef.OffsetX(), 0));
 }
 
 void
@@ -605,13 +633,7 @@ Player::Damage(int value)
 {
 	_hp =max(_hp-value,0);
 	if (_hp <= 0){
-		_isAvailable = false;
-
-		ChangeState(ps_Dead);
-		_isRight ? _fragDrawer->TurnUV() : 0;//uv値のUだけ反転
-		_fragDrawer->FragmentScalling(3.0f);//Scallingの方を先にする
-		_fragDrawer->FragmentTranslation(Vector2(_collider.Left() - 32, _collider.Top()));
-		_fragDrawer->Break();
+		Killed();
 	}
 }
 
@@ -642,11 +664,27 @@ Player::Reject(Vector2 vec)
 		ChangeState(ps_Walk);
 		_velocity.Init();
 	}
+
+	++_rejectCnt;
 }
 
 void
 Player::Killed()
 {
+	_isAvailable = false;
+
+	ChangeState(ps_Dead);
+	_isRight ? _fragDrawer->TurnUV() : 0;//uv値のUだけ反転
+	_fragDrawer->FragmentScalling(3.0f);//Scallingの方を先にする
+	_fragDrawer->FragmentTranslation(Vector2(_collider.Left() - 32, _collider.Top()));
+	_fragDrawer->Break();
+
+	std::list<GrabMan*>::iterator it = _grabbingEnemies.begin();
+	for (; it != _grabbingEnemies.end();)
+	{
+		(*it)->GrabRelease();
+		++it;
+	}
 
 }
 

@@ -106,6 +106,7 @@ private:
 	int _deadHandle;
 	bool _isDead;
 
+	int _rejectCnt;
 
 public:
 	Player(Camera&,Stage&);
@@ -126,6 +127,8 @@ public:
 	void ChangeState(PlayerState state);
 
 	Rect& GetAttackRect(){ return _attackRect; }
+
+	bool IsRight(){ return _isRight; }
 
 	Vector2& GetCenter(){
 		return _pos;
@@ -151,6 +154,8 @@ public:
 	bool IsDead(){ return _isDead; }
 
 	void Move(Vector2 vec);
+
+	int GetRejectCnt(){ return _rejectCnt; }
 };
 
 

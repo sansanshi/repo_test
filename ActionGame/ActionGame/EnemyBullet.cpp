@@ -13,6 +13,7 @@ EnemyBullet::EnemyBullet(Vector2 pos, Vector2 vel, int handle, Camera& camera) :
 	_collider.width = 32;
 	_collider.height = 16;
 	_collider.ToEnable();
+	_isLeft = vel.x < 0.0f;
 }
 
 

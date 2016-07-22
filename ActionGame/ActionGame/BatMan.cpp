@@ -24,7 +24,7 @@ BatMan::BatMan(Vector2 pos, int& handle, int& deadHandle, Player& player, Camera
 	_walkFrame = 0;
 	_state = state_arial;
 
-	_hpMax = 2;
+	_hpMax = 10;
 	_hp = _hpMax;
 
 	_pfuncMap[BatMan::state_far] = &BatMan::FarUpdate;

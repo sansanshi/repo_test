@@ -8,7 +8,8 @@
 //凝ったタイトル作る
 //死んだら最初から始まる
 
-PlayingScene::PlayingScene() : _player(_camera, _stage), _camera(_player), _enemyFac(_player, _camera,_ebulletFac), _blockFac(_player,_camera), _stage(_camera),_ebulletFac(_camera)/*, _fragDrawer()*/
+PlayingScene::PlayingScene() 
+: _player(_camera, _stage), _camera(_player), _enemyFac(_player, _camera,_ebulletFac), _blockFac(_player,_camera), _stage(_camera),_ebulletFac(_camera),_effectFac(_camera)/*, _fragDrawer()*/
 {
 	_groundZero = 360.0f;
 	_stageGrHandle = LoadGraph("img/stage.png");
@@ -43,6 +44,7 @@ PlayingScene::Update()
 	_enemyFac.Update();
 	_blockFac.Update();
 	_ebulletFac.Update();
+	_effectFac.Update();
 
 	DrawExtendGraph(0 + _camera.OffsetX()-640, 0, 0 + _camera.OffsetX(), 480, _stageGrHandle, false);
 	DrawExtendGraph(0 + _camera.OffsetX(), 0,640+_camera.OffsetX(),480, _stageGrHandle, false);
@@ -99,10 +101,15 @@ PlayingScene::Update()
 		if (CollisionDetector::IsHit(enemy->GetCollider(), _player.GetAttackCol()))
 		{
 			enemy->OnCollided(&(_player.GetAttackCol()));
-			_camera.InvokeQuake(4.0f);
-			_blockFac.CreateBlock(bt_movable, enemy->GetPos()+Vector2(0,30));//
-			//_fragDrawer.Capture();//バラバラテスト
-			//_fragDrawer.Break();
+			_camera.InvokeQuake(5.0f);
+			if(enemy->CharaType()==ct_knifeMan)_blockFac.CreateBlock(bt_vmovable, enemy->GetPos()+Vector2(0,30));//
+			if (enemy->CharaType() == ct_grabMan)_blockFac.CreateBlock(bt_movable, enemy->GetPos() + Vector2(0, 30));
+
+			Vector2 pos = CollisionDetector::CenterOfHit(enemy->GetCollider(), _player.GetAttackCol());
+			int x = _camera.OffsetX();
+			int a = 0;
+			
+			_effectFac.Create(CollisionDetector::CenterOfHit(enemy->GetCollider(), _player.GetAttackCol()));
 		}
 	}
 	
@@ -121,13 +128,14 @@ PlayingScene::Update()
 
 	for (auto& block : _blockFac.GetBlocks())
 	{
-		if (_player.IsAvailable())
+		if (_player.IsAvailable()&&_player.GetRejectCnt()<2)
 		{
 			if (CollisionDetector::IsHit(_player.GetCollider(), block->GetCollider()))
 			{
-				Vector2 vec = CollisionDetector::RejectVec(&(block->GetCollider()), &_player.GetCollider());
+				Vector2 vec = CollisionDetector::RejectVec(&_player.GetCollider(), &(block->GetCollider()));
 				_player.Reject(vec);
-				if (block->GetBlockType()==bt_movable&&vec.y < 0.0f) block->OnCollided(_player);//上方向に押し戻されていたら←うまくいってない
+				
+				if ((block->GetBlockType()==bt_movable||block->GetBlockType()==bt_vmovable)&&vec.y < 0.0f) block->OnCollided(_player);//上方向に押し戻されていたら←うまくいってない
 			}
 		}
 
@@ -161,6 +169,7 @@ PlayingScene::Update()
 	_stage.Draw();
 	_blockFac.Draw();
 	_ebulletFac.Draw();
+	_effectFac.Draw();
 
 	//_fragDrawer.Draw();
 

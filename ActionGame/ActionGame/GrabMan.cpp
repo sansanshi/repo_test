@@ -22,7 +22,7 @@ GrabMan::GrabMan(Vector2 pos, int& handle, int& deadHandle, Player& player, Came
 	_walkFrame = 0;
 	_state = state_arial;
 
-	_hpMax = 2;
+	_hpMax = 1;
 	_hp = _hpMax;
 
 	_pfuncMap[state_far] = &GrabMan::FarUpdate;

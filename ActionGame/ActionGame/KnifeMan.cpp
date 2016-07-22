@@ -24,7 +24,7 @@ KnifeMan::KnifeMan(Vector2 pos, int& handle, int& deadHandle, Player& player, Ca
 	_walkFrame = 0;
 	_state = state_arial;
 
-	_hpMax = 2;
+	_hpMax = 5;
 	_hp = _hpMax;
 
 	_pfuncMap[KnifeMan::state_far] = &KnifeMan::FarUpdate;
@@ -242,7 +242,7 @@ KnifeMan::PreOverThrowUpdate()
 	if (_stateFrame[state_preOverThrow] > 30)
 	{
 		ChangeState(state_overThrow);
-		_ebulletFac.Create(_pos + _overThrowOffset, Vector2(-4.0f,0.f));
+		!_isLeft ? _ebulletFac.Create(_pos + _overThrowOffset, Vector2(4.0f, 0.f)) : _ebulletFac.Create(_pos + _overThrowOffset, Vector2(-4.0f, 0.f));
 	}
 	_velocity.y = 3.0f;
 	_pos += _velocity;
@@ -254,7 +254,7 @@ KnifeMan::PreUnderThrowUpdate()
 	if (_stateFrame[state_preUnderThrow] > 30)
 	{
 		ChangeState(state_underThrow);
-		_ebulletFac.Create(_pos + _underThrowOffset, Vector2(-4.0f, 0.f));
+		!_isLeft ? _ebulletFac.Create(_pos + _underThrowOffset, Vector2(4.0f, 0.f)) : _ebulletFac.Create(_pos + _underThrowOffset, Vector2(-4.0f, 0.f));
 	}
 	_velocity.y = 3.0f;
 	_pos += _velocity;

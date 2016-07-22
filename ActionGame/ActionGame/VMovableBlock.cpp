@@ -23,7 +23,7 @@ VMovableBlock::~VMovableBlock()
 void
 VMovableBlock::OnCollided(Player& player)
 {
-	//player.Move(_vel);
+	player.Move(_vel);
 }
 void
 VMovableBlock::Update()
@@ -32,9 +32,10 @@ VMovableBlock::Update()
 	n = (n + 1) % (30 * 2);
 	int m = abs(n - 30);
 	_vel.y = m - 15;
+	_vel = _vel*0.5f;
 
-	_pos += _vel*0.5f;
-	_collider.SetCenter(_pos);
+	_pos += _vel;
+	_collider.SetCenter_Cam(_pos,_cameraRef.OffsetX());
 }
 
 void
