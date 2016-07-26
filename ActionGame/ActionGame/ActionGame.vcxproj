@@ -106,6 +106,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayingScene.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SlantingBlock.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="VMovableBlock.cpp" />
@@ -134,6 +135,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayingScene.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SlantingBlock.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="VMovableBlock.h" />

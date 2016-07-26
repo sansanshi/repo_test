@@ -11,6 +11,7 @@ BlockFactory::BlockFactory(Player& player, Camera& camera) :_player(player), _ca
 	_imgMap[bt_movable] = LoadGraph("img/movableBlock.png");
 	_imgMap[bt_vmovable] = LoadGraph("img/vmovableBlock.png");
 	_imgMap[bt_normal] = LoadGraph("img/normalBlock.png");
+	_imgMap[bt_slanting] = LoadGraph("img/slantingBlock.png");
 }
 
 

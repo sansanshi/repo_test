@@ -108,6 +108,8 @@ private:
 
 	int _rejectCnt;
 
+	Vector2 _upperVec;//y方向のベクトル　ブロックとの当たり判定に使う 2Dだと下方向（0，1）
+
 public:
 	Player(Camera&,Stage&);
 	~Player();

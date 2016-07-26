@@ -19,6 +19,12 @@
     <Filter Include="ヘッダー ファイル\Enemy">
       <UniqueIdentifier>{84fba15c-5b30-4153-a825-d1d630626aa4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Block">
+      <UniqueIdentifier>{7eab69e0-4512-43e5-8782-e7e690a3184f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Block">
+      <UniqueIdentifier>{3bbe5717-c707-4461-8649-53053b171c23}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -57,13 +63,7 @@
     <ClCompile Include="EnemyBulletFactory.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Block.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="BlockFactory.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="MovableBlock.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Stage.cpp">
@@ -90,9 +90,6 @@
     <ClCompile Include="NormalBlock.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="VMovableBlock.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="TitleScene.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -101,6 +98,18 @@
     </ClCompile>
     <ClCompile Include="Effect.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Block.cpp">
+      <Filter>ソース ファイル\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="MovableBlock.cpp">
+      <Filter>ソース ファイル\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="VMovableBlock.cpp">
+      <Filter>ソース ファイル\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="SlantingBlock.cpp">
+      <Filter>ソース ファイル\Block</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -140,13 +149,7 @@
     <ClInclude Include="EnemyBulletFactory.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Block.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="BlockFactory.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="MovableBlock.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Stage.h">
@@ -170,9 +173,6 @@
     <ClInclude Include="NormalBlock.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="VMovableBlock.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="TitleScene.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -181,6 +181,18 @@
     </ClInclude>
     <ClInclude Include="Effect.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Block.h">
+      <Filter>ヘッダー ファイル\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="MovableBlock.h">
+      <Filter>ヘッダー ファイル\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="VMovableBlock.h">
+      <Filter>ヘッダー ファイル\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="SlantingBlock.h">
+      <Filter>ヘッダー ファイル\Block</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
