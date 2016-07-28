@@ -110,6 +110,22 @@ private:
 
 	Vector2 _upperVec;//y方向のベクトル　ブロックとの当たり判定に使う 2Dだと下方向（0，1）
 
+	int _model;
+	int _animTime;
+	int _animDuration;
+
+	enum AnimState{
+		anim_none,
+		anim_idle,
+		anim_punch,
+		anim_kick,
+		anim_walk,
+
+	};
+	//std::map<AnimState, int> _anim;
+	int _anim;
+	AnimState _animState;
+
 public:
 	Player(Camera&,Stage&);
 	~Player();
@@ -158,6 +174,8 @@ public:
 	void Move(Vector2 vec);
 
 	int GetRejectCnt(){ return _rejectCnt; }
+
+	void ChangeAnim(AnimState anim);
 };
 
 

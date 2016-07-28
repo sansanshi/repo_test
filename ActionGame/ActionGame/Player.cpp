@@ -6,6 +6,8 @@
 //プレイヤーを2000とかかなり右のほうに置いておいて0に向かっていった方が作りやすい
 //0からはスクロールしないようにする
 
+#define M_PI 3.1415926535
+
 Player::Player(Camera& camera, Stage& stage) :_cameraRef(camera), _stageRef(stage)
 {
 	_collider = Collider(this, ct_player, col_default);
@@ -119,8 +121,24 @@ Player::Player(Camera& camera, Stage& stage) :_cameraRef(camera), _stageRef(stag
 
 	_upperVec = Vector2(0.0f, 1.0f);
 
-	_model = MV1LoadModel("初音ミク.pmd");
+	_model = MV1LoadModel("model/初音ミク.pmd");
+	MV1SetScale(_model, VGet(8.0f, 8.0f, 8.0f));
+	int materialNum = MV1GetMaterialNum(_model);
+	for (int i = 0; i < materialNum; i++)
+	{
+		MV1SetMaterialOutLineDotWidth(_model, i, 0.02);
+	}
 
+	int w, h, depth;
+	GetScreenState(&w, &h, &depth);
+	SetupCamera_Ortho(h);
+
+	_animState = anim_idle;
+	_anim = MV1AttachAnim(_model, _animState - 1);
+	//_anim[anim_idle] = MV1AttachAnim(_model, 0);
+	//_anim[anim_punch] = MV1AttachAnim(_model, 1);
+	_animTime = 0;
+	_animDuration = MV1GetAnimTotalTime(_model, 0);
 }
 
 
@@ -155,6 +173,26 @@ Player::Draw()
 	_collider.Draw();
 	_attackCol.Draw(0xff000000);
 	//DrawBox(0, 400, 640, 480, 0xffffff,false);
+	
+	_animTime=_animTime > _animDuration ? 0 : _animTime+1;
+	MV1SetAttachAnimTime(_model,_anim,_animTime);
+	MV1DrawModel(_model);
+
+	MV1SetPosition(_model, VGet(100.f, 0.f, 0.f));
+	MATRIX mat;
+	float r = 90 * M_PI / 180;
+	
+	MV1SetRotationXYZ(_model, VGet(0,r,0));
+}
+
+void
+Player::ChangeAnim(AnimState animState)
+{
+	_animTime = 0;
+	MV1DetachAnim(_model, _anim);
+	_animState = animState;
+	_animDuration = MV1GetAnimTotalTime(_model, _animState-1);
+	_anim = MV1AttachAnim(_model, _animState - 1);
 }
 
 void
@@ -238,6 +276,7 @@ Player::KickUpdate()
 		//_pFunc = &Player::WalkUpdate;
 		ChangeState(ps_Walk);
 		_kickInterval = 30;
+		ChangeAnim(anim_idle);
 	}
 }
 
@@ -293,6 +332,7 @@ Player::PunchUpdate()
 	{
 		//_pFunc = &Player::WalkUpdate;
 		ChangeState(ps_Walk);
+		ChangeAnim(anim_idle);
 	}
 
 	_pos += _velocity;
@@ -353,12 +393,13 @@ Player::WalkUpdate()
 	{
 		_velocity.x = 0;
 		ChangeState(ps_Punch);
-
+		ChangeAnim(anim_punch);
 	}
 	if (_key[KEY_INPUT_X])
 	{
 		_velocity.x = 0;
 		if (_kickInterval == 0)ChangeState(ps_Kamae);
+		ChangeAnim(anim_kick);
 	}
 
 	if (_prevRejectY == false)//playingSceneの方でUpdate→ステージとの押し戻し　の順で処理していること前提の処理

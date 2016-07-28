@@ -31,3 +31,9 @@ SlantingBlock::Draw()
 {
 	DrawCameraGraph(_pos.x, _pos.y, 0, 0, 32, 32, 16, 16, 1.0f, 0.0, _handle, false, false);
 }
+
+void
+SlantingBlock::Update()
+{
+
+}
