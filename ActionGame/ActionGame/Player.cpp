@@ -118,6 +118,9 @@ Player::Player(Camera& camera, Stage& stage) :_cameraRef(camera), _stageRef(stag
 	_rejectCnt = 0;
 
 	_upperVec = Vector2(0.0f, 1.0f);
+
+	_model = MV1LoadModel("‰‰¹ƒ~ƒN.pmd");
+
 }
 
 
