@@ -12,6 +12,8 @@ GameMain::GameMain()
 	if (DxLib_Init() == -1){
 		return;
 	}
+	SetUseDirect3DVersion(3);
+
 	SetDrawScreen(DX_SCREEN_BACK);
 	_scene = nullptr;
 

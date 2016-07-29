@@ -126,6 +126,7 @@ private:
 	int _anim;
 	AnimState _animState;
 
+	bool _prevIsRight;//前フレームに右を向いていたか
 public:
 	Player(Camera&,Stage&);
 	~Player();
@@ -152,6 +153,12 @@ public:
 		return _pos;
 	}//return _collider.Center(); }
 
+	MATRIX _scaleMat;
+	MATRIX _rotMat;
+	MATRIX _transMat;
+	void ToRightCulling();//モデルのポリゴンを右回りで表示する
+	void ToLeftCulling();
+	void TurnModelX();
 
 	void DrawCameraGraph(int x, int y, int srcX, int srcY, int width, int height, int cx, int cy, double extRate,double angle, int handle, int transFlag, int turnFlag);//drawrotagraph2をラップしてずらした位置に表示する　あとは全部の描画をこいつに置き換える
 

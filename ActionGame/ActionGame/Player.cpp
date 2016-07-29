@@ -51,7 +51,7 @@ Player::Player(Camera& camera, Stage& stage) :_cameraRef(camera), _stageRef(stag
 	_handleMap[ps_Grabbed] = LoadGraph("img/walk_.png");
 	_handleMap[ps_Dead] = LoadGraph("img/damage_bottom.png");
 
-	_pFuncMap[ps_Neutral] = &Player::WalkUpdate;
+	_pFuncMap[ps_Neutral] = &Player::NeutralUpdate;
 	_pFuncMap[ps_Walk] = &Player::WalkUpdate;
 	_pFuncMap[ps_Punch] = &Player::PunchUpdate;
 	_pFuncMap[ps_Jump] = &Player::JumpUpdate;
@@ -139,6 +139,50 @@ Player::Player(Camera& camera, Stage& stage) :_cameraRef(camera), _stageRef(stag
 	//_anim[anim_punch] = MV1AttachAnim(_model, 1);
 	_animTime = 0;
 	_animDuration = MV1GetAnimTotalTime(_model, 0);
+
+	_prevIsRight = false;
+
+	_rotMat = MGetRotY(DX_PI_F/2.0f);
+	_scaleMat = MGetScale(VGet(8.0f, 8.0f, 8.0f));
+	_transMat = MGetTranslate(VGet(100, 0, 0));
+}
+
+void
+Player::ToLeftCulling()
+{
+	int meshNum = MV1GetMeshNum(_model);
+	for (int i = 0; i < meshNum; i++)
+	{
+		if (MV1GetMeshBackCulling(_model, i) != DX_CULLING_NONE)
+		{
+			MV1SetMeshBackCulling(_model, i, DX_CULLING_LEFT);
+		}
+	}
+	TurnModelX();
+}
+void
+Player::ToRightCulling()
+{
+	int meshNum = MV1GetMeshNum(_model);
+	for (int i = 0; i < meshNum; i++)
+	{
+		if (MV1GetMeshBackCulling(_model, i) != DX_CULLING_NONE)
+		{
+			MV1SetMeshBackCulling(_model, i, DX_CULLING_RIGHT);
+		}
+	}
+	TurnModelX();
+}
+
+void
+Player::TurnModelX()
+{
+	MATRIX mat;
+	mat = MGetIdent();
+	mat.m[0][0] = -1.0f;
+
+	_scaleMat = MMult(_scaleMat, mat);
+
 }
 
 
@@ -155,11 +199,15 @@ Player::~Player()
 void
 Player::Update() 
 {
+	_prevIsRight = _isRight;
+
 	_rejectCnt = 0;
 	_stateFrame[_state]++;
 	_cOffsetX = _cameraRef.OffsetX();
 	(this->*_pFunc)();//this->pFuncMap[_state]とかにすると毎回mapを見るので無駄？
 	//if (_pos.y >= _groundZero&&_velocity.y > 0){}//地面についたかどうか
+	if (_prevIsRight == true && _isRight == false) ToLeftCulling();
+	if (_prevIsRight == false && _isRight == true) ToRightCulling();
 	
 }
 
@@ -178,11 +226,14 @@ Player::Draw()
 	MV1SetAttachAnimTime(_model,_anim,_animTime);
 	MV1DrawModel(_model);
 
-	MV1SetPosition(_model, VGet(100.f, 0.f, 0.f));
-	MATRIX mat;
-	float r = 90 * M_PI / 180;
+	//MV1SetPosition(_model, VGet(100.f, 0.f, 0.f));
 	
-	MV1SetRotationXYZ(_model, VGet(0,r,0));
+	MATRIX mat = MMult(_rotMat,_scaleMat);
+	mat = MMult(mat, _transMat);
+	float r = 90 * M_PI / 180;
+
+	
+	MV1SetMatrix(_model,mat);//MV1SetRotationXYZ(_model, VGet(0,r,0));
 }
 
 void
@@ -274,7 +325,7 @@ Player::KickUpdate()
 	if (_stateFrame[ps_Kick] > 10)
 	{
 		//_pFunc = &Player::WalkUpdate;
-		ChangeState(ps_Walk);
+		ChangeState(ps_Neutral);
 		_kickInterval = 30;
 		ChangeAnim(anim_idle);
 	}
@@ -304,7 +355,9 @@ Player::JumpUpdate()
 
 	if (_key[KEY_INPUT_X])
 	{
-		if (_kickInterval == 0)ChangeState(ps_JumpKick);
+		if (_kickInterval == 0){
+			ChangeState(ps_JumpKick);
+		}
 	}
 	//ここ
 	//if (_collider.Bottom() >= 400.0f) {
@@ -331,7 +384,7 @@ Player::PunchUpdate()
 	if (_stateFrame[ps_Punch] > 10) 
 	{
 		//_pFunc = &Player::WalkUpdate;
-		ChangeState(ps_Walk);
+		ChangeState(ps_Neutral);
 		ChangeAnim(anim_idle);
 	}
 
@@ -363,6 +416,10 @@ Player::WalkUpdate()
 		_isRight = false;
 	}
 	
+	if (vx == 0){
+		ChangeState(ps_Neutral);
+		ChangeAnim(anim_idle);
+	}
 
 
 	if (_key[KEY_INPUT_SPACE])
@@ -413,7 +470,72 @@ Player::WalkUpdate()
 void 
 Player::NeutralUpdate()
 {
+	_velocity.y = 3.0f;//これやってるの危ないかも
 
+	_walkFrame = vx != 0 ? _walkFrame + 1 : 0;
+	_kickInterval = max(_kickInterval - 1, 0);
+
+	GetHitKeyStateAll(_key);
+
+	vx = vy = 0;
+	if (_key[KEY_INPUT_RIGHT])
+	{
+		vx = 1;
+		_isRight = true;
+		ChangeState(ps_Walk);
+		ChangeAnim(anim_walk);
+	}
+	if (_key[KEY_INPUT_LEFT])
+	{
+		vx = -1;
+		_isRight = false;
+		ChangeState(ps_Walk);
+		ChangeAnim(anim_walk);
+	}
+
+
+
+	if (_key[KEY_INPUT_SPACE])
+	{
+		_velocity.y = -_jumpPower;
+		_acceleration.y = 0.3f;
+		//_pFunc = &Player::JumpUpdate;
+		ChangeState(ps_Jump);
+	}
+
+
+	_velocity.x = vx*_walkSpd;
+	_pos += _velocity;
+
+	_collider.SetCenter(_pos + Vector2(_cameraRef.OffsetX(), 0));
+
+	if (_key[KEY_INPUT_DOWN])
+	{
+		ChangeState(ps_Crouch);
+		_collider.width = 48;
+		_collider.height = 82;
+		_collider.SetCenter(_pos + Vector2(0, 20));
+		_velocity.x = 0;
+	}
+	if (_key[KEY_INPUT_Z])
+	{
+		_velocity.x = 0;
+		ChangeState(ps_Punch);
+		ChangeAnim(anim_punch);
+	}
+	if (_key[KEY_INPUT_X])
+	{
+		_velocity.x = 0;
+		if (_kickInterval == 0)ChangeState(ps_Kamae);
+		ChangeAnim(anim_kick);
+	}
+
+	if (_prevRejectY == false)//playingSceneの方でUpdate→ステージとの押し戻し　の順で処理していること前提の処理
+	{
+		ChangeState(ps_Jump);
+		_velocity.x = 0.f;
+	}
+	_prevRejectY = false;
 }
 
 void
@@ -436,7 +558,7 @@ Player::JumpKickUpdate()
 	if (_collider.Bottom() >= 400.0f) {
 		_pos.y = 400.0 - _collider.height / 2;
 		_collider.SetCenter(_pos+Vector2(_cameraRef.OffsetX(),0));;
-		ChangeState(ps_Walk);
+		ChangeState(ps_Neutral);
 		_velocity = Vector2(0, 0);
 		_acceleration = Vector2(0, 0);
 	}
@@ -468,7 +590,7 @@ Player::CrouchUpdate()
 
 	if (!_key[KEY_INPUT_DOWN])
 	{
-		ChangeState(ps_Walk);
+		ChangeState(ps_Neutral);
 		_collider.SetCenter(_pos+Vector2(_cameraRef.OffsetX(),0));;
 		_collider.width = 32;
 		_collider.height = 128;
@@ -588,7 +710,7 @@ Player::GrabbedUpdate()
 	}
 
 	if (_grabbingEnemies.size() == 0){
-		ChangeState(ps_Walk);
+		ChangeState(ps_Neutral);
 	}
 
 }
@@ -707,7 +829,7 @@ Player::Reject(Vector2 vec)
 	_collider.SetCenter(_pos + Vector2(_cameraRef.OffsetX(), 0));
 	if ((_state==ps_Jump||_state==ps_JumpKick)&&vec.y<0)//ジャンプｏｒジャンプキック状態で上向きに押し返された場合←ここやめたほうがいいかも
 	{
-		ChangeState(ps_Walk);
+		ChangeState(ps_Neutral);
 		_velocity.Init();
 	}
 
