@@ -19,6 +19,22 @@ PlayingScene::PlayingScene()
 	_camera.SetUp();
 
 	rect = Rect(Vector2(960, 380), 500, 100);
+
+
+	testHandle = LoadGraph("stage.png");
+	shaderHandle = LoadPixelShader("model/test.pso");
+	thirdscreen = MakeScreen(640, 480);
+
+	//頂点の設定
+	for (int i = 0; i < 4; i++)
+	{
+		vertex[i].pos = VGet((i % 2)*640.0f, (i / 2)*480.0f, 0);
+		vertex[i].rhw = 1.0f;
+		vertex[i].dif = GetColorU8(255, 255, 255, 255);
+		vertex[i].spc = GetColorU8(0, 0, 0, 0);
+		vertex[i].u = vertex[i].su = (float)(i % 2);
+		vertex[i].v = vertex[i].sv = (float)(i / 2);
+	}
 }
 
 
@@ -141,6 +157,9 @@ PlayingScene::Update()
 
 	}
 
+
+
+
 	//Collider col = _player.GetAttackCol();
 	//Collider playerCol = _player.GetCollider();
 	//GameObject& obj = _grabman;
@@ -160,7 +179,8 @@ PlayingScene::Update()
 	//{
 	//	if(enemy.IsCollidable())_player.OnCollided(&enemy);
 	//}
-
+	SetDrawScreen(thirdscreen);
+	ClearDrawScreen();
 
 	DrawBox(rect.Left() + _camera.OffsetX(), rect.Top(), rect.Right() + _camera.OffsetX(), rect.Bottom(), 0x000000, true);
 
@@ -175,6 +195,15 @@ PlayingScene::Update()
 
 	DrawExtendGraph(_hpBarRect.Left(),_hpBarRect.Top() ,
 		_hpBarRect.Left() + _hpBarRect.width * _player.GetPercentageHp(), _hpBarRect.Bottom(), _hpBarHandle, false);//バー表示 長いので2行
+
+
+	SetUseTextureToShader(0, thirdscreen);
+	//ピクセルシェーダのセット
+	SetUsePixelShader(shaderHandle);
+	DrawPrimitive2DToShader(vertex, 4, DX_PRIMTYPE_TRIANGLESTRIP);
+
+	ScreenFlip();
+	ClearDrawScreen();
 
 	_player.IsDead() ? GameMain::Instance().ChangeScene(new PlayingScene()):0;//プレイヤーが死んでたらシーンをロード（sceneをdeleteしてるので処理の一番最後に置く）
 

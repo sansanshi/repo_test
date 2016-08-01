@@ -29,6 +29,11 @@ private:
 	Rect rect;//ŒŠŠJ‚¯‚é—p‚Ìrect
 
 	//FragmentDrawer _fragDrawer;
+
+	int testHandle;
+	int shaderHandle;
+	int thirdscreen;
+	VERTEX2DSHADER vertex[4];
 	
 public:
 	PlayingScene();
