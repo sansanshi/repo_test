@@ -7,12 +7,13 @@
 
 GameMain::GameMain()
 {
+	SetUseDirect3DVersion(DX_DIRECT3D_9EX);//デフォだとdirectX11を使っている　11だとシェーダの読み込みがうまくいかないっぽい
 	DxLib::ChangeWindowMode(true);
 	DxLib::SetGraphMode(640, 480, 32);
 	if (DxLib_Init() == -1){
 		return;
 	}
-	SetUseDirect3DVersion(3);
+	int i=GetUseDirect3DVersion();
 
 	SetDrawScreen(DX_SCREEN_BACK);
 	_scene = nullptr;

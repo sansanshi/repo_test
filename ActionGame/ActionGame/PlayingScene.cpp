@@ -22,7 +22,7 @@ PlayingScene::PlayingScene()
 
 
 	testHandle = LoadGraph("img/stage.png");
-	shaderHandle = LoadPixelShader("model/shaderPS.pso");
+	shaderHandle = LoadPixelShader("model/sakuya.pso");
 	thirdscreen = MakeScreen(640, 480);
 
 	//頂点の設定
@@ -35,6 +35,8 @@ PlayingScene::PlayingScene()
 		vertex[i].u = vertex[i].su = (float)(i % 2);
 		vertex[i].v = vertex[i].sv = (float)(i / 2);
 	}
+
+	_timer = 0;
 }
 
 
@@ -45,6 +47,7 @@ PlayingScene::~PlayingScene()
 void
 PlayingScene::Update()
 {
+	++_timer;
 	_camera.Update();
 	_player.Update();
 	/*if (_player.GetRect().Bottom() >= _groundZero)
@@ -62,9 +65,7 @@ PlayingScene::Update()
 	_ebulletFac.Update();
 	_effectFac.Update();
 
-	DrawExtendGraph(0 + _camera.OffsetX()-640, 0, 0 + _camera.OffsetX(), 480, _stageGrHandle, false);
-	DrawExtendGraph(0 + _camera.OffsetX(), 0,640+_camera.OffsetX(),480, _stageGrHandle, false);
-	DrawExtendGraph(0 + _camera.OffsetX()+640, 0, 640 + _camera.OffsetX()+640, 480, _stageGrHandle, false);
+	
 	//DrawExtendGraph()
 
 	
@@ -179,8 +180,22 @@ PlayingScene::Update()
 	//{
 	//	if(enemy.IsCollidable())_player.OnCollided(&enemy);
 	//}
+
 	SetDrawScreen(thirdscreen);
 	ClearDrawScreen();
+	DrawExtendGraph(0 + _camera.OffsetX() - 640, 0, 0 + _camera.OffsetX(), 480, _stageGrHandle, false);
+	DrawExtendGraph(0 + _camera.OffsetX(), 0, 640 + _camera.OffsetX(), 480, _stageGrHandle, false);
+	DrawExtendGraph(0 + _camera.OffsetX() + 640, 0, 640 + _camera.OffsetX() + 640, 480, _stageGrHandle, false);
+
+	SetDrawScreen(DX_SCREEN_BACK);
+	SetPSConstSF(0, _timer);
+	SetUseTextureToShader(0, thirdscreen);
+	//ピクセルシェーダのセット
+	SetUsePixelShader(shaderHandle);
+	DrawPrimitive2DToShader(vertex, 4, DX_PRIMTYPE_TRIANGLESTRIP);
+
+	//ScreenFlip();
+	//ClearDrawScreen();
 
 	DrawBox(rect.Left() + _camera.OffsetX(), rect.Top(), rect.Right() + _camera.OffsetX(), rect.Bottom(), 0x000000, true);
 
@@ -197,13 +212,7 @@ PlayingScene::Update()
 		_hpBarRect.Left() + _hpBarRect.width * _player.GetPercentageHp(), _hpBarRect.Bottom(), _hpBarHandle, false);//バー表示 長いので2行
 
 
-	SetUseTextureToShader(0, thirdscreen);
-	//ピクセルシェーダのセット
-	SetUsePixelShader(shaderHandle);
-	DrawPrimitive2DToShader(vertex, 4, DX_PRIMTYPE_TRIANGLESTRIP);
-
-	ScreenFlip();
-	ClearDrawScreen();
+	
 
 	_player.IsDead() ? GameMain::Instance().ChangeScene(new PlayingScene()):0;//プレイヤーが死んでたらシーンをロード（sceneをdeleteしてるので処理の一番最後に置く）
 

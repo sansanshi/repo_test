@@ -17,6 +17,11 @@ TitleScene::TitleScene()
 	_fragDrawer->TransparentFragment();
 	_breakingTimer = 0;
 	_breakFlag = false;
+
+	//int b = DxLib_Init();
+
+	int shaderHandle = DxLib::LoadPixelShader("model/SamplePS.pso");
+	int a = 0;
 }
 
 
