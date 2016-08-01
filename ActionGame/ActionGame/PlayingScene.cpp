@@ -21,8 +21,8 @@ PlayingScene::PlayingScene()
 	rect = Rect(Vector2(960, 380), 500, 100);
 
 
-	testHandle = LoadGraph("stage.png");
-	shaderHandle = LoadPixelShader("model/test.pso");
+	testHandle = LoadGraph("img/stage.png");
+	shaderHandle = LoadPixelShader("model/shaderPS.pso");
 	thirdscreen = MakeScreen(640, 480);
 
 	//í∏ì_ÇÃê›íË
