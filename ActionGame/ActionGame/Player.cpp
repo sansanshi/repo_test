@@ -121,12 +121,13 @@ Player::Player(Camera& camera, Stage& stage) :_cameraRef(camera), _stageRef(stag
 
 	_upperVec = Vector2(0.0f, 1.0f);
 
-	_model = MV1LoadModel("model/初音ミク.pmd");
-	MV1SetScale(_model, VGet(8.0f, 8.0f, 8.0f));
-	int materialNum = MV1GetMaterialNum(_model);
+	_modelHandle = MV1LoadModel("model/初音ミク.pmd");
+	MV1SetScale(_modelHandle, VGet(8.0f, 8.0f, 8.0f));
+	int materialNum = MV1GetMaterialNum(_modelHandle);
 	for (int i = 0; i < materialNum; i++)
 	{
-		MV1SetMaterialOutLineDotWidth(_model, i, 0.02);
+		//MV1SetMaterialOutLineDotWidth(_modelHandle, i, 0.02);
+		//MV1SetMaterialDifColor(_modelHandle, 1, GetColorF(0.0f, 0.5f, 0.0f, 1.0f));
 	}
 
 	int w, h, depth;
@@ -134,28 +135,36 @@ Player::Player(Camera& camera, Stage& stage) :_cameraRef(camera), _stageRef(stag
 	SetupCamera_Ortho(h);
 
 	_animState = anim_idle;
-	_anim = MV1AttachAnim(_model, _animState - 1);
-	//_anim[anim_idle] = MV1AttachAnim(_model, 0);
-	//_anim[anim_punch] = MV1AttachAnim(_model, 1);
+	_anim = MV1AttachAnim(_modelHandle, _animState - 1);
+	//_anim[anim_idle] = MV1AttachAnim(_modelHandle, 0);
+	//_anim[anim_punch] = MV1AttachAnim(_modelHandle, 1);
 	_animTime = 0;
-	_animDuration = MV1GetAnimTotalTime(_model, 0);
+	_animDuration = MV1GetAnimTotalTime(_modelHandle, 0);
 
 	_prevIsRight = false;
 
 	_rotMat = MGetRotY(DX_PI_F/2.0f);
 	_scaleMat = MGetScale(VGet(8.0f, 8.0f, 8.0f));
 	_transMat = MGetTranslate(VGet(100, 0, 0));
+
+	_vertShaderHandle = LoadVertexShader("shader/mmdVS.vso");
+	_pixelShaderHandle = LoadPixelShader("shader/mmdPS.pso");
+
+	SetUseVertexShader(_vertShaderHandle);
+	SetUsePixelShader(_pixelShaderHandle);
+	int i=MV1SetMaterialDifColor(_modelHandle, 1, GetColorF(0.0f, 0.5f, 0.0f, 1.0f));
+	int a = 0;
 }
 
 void
 Player::ToLeftCulling()
 {
-	int meshNum = MV1GetMeshNum(_model);
+	int meshNum = MV1GetMeshNum(_modelHandle);
 	for (int i = 0; i < meshNum; i++)
 	{
-		if (MV1GetMeshBackCulling(_model, i) != DX_CULLING_NONE)
+		if (MV1GetMeshBackCulling(_modelHandle, i) != DX_CULLING_NONE)
 		{
-			MV1SetMeshBackCulling(_model, i, DX_CULLING_LEFT);
+			MV1SetMeshBackCulling(_modelHandle, i, DX_CULLING_LEFT);
 		}
 	}
 	TurnModelX();
@@ -163,12 +172,12 @@ Player::ToLeftCulling()
 void
 Player::ToRightCulling()
 {
-	int meshNum = MV1GetMeshNum(_model);
+	int meshNum = MV1GetMeshNum(_modelHandle);
 	for (int i = 0; i < meshNum; i++)
 	{
-		if (MV1GetMeshBackCulling(_model, i) != DX_CULLING_NONE)
+		if (MV1GetMeshBackCulling(_modelHandle, i) != DX_CULLING_NONE)
 		{
-			MV1SetMeshBackCulling(_model, i, DX_CULLING_RIGHT);
+			MV1SetMeshBackCulling(_modelHandle, i, DX_CULLING_RIGHT);
 		}
 	}
 	TurnModelX();
@@ -194,6 +203,15 @@ Player::~Player()
 	{
 		DeleteGraph(h.second);
 	}
+
+	// 読み込んだ頂点シェーダーの削除
+	DeleteShader(_vertShaderHandle);
+
+	// 読み込んだピクセルシェーダーの削除
+	DeleteShader(_pixelShaderHandle);
+
+	// 読み込んだモデルの削除
+	MV1DeleteModel(_modelHandle);
 }
 
 void
@@ -221,29 +239,35 @@ Player::Draw()
 	_collider.Draw();
 	_attackCol.Draw(0xff000000);
 	//DrawBox(0, 400, 640, 480, 0xffffff,false);
-	
-	_animTime=_animTime > _animDuration ? 0 : _animTime+1;
-	MV1SetAttachAnimTime(_model,_anim,_animTime);
-	MV1DrawModel(_model);
 
-	//MV1SetPosition(_model, VGet(100.f, 0.f, 0.f));
+	FLOAT4 f4 = { 0.2f, 0.2f, 0.2f, 0.2f };
+	
+	//MV1SetPosition(_modelHandle, VGet(100.f, 0.f, 0.f));
+	SetUseVertexShader(_vertShaderHandle);//ここで設定しとかないと他で設定したシェーダが適用されたりする
+	SetUsePixelShader(_pixelShaderHandle);
+	//SetVSConstF(1, f4);//渡してみたけど何も変わらない
 	
 	MATRIX mat = MMult(_rotMat,_scaleMat);
 	mat = MMult(mat, _transMat);
 	float r = 90 * M_PI / 180;
 
 	
-	MV1SetMatrix(_model,mat);//MV1SetRotationXYZ(_model, VGet(0,r,0));
+	MV1SetMatrix(_modelHandle,mat);//MV1SetRotationXYZ(_modelHandle, VGet(0,r,0));
+	MV1SetUseOrigShader(TRUE);
+	_animTime = _animTime > _animDuration ? 0 : _animTime + 1;
+	MV1SetAttachAnimTime(_modelHandle, _anim, _animTime);
+	MV1DrawModel(_modelHandle);
+	MV1SetUseOrigShader(false);
 }
 
 void
 Player::ChangeAnim(AnimState animState)
 {
 	_animTime = 0;
-	MV1DetachAnim(_model, _anim);
+	MV1DetachAnim(_modelHandle, _anim);
 	_animState = animState;
-	_animDuration = MV1GetAnimTotalTime(_model, _animState-1);
-	_anim = MV1AttachAnim(_model, _animState - 1);
+	_animDuration = MV1GetAnimTotalTime(_modelHandle, _animState-1);
+	_anim = MV1AttachAnim(_modelHandle, _animState - 1);
 }
 
 void

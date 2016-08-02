@@ -114,7 +114,7 @@ private:
 
 	Vector2 _upperVec;//y方向のベクトル　ブロックとの当たり判定に使う 2Dだと下方向（0，1）
 
-	int _model;
+	int _modelHandle;
 	int _animTime;
 	int _animDuration;
 
@@ -133,6 +133,9 @@ private:
 	AnimState _animState;
 
 	bool _prevIsRight;//前フレームに右を向いていたか
+
+	int _vertShaderHandle;
+	int _pixelShaderHandle;
 public:
 	Player(Camera&,Stage&);
 	~Player();

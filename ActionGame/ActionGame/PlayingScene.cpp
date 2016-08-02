@@ -22,7 +22,7 @@ PlayingScene::PlayingScene()
 
 
 	testHandle = LoadGraph("img/stage.png");
-	shaderHandle = LoadPixelShader("model/sakuya.pso");
+	shaderHandle = LoadPixelShader("shader/sakuya.pso");
 	thirdscreen = MakeScreen(640, 480);
 
 	//í∏ì_ÇÃê›íË
@@ -197,8 +197,7 @@ PlayingScene::Update()
 	SetUsePixelShader(shaderHandle);
 	DrawPrimitive2DToShader(vertex, 4, DX_PRIMTYPE_TRIANGLESTRIP);
 
-	//ScreenFlip();
-	//ClearDrawScreen();
+	MV1SetUseOrigShader(false);
 
 	DrawBox(rect.Left() + _camera.OffsetX(), rect.Top(), rect.Right() + _camera.OffsetX(), rect.Bottom(), 0x000000, true);
 
