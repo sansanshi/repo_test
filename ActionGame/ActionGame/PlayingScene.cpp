@@ -36,7 +36,8 @@ PlayingScene::PlayingScene()
 		vertex[i].v = vertex[i].sv = (float)(i / 2);
 	}
 
-	_timer = 0;
+	_timer = 0.f;
+	_timerAccel = 0.f;
 }
 
 
@@ -47,7 +48,9 @@ PlayingScene::~PlayingScene()
 void
 PlayingScene::Update()
 {
-	++_timer;
+	_timer += _timerAccel;
+	_timerAccel += 0.05f;
+
 	_camera.Update();
 	_player.Update();
 	/*if (_player.GetRect().Bottom() >= _groundZero)

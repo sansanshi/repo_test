@@ -26,14 +26,30 @@ PS_OUTPUT main( PS_INPUT PSInput )  //入力値
     PS_OUTPUT PSOutput ;
     float4 TextureColor;
     TextureColor = tex2D( Texture , PSInput.TextureCoord0 );
+	float2 CalcPos;
+
 	float temp=(uvCenter.x - PSInput.TextureCoord0.x)*(uvCenter.x - PSInput.TextureCoord0.x) + (uvCenter.y - PSInput.TextureCoord0.y)*(uvCenter.y - PSInput.TextureCoord0.y);
 	float temp2 = sqrt(temp);//中央(uvCenter)からの距離
 
 	if (temp2 < radius){
-		TextureColor.r = 1.0f - TextureColor.r;
-		TextureColor.g = 1.0f - TextureColor.g;
-		TextureColor.b = 1.0f - TextureColor.b;
+		//色反転
+		//TextureColor.r = 1.0f - TextureColor.r;
+		//TextureColor.g = 1.0f - TextureColor.g;
+		//TextureColor.b = 1.0f - TextureColor.b;
+
+		//グレイスケール化
+		float Y = TextureColor.r * 0.29891f + TextureColor.g * 0.58661f + TextureColor.b * 0.11448f;
+		TextureColor.r = Y;
+		TextureColor.g = Y;
+		TextureColor.b = Y;
 	}
+	/*if (temp2 < radius + 0.2f)//ぐにゃぐにゃ
+	{
+		CalcPos.x = fmod(1.0 + PSInput.TextureCoord0.x + 0.2*sin(PSInput.TextureCoord0.y * 24.0 + timer), 1.0);
+		CalcPos.y = PSInput.TextureCoord0.y;
+
+		TextureColor = tex2D(Texture, CalcPos);
+	}*/
 
     PSOutput.Output = TextureColor;
     return PSOutput;

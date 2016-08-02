@@ -26,6 +26,8 @@ enum PlayerState{
 	ps_CrouchKamae,
 	ps_Grabbed,
 	ps_Dead,
+	ps_Spell,
+
 };
 
 class Player:public GameObject//:public Collider
@@ -64,6 +66,7 @@ private:
 	void CrouchKamaeUpdate();
 	void GrabbedUpdate();
 	void DeadUpdate();
+	void SpeddUpdate();
 
 	int _walkFrame;
 	int _kickingFrame;
@@ -90,6 +93,7 @@ private:
 	void DrawKamae();
 	void DrawCrouchKamae();
 	void DrawDead();
+	void DrawSpell();
 
 	Rect _attackRect;
 	Collider _attackCol;
@@ -120,6 +124,8 @@ private:
 		anim_punch,
 		anim_kick,
 		anim_walk,
+		anim_spell,
+
 
 	};
 	//std::map<AnimState, int> _anim;

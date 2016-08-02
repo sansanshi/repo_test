@@ -35,7 +35,8 @@ private:
 	int thirdscreen;
 	VERTEX2DSHADER vertex[4];
 
-	int _timer;
+	float _timer;
+	float _timerAccel;
 	
 public:
 	PlayingScene();
