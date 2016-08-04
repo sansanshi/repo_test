@@ -21,7 +21,7 @@ float timer : register( c0 );
 
 PS_OUTPUT main( PS_INPUT PSInput )  //“ü—Í’l
 {
-	float2 uvCenter = float2(0.5f, 0.5f);
+	float2 uvCenter = float2(0.5f, 0.8f);
 	float radius = timer / 100.0f;//“K—p‚·‚é”¼Œa
     PS_OUTPUT PSOutput ;
     float4 TextureColor;

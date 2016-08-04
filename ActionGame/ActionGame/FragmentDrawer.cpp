@@ -179,6 +179,15 @@ Fragment::Transparency()//毎フレームこれ呼んでると動かない（中で座標を弄ってるの
 }
 
 void
+Fragment::Init()
+{
+	_velocity.Init();
+	_accel.x = 0.04f*static_cast<float>(rand() % 21 - 10);
+	_accel.y = 0.3f;
+	_fallTimer = 0;
+}
+
+void
 FragmentDrawer::TransparentFragment()
 {
 	std::vector<Fragment>::iterator it = _fragments.begin();
@@ -226,6 +235,70 @@ FragmentDrawer::FragmentDrawer(void) : BaseDrawer(), _breaking(false), _capHandl
 	_capHandle = MakeGraph(640, 480);
 }//Grabmanのコンストラクタで初期化子を使うかポインタ型で定義することで解決
 
+void
+FragmentDrawer::InitVertices()
+{
+	_breaking = false;
+
+	int divx = 8;
+	int divy = 6;
+	int screenW = 640;
+	int screenH = 480;
+	_fragments.resize(divx*divy * 2);//四角形→三角形に分割してるのでfragment（三角形の欠片？）の数は分割数（四角形の数）*2
+	_vertices.resize(divx*divy * 6);//四角形が2つの三角形になった→四角形1個で頂点6つになっているので*6
+	for (int j = 0; j<divy; ++j){
+		float top = (screenH / divy)*j;
+		float bottom = (screenH / divy)*(j + 1);
+		float topv = (1.f / divy)*static_cast<float>(j);
+		float bottomv = (1.f / divy)*static_cast<float>(j + 1);
+		for (int i = 0; i<divx; ++i){
+			float left = (screenW / divx)*static_cast<float>(i);
+			float right = (screenW / divx)*static_cast<float>(i + 1);
+			float leftu = (1.f / divx)*static_cast<float>(i);
+			float rightu = (1.f / divx)*static_cast<float>(i + 1);
+
+			int headidx = (i + divx*j) * 6;
+
+			//上半分
+			_vertices[headidx + 0].r = _vertices[headidx + 0].g = _vertices[headidx + 0].b = _vertices[headidx + 0].a = 255;
+			_vertices[headidx + 0].x = left; _vertices[headidx + 0].y = top;
+			_vertices[headidx + 0].u = leftu; _vertices[headidx + 0].v = topv;
+			_vertices[headidx + 1].r = _vertices[headidx + 1].g = _vertices[headidx + 1].b = _vertices[headidx + 1].a = 255;
+			_vertices[headidx + 1].x = right; _vertices[headidx + 1].y = top;
+			_vertices[headidx + 1].u = rightu; _vertices[headidx + 1].v = topv;
+			_vertices[headidx + 2].r = _vertices[headidx + 2].g = _vertices[headidx + 2].b = _vertices[headidx + 2].a = 255;
+			_vertices[headidx + 2].x = left; _vertices[headidx + 2].y = bottom;
+			_vertices[headidx + 2].u = leftu; _vertices[headidx + 2].v = bottomv;
+			int fragHeadIdx = (i + divx*j) * 2;//上半分→下半分で、1つ横の上半分は＋1ではないので＊2
+			_fragments[fragHeadIdx]._headVert = &_vertices[headidx + 0];
+			_fragments[fragHeadIdx].CalculateCenter();
+			for (int i = 0; i < 3; i++)//何もしてない頂点情報を保存テスト
+			{
+				_fragments[fragHeadIdx].identityVert[i] = _vertices[headidx + 0 + i];
+			}
+			_fragments[fragHeadIdx].Init();//速度とか初期化
+
+			//下半分
+			_vertices[headidx + 3].r = _vertices[headidx + 3].g = _vertices[headidx + 3].b = _vertices[headidx + 3].a = 255;
+			_vertices[headidx + 3].x = right; _vertices[headidx + 3].y = top;
+			_vertices[headidx + 3].u = rightu; _vertices[headidx + 3].v = topv;
+			_vertices[headidx + 4].r = _vertices[headidx + 4].g = _vertices[headidx + 4].b = _vertices[headidx + 4].a = 255;
+			_vertices[headidx + 4].x = left; _vertices[headidx + 4].y = bottom;
+			_vertices[headidx + 4].u = leftu; _vertices[headidx + 4].v = bottomv;
+			_vertices[headidx + 5].r = _vertices[headidx + 5].g = _vertices[headidx + 5].b = _vertices[headidx + 5].a = 255;
+			_vertices[headidx + 5].x = right; _vertices[headidx + 5].y = bottom;
+			_vertices[headidx + 5].u = rightu; _vertices[headidx + 5].v = bottomv;
+			_fragments[fragHeadIdx + 1]._headVert = &_vertices[headidx + 3];
+			_fragments[fragHeadIdx + 1].CalculateCenter();
+			for (int i = 0; i < 3; i++)//何もしてない頂点情報を保存テスト
+			{
+				_fragments[fragHeadIdx + 1].identityVert[i] = _vertices[headidx + 3 + i];
+			}
+			_fragments[fragHeadIdx+1].Init();
+
+		}
+	}
+}
 
 
 FragmentDrawer::~FragmentDrawer(void)
@@ -257,6 +330,7 @@ Fragment::AddPower(Vector2 power)
 void
 FragmentDrawer::Capture(){
 	int r = DxLib::GetDrawScreenGraph(0, 0, 640, 480, _capHandle);
+	int a;
 }
 void
 FragmentDrawer::CreateGraph(int handle)//一応作ったけどコンストラクタで_capHandle設定してるから使わないかも

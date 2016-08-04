@@ -25,6 +25,8 @@ public:
 	void Transparency();
 	void IncrAlpha();
 	void DecrAlpha();
+
+	void Init();
 };
 
 
@@ -69,4 +71,6 @@ public:
 	void TransparentFragment();
 	void IncrFragAlpha();
 	float GetAlpha();//とりあえず一番最初の頂点からアルファ値持ってくる
+
+	void InitVertices();
 };

@@ -11,6 +11,7 @@ class Camera;
 class Enemy;
 class GrabMan;
 class Stage;
+class PlayingScene;
 
 enum PlayerState{
 	ps_Neutral,
@@ -66,7 +67,7 @@ private:
 	void CrouchKamaeUpdate();
 	void GrabbedUpdate();
 	void DeadUpdate();
-	void SpeddUpdate();
+	void SpellUpdate();
 
 	int _walkFrame;
 	int _kickingFrame;
@@ -136,8 +137,10 @@ private:
 
 	int _vertShaderHandle;
 	int _pixelShaderHandle;
+
+	PlayingScene& _playingScene;
 public:
-	Player(Camera&,Stage&);
+	Player(Camera&,Stage&,PlayingScene&);
 	~Player();
 	Vector2& GetPos(){ return _pos; }
 	void Update();

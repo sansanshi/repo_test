@@ -3,12 +3,13 @@
 #include"Camera.h"
 #include"Enemy.h"
 #include"GrabMan.h"
+#include"PlayingScene.h"
 //プレイヤーを2000とかかなり右のほうに置いておいて0に向かっていった方が作りやすい
 //0からはスクロールしないようにする
 
 #define M_PI 3.1415926535
 
-Player::Player(Camera& camera, Stage& stage) :_cameraRef(camera), _stageRef(stage)
+Player::Player(Camera& camera, Stage& stage, PlayingScene& scene) :_cameraRef(camera), _stageRef(stage), _playingScene(scene)
 {
 	_collider = Collider(this, ct_player, col_default);
 	_collider.ToEnable();
@@ -50,6 +51,7 @@ Player::Player(Camera& camera, Stage& stage) :_cameraRef(camera), _stageRef(stag
 	_handleMap[ps_CrouchKamae] = LoadGraph("img/crouch_kamae_.png");
 	_handleMap[ps_Grabbed] = LoadGraph("img/walk_.png");
 	_handleMap[ps_Dead] = LoadGraph("img/damage_bottom.png");
+	_handleMap[ps_Spell] = LoadGraph("img/neutral.png");
 
 	_pFuncMap[ps_Neutral] = &Player::NeutralUpdate;
 	_pFuncMap[ps_Walk] = &Player::WalkUpdate;
@@ -64,6 +66,7 @@ Player::Player(Camera& camera, Stage& stage) :_cameraRef(camera), _stageRef(stag
 	_pFuncMap[ps_CrouchKamae] = &Player::CrouchKamaeUpdate;
 	_pFuncMap[ps_Grabbed] = &Player::GrabbedUpdate;
 	_pFuncMap[ps_Dead] = &Player::DeadUpdate;
+	_pFuncMap[ps_Spell] = &Player::SpellUpdate;
 
 	_stateFrame[ps_Neutral] = 0;
 	_stateFrame[ps_Walk] = 0;
@@ -78,6 +81,7 @@ Player::Player(Camera& camera, Stage& stage) :_cameraRef(camera), _stageRef(stag
 	_stateFrame[ps_CrouchKamae] = 0;
 	_stateFrame[ps_Grabbed] = 0;
 	_stateFrame[ps_Dead] = 0;
+	_stateFrame[ps_Spell] = 0;
 
 
 	std::map<PlayerState, int>::iterator it = _stateFrame.begin();//mapのfirstはconstらしいので無理っぽい
@@ -102,6 +106,7 @@ Player::Player(Camera& camera, Stage& stage) :_cameraRef(camera), _stageRef(stag
 	_drawFuncMap[ps_CrouchKamae] = &Player::DrawCrouchKamae;
 	_drawFuncMap[ps_Grabbed] = &Player::DrawWalk;
 	_drawFuncMap[ps_Dead] = &Player::DrawDead;
+	_drawFuncMap[ps_Spell] = &Player::DrawSpell;
 
 	//attackCol 幅高さ決める　　プレイヤーのセンターからoffset isRightでoffset.xを変える
 	_attackCol= Collider(this, ct_player, col_attack);
@@ -482,6 +487,11 @@ Player::WalkUpdate()
 		if (_kickInterval == 0)ChangeState(ps_Kamae);
 		ChangeAnim(anim_kick);
 	}
+	if (_key[KEY_INPUT_A])
+	{
+		_velocity.x = 0;
+		ChangeState(ps_Spell);
+	}
 
 	if (_prevRejectY == false)//playingSceneの方でUpdate→ステージとの押し戻し　の順で処理していること前提の処理
 	{
@@ -552,6 +562,11 @@ Player::NeutralUpdate()
 		_velocity.x = 0;
 		if (_kickInterval == 0)ChangeState(ps_Kamae);
 		ChangeAnim(anim_kick);
+	}
+	if (_key[KEY_INPUT_A])
+	{
+		_velocity.x = 0;
+		ChangeState(ps_Spell);
 	}
 
 	if (_prevRejectY == false)//playingSceneの方でUpdate→ステージとの押し戻し　の順で処理していること前提の処理
@@ -635,6 +650,22 @@ Player::DeadUpdate()
 		_isDead = true;
 	}
 }
+
+void
+Player::SpellUpdate()
+{
+	_velocity.y = 3.0f;
+	if (_stateFrame[ps_Spell] > 20)
+	{
+		if(_playingScene._isTimeMove)_playingScene.TimeStop();
+		else if(_playingScene._isTimeStop) _playingScene.TimeMove();
+		ChangeState(ps_Neutral);
+	}
+
+	_pos += _velocity;
+	_collider.SetCenter(_pos + Vector2(_cameraRef.OffsetX(), 0));
+}
+
 void
 Player::DrawDead()
 {
@@ -797,6 +828,11 @@ void
 Player::DrawCrouchKamae()
 {
 	DrawCameraGraph(_pos.x, _pos.y-16, 0, 0, 22, 40, 11, 20, 3.0, 0, _handleMap[_state], true, _isRight);
+}
+void
+Player::DrawSpell()
+{
+	DrawCameraGraph(_pos.x, _pos.y , 0, 0, 16, 40, 8, 20, 3.0, 0, _handleMap[_state], true, _isRight);
 }
 
 void

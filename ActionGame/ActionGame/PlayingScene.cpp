@@ -9,7 +9,7 @@
 //死んだら最初から始まる
 
 PlayingScene::PlayingScene() 
-: _player(_camera, _stage), _camera(_player), _enemyFac(_player, _camera,_ebulletFac), _blockFac(_player,_camera), _stage(_camera),_ebulletFac(_camera),_effectFac(_camera)/*, _fragDrawer()*/
+: _player(_camera, _stage,*this), _camera(_player), _enemyFac(_player, _camera,_ebulletFac), _blockFac(_player,_camera), _stage(_camera),_ebulletFac(_camera),_effectFac(_camera), _fragDrawer()
 {
 	_groundZero = 360.0f;
 	_stageGrHandle = LoadGraph("img/stage.png");
@@ -38,6 +38,11 @@ PlayingScene::PlayingScene()
 
 	_timer = 0.f;
 	_timerAccel = 0.f;
+	_fragDrawer.InitVertices();//コンストラクタで走るCreateVerticesだと頂点カラー弄ってるのでそれ直す
+	_isTimeBreaking = false;
+	_isTimeStopping = false;
+	_isTimeStop = false;
+	_isTimeMove - true;
 }
 
 
@@ -48,8 +53,25 @@ PlayingScene::~PlayingScene()
 void
 PlayingScene::Update()
 {
-	_timer += _timerAccel;
-	_timerAccel += 0.05f;
+	if (_isTimeStopping){
+		_timer = min(_timer + _timerAccel, 100.0f);
+		_timerAccel += 0.15f;
+		if (_timer == 100.0f) {
+			_isTimeMove = false;
+			_isTimeStopping = false;
+			_isTimeStop = true;
+		}
+	}
+	if (_isTimeBreaking)
+	{
+		_timer = max(_timer - _timerAccel, 0.0f);
+		_timerAccel -= 0.15f;
+		if (_timer == 0.0f) {
+			_isTimeBreaking = false;
+			_isTimeMove = true;
+		}
+	}
+	
 
 	_camera.Update();
 	_player.Update();
@@ -63,9 +85,9 @@ PlayingScene::Update()
 
 	_stage.Update();
 	
-	_enemyFac.Update();
-	_blockFac.Update();
-	_ebulletFac.Update();
+	if(_timer<100.0f)_enemyFac.Update();
+	if(_timer<100.0f)_blockFac.Update();
+	if (_timer<100.0f)_ebulletFac.Update();
 	_effectFac.Update();
 
 	
@@ -125,6 +147,9 @@ PlayingScene::Update()
 			if(enemy->CharaType()==ct_knifeMan)_blockFac.CreateBlock(bt_vmovable, enemy->GetPos()+Vector2(0,30));//
 			if (enemy->CharaType() == ct_grabMan)_blockFac.CreateBlock(bt_movable, enemy->GetPos() + Vector2(0, 30));
 
+			//TimeBreak();//ここにくるまでに何も描画してないのでGetDrawScreenしても真っ黒な画面しか撮れない
+			//if(_isTimeStopping)_timeBreaking = true;
+
 			Vector2 pos = CollisionDetector::CenterOfHit(enemy->GetCollider(), _player.GetAttackCol());
 			int x = _camera.OffsetX();
 			int a = 0;
@@ -135,7 +160,7 @@ PlayingScene::Update()
 	
 	for (auto& enemy : _enemyFac.GetEnemies())
 	{
-		if (!enemy->CharaType() == ct_batman) continue;
+		if (!(enemy->CharaType() == ct_batman)) continue;
 		if (_player.IsAvailable() && enemy->GetAttackCol().IsCollidable())
 		{
 			if (CollisionDetector::IsHit(_player.GetCollider(), enemy->GetAttackCol()))
@@ -190,6 +215,13 @@ PlayingScene::Update()
 	DrawExtendGraph(0 + _camera.OffsetX(), 0, 640 + _camera.OffsetX(), 480, _stageGrHandle, false);
 	DrawExtendGraph(0 + _camera.OffsetX() + 640, 0, 640 + _camera.OffsetX() + 640, 480, _stageGrHandle, false);
 
+	_enemyFac.Draw();
+	//_player.Draw();
+	_stage.Draw();
+	_blockFac.Draw();
+	_ebulletFac.Draw();
+	_effectFac.Draw();
+
 	SetDrawScreen(DX_SCREEN_BACK);
 	SetPSConstSF(0, _timer);
 	SetUseTextureToShader(0, thirdscreen);
@@ -201,14 +233,16 @@ PlayingScene::Update()
 
 	DrawBox(rect.Left() + _camera.OffsetX(), rect.Top(), rect.Right() + _camera.OffsetX(), rect.Bottom(), 0x000000, true);
 
-	_enemyFac.Draw();
-	_player.Draw();
-	_stage.Draw();
-	_blockFac.Draw();
-	_ebulletFac.Draw();
-	_effectFac.Draw();
-
-	//_fragDrawer.Draw();
+	_player.Draw();//プレイヤーは白黒にしたくないので2回描画してみる
+	
+	//_fragDrawer.Capture();
+	if (_isTimeBreaking)
+	{
+		//TimeBreak();
+		//_timeBreaking = false;
+	}
+	_fragDrawer.Draw();
+	
 
 	DrawExtendGraph(_hpBarRect.Left(),_hpBarRect.Top() ,
 		_hpBarRect.Left() + _hpBarRect.width * _player.GetPercentageHp(), _hpBarRect.Bottom(), _hpBarHandle, false);//バー表示 長いので2行
@@ -218,6 +252,27 @@ PlayingScene::Update()
 
 	_player.IsDead() ? GameMain::Instance().ChangeScene(new PlayingScene()):0;//プレイヤーが死んでたらシーンをロード（sceneをdeleteしてるので処理の一番最後に置く）
 
+}
+
+void
+PlayingScene::TimeBreak()
+{
+	_isTimeStopping = false;
+	_fragDrawer.InitVertices();
+	_fragDrawer.Capture();
+	_fragDrawer.Break();
+	_timer = 0;
+	_timerAccel = 0;
+}
+void
+PlayingScene::TimeStop()
+{
+	_isTimeStopping = true;
+}
+void
+PlayingScene::TimeMove()
+{
+	_isTimeBreaking = true;
 }
 
 

@@ -37,11 +37,22 @@ private:
 
 	float _timer;
 	float _timerAccel;
+
+	FragmentDrawer _fragDrawer;
 	
 public:
 	PlayingScene();
 	~PlayingScene();
 	void Update();
+
+	void TimeBreak();
+	void TimeStop();
+	void TimeMove();
 	//bool HitCheck(GameObject*, GameObject*);
+	bool IsTimeStopping(){ return _timer >= 100.0f; }
+	bool _isTimeBreaking;//’âŽ~‹óŠÔ‚ªk‚ñ‚Å‚¢‚éó‘Ô‚©‚Ç‚¤‚©
+	bool _isTimeStopping;//’âŽ~‹óŠÔ‚ªL‚ª‚Á‚Ä‚¢‚éó‘Ô‚©‚Ç‚¤‚©
+	bool _isTimeStop;//Š®‘S‚É’âŽ~‹óŠÔ‚ªL‚ª‚è‚«‚Á‚½‚©‚Ç‚¤‚©
+	bool _isTimeMove;//Š®‘S‚É’âŽ~‹óŠÔ‚ªk‚Ý‚«‚Á‚½‚©‚Ç‚¤‚©
 };
 
