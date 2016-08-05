@@ -1,6 +1,27 @@
-﻿2016/08/05 17:24:17 にビルドを開始しました。
+﻿2016/08/05 17:29:25 にビルドを開始しました。
      1>ノード 2 上のプロジェクト "C:\Users\student\Desktop\1401349澁谷\repo_test\ActionGame\ActionGame\ActionGame.vcxproj" (Build ターゲット)。
-     1>Link:
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IDxlib /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt PlayingScene.cpp
+         PlayingScene.cpp
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\geometry.h(63): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\geometry.h(64): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\geometry.h(65): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\geometry.h(66): warning C4244: 'return' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\collisiondetector.h(69): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\collisiondetector.h(73): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\collisiondetector.h(95): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\collisiondetector.h(96): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\collisiondetector.h(97): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\collisiondetector.h(98): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\collisiondetector.h(100): warning C4244: '=' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\collisiondetector.h(101): warning C4244: '=' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\playingscene.cpp(168): warning C4244: '初期化中' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\playingscene.cpp(228): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\playingscene.cpp(229): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\playingscene.cpp(230): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\playingscene.cpp(248): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\student\desktop\1401349澁谷\repo_test\actiongame\actiongame\playingscene.cpp(262): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+       Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\student\Desktop\1401349澁谷\repo_test\ActionGame\Debug\ActionGame.exe" /INCREMENTAL /NOLOGO /LIBPATH:Dxlib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\student\Desktop\1401349澁谷\repo_test\ActionGame\Debug\ActionGame.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\student\Desktop\1401349澁谷\repo_test\ActionGame\Debug\ActionGame.lib" /MACHINE:X86 Debug\BatMan.obj
          Debug\Block.obj
          Debug\BlockFactory.obj
@@ -29,24 +50,9 @@
          Debug\Stage.obj
          Debug\TitleScene.obj
          Debug\VMovableBlock.obj
-            ライブラリ C:\Users\student\Desktop\1401349澁谷\repo_test\ActionGame\Debug\ActionGame.lib とオブジェクト C:\Users\student\Desktop\1401349澁谷\repo_test\ActionGame\Debug\ActionGame.exp を作成中
-     1>Stage.obj : warning LNK4099: PDB 'vc120.pdb' が 'Stage.obj' で、または 'C:\Users\student\Desktop\1401349澁谷\repo_test\ActionGame\Debug\vc120.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-     1>SlantingBlock.obj : warning LNK4099: PDB 'vc120.pdb' が 'SlantingBlock.obj' で、または 'C:\Users\student\Desktop\1401349澁谷\repo_test\ActionGame\Debug\vc120.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-     1>Scene.obj : warning LNK4099: PDB 'vc120.pdb' が 'Scene.obj' で、または 'C:\Users\student\Desktop\1401349澁谷\repo_test\ActionGame\Debug\vc120.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-     1>NormalBlock.obj : warning LNK4099: PDB 'vc120.pdb' が 'NormalBlock.obj' で、または 'C:\Users\student\Desktop\1401349澁谷\repo_test\ActionGame\Debug\vc120.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-     1>main.obj : warning LNK4099: PDB 'vc120.pdb' が 'main.obj' で、または 'C:\Users\student\Desktop\1401349澁谷\repo_test\ActionGame\Debug\vc120.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-     1>Geometry.obj : warning LNK4099: PDB 'vc120.pdb' が 'Geometry.obj' で、または 'C:\Users\student\Desktop\1401349澁谷\repo_test\ActionGame\Debug\vc120.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-     1>GameObject.obj : warning LNK4099: PDB 'vc120.pdb' が 'GameObject.obj' で、または 'C:\Users\student\Desktop\1401349澁谷\repo_test\ActionGame\Debug\vc120.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-     1>EnemyBulletFactory.obj : warning LNK4099: PDB 'vc120.pdb' が 'EnemyBulletFactory.obj' で、または 'C:\Users\student\Desktop\1401349澁谷\repo_test\ActionGame\Debug\vc120.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-     1>Enemy.obj : warning LNK4099: PDB 'vc120.pdb' が 'Enemy.obj' で、または 'C:\Users\student\Desktop\1401349澁谷\repo_test\ActionGame\Debug\vc120.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-     1>EffectFactory.obj : warning LNK4099: PDB 'vc120.pdb' が 'EffectFactory.obj' で、または 'C:\Users\student\Desktop\1401349澁谷\repo_test\ActionGame\Debug\vc120.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-     1>Effect.obj : warning LNK4099: PDB 'vc120.pdb' が 'Effect.obj' で、または 'C:\Users\student\Desktop\1401349澁谷\repo_test\ActionGame\Debug\vc120.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-     1>CollisionDetector.obj : warning LNK4099: PDB 'vc120.pdb' が 'CollisionDetector.obj' で、または 'C:\Users\student\Desktop\1401349澁谷\repo_test\ActionGame\Debug\vc120.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-     1>Collider.obj : warning LNK4099: PDB 'vc120.pdb' が 'Collider.obj' で、または 'C:\Users\student\Desktop\1401349澁谷\repo_test\ActionGame\Debug\vc120.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
-     1>Block.obj : warning LNK4099: PDB 'vc120.pdb' が 'Block.obj' で、または 'C:\Users\student\Desktop\1401349澁谷\repo_test\ActionGame\Debug\vc120.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
          ActionGame.vcxproj -> C:\Users\student\Desktop\1401349澁谷\repo_test\ActionGame\Debug\ActionGame.exe
      1>プロジェクト "C:\Users\student\Desktop\1401349澁谷\repo_test\ActionGame\ActionGame\ActionGame.vcxproj" (Build ターゲット) のビルドが完了しました。
 
 ビルドに成功しました。
 
-経過時間 00:00:00.79
+経過時間 00:00:01.53

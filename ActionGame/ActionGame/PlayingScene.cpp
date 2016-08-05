@@ -290,6 +290,7 @@ void
 PlayingScene::TimeMove()
 {
 	_isTimeBreaking = true;
+	_stoppingTimer = 0;
 }
 
 
