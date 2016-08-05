@@ -39,6 +39,9 @@ private:
 	float _timerAccel;
 
 	FragmentDrawer _fragDrawer;
+
+	int _stoppingTimer;//~‚Ü‚Á‚Ä‚¢‚éƒtƒŒ[ƒ€”
+	int _stoppingLimit;//~‚ß‚ç‚ê‚éŠÔ
 	
 public:
 	PlayingScene();

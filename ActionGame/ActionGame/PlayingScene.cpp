@@ -4,6 +4,7 @@
 #include<assert.h>
 #include"GameMain.h"
 #include"Block.h"
+#include<string>
 
 //凝ったタイトル作る
 //死んだら最初から始まる
@@ -42,7 +43,10 @@ PlayingScene::PlayingScene()
 	_isTimeBreaking = false;
 	_isTimeStopping = false;
 	_isTimeStop = false;
-	_isTimeMove - true;
+	_isTimeMove = true;
+
+	_stoppingTimer = 0;
+	_stoppingLimit = 120;
 }
 
 
@@ -64,6 +68,7 @@ PlayingScene::Update()
 	}
 	if (_isTimeBreaking)
 	{
+		_isTimeStop = false;
 		_timer = max(_timer - _timerAccel, 0.0f);
 		_timerAccel -= 0.15f;
 		if (_timer == 0.0f) {
@@ -71,7 +76,16 @@ PlayingScene::Update()
 			_isTimeMove = true;
 		}
 	}
-	
+
+	if (_isTimeStop)
+	{
+		++_stoppingTimer;
+		if (_stoppingTimer > _stoppingLimit)
+		{
+			_stoppingTimer = 0;
+			_isTimeBreaking = true;
+		}
+	}
 
 	_camera.Update();
 	_player.Update();
@@ -247,7 +261,10 @@ PlayingScene::Update()
 	DrawExtendGraph(_hpBarRect.Left(),_hpBarRect.Top() ,
 		_hpBarRect.Left() + _hpBarRect.width * _player.GetPercentageHp(), _hpBarRect.Bottom(), _hpBarHandle, false);//バー表示 長いので2行
 
-
+	DrawString(30, 200, "移動：十字キー\nパンチ：Z　キック：X\n時間停止、解除：A",0xff0000);
+	float f = (float)(_stoppingLimit - _stoppingTimer) / 60.f;
+	std::string s = std::to_string(f);
+	if(_isTimeStop)DrawString(560, 200, s.c_str(), 0x0000ff);
 	
 
 	_player.IsDead() ? GameMain::Instance().ChangeScene(new PlayingScene()):0;//プレイヤーが死んでたらシーンをロード（sceneをdeleteしてるので処理の一番最後に置く）

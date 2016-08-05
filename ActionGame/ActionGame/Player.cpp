@@ -20,7 +20,7 @@ Player::Player(Camera& camera, Stage& stage, PlayingScene& scene) :_cameraRef(ca
 	_velocity = Vector2(0, 0);
 	_acceleration = Vector2(0, 0.2f);
 	 _collider.SetRect(Rect(_pos,32, 128));
-	_handle = LoadGraph("img/neutral.png");
+	//_handle = LoadGraph("img/neutral.png");
 	_isRight = false;
 	_walkFrame = 0;
 	_kickingFrame = 0;
@@ -38,20 +38,20 @@ Player::Player(Camera& camera, Stage& stage, PlayingScene& scene) :_cameraRef(ca
 	_attackDamage = 1;
 	_walkSpd = 5.0f;
 
-	_handleMap[ps_Neutral] = LoadGraph("img/neutral.png");
-	_handleMap[ps_Jump] = LoadGraph("img/jump.png");
-	_handleMap[ps_Walk] = LoadGraph("img/walk_.png");
-	_handleMap[ps_Punch] = LoadGraph("img/punch_.png");
-	_handleMap[ps_Kick] = LoadGraph("img/kick_.png");
-	_handleMap[ps_JumpKick] = LoadGraph("img/jump_kick_.png");
-	_handleMap[ps_Crouch] = LoadGraph("img/crouch_.png");
-	_handleMap[ps_CrouchKick] = LoadGraph("img/crouch_kick_.png");
-	_handleMap[ps_CrouchPunch] = LoadGraph("img/crouch_punch_.png");
-	_handleMap[ps_Kamae] = LoadGraph("img/kamae.png");
-	_handleMap[ps_CrouchKamae] = LoadGraph("img/crouch_kamae_.png");
-	_handleMap[ps_Grabbed] = LoadGraph("img/walk_.png");
+	_handleMap[ps_Neutral] = LoadGraph("img/sakuya/stand.png");
+	_handleMap[ps_Jump] = LoadGraph("img/sakuya/jump.png");
+	_handleMap[ps_Walk] = LoadGraph("img/sakuya/walk.png");
+	_handleMap[ps_Punch] = LoadGraph("img/sakuya/punch.png");
+	_handleMap[ps_Kick] = LoadGraph("img/sakuya/kick.png");
+	_handleMap[ps_JumpKick] = LoadGraph("img/sakuya/jump_kick.png");
+	_handleMap[ps_Crouch] = LoadGraph("img/sakuya/crouch.png");
+	_handleMap[ps_CrouchKick] = LoadGraph("img/sakuya/crouch_kick.png");
+	_handleMap[ps_CrouchPunch] = LoadGraph("img/sakuya/crouch_punch.png");
+	_handleMap[ps_Kamae] = LoadGraph("img/sakuya/kamae.png");
+	_handleMap[ps_CrouchKamae] = LoadGraph("img/sakuya/crouch_kamae.png");
+	_handleMap[ps_Grabbed] = LoadGraph("img/sakuya/stand.png");
 	_handleMap[ps_Dead] = LoadGraph("img/damage_bottom.png");
-	_handleMap[ps_Spell] = LoadGraph("img/neutral.png");
+	_handleMap[ps_Spell] = LoadGraph("img/sakuya/spell_.png");
 
 	_pFuncMap[ps_Neutral] = &Player::NeutralUpdate;
 	_pFuncMap[ps_Walk] = &Player::WalkUpdate;
@@ -111,13 +111,13 @@ Player::Player(Camera& camera, Stage& stage, PlayingScene& scene) :_cameraRef(ca
 	//attackCol 幅高さ決める　　プレイヤーのセンターからoffset isRightでoffset.xを変える
 	_attackCol= Collider(this, ct_player, col_attack);
 	_attackCol.ToEnable();
-	_attackCol.width = 20;
-	_attackCol.height = 20;
+	_attackCol.width = 40;
+	_attackCol.height = 30;
 	_attackColOffset = _isRight ? Vector2(44, 10) : Vector2(-44, 10);
 
-	_deadHandle = LoadGraph("img/damage_top.png");
+	_deadHandle = LoadGraph("img/sakuya/dead.png");
 	_fragDrawer = new FragmentDrawer(_deadHandle);
-	_fragDrawer->FragmentScalling(3.0f);
+	_fragDrawer->FragmentScalling(1.0f);
 
 	_isAvailable = true;
 	_isDead = false;
@@ -241,8 +241,8 @@ Player::Draw()
 	//DrawExtendGraph(_pos.x, _pos.y, _pos.x + 32, _pos.y + 128, _handleMap[_state], true);
 	//面倒なのでステートで分ける_
 	(this->*_drawFuncMap[_state])();
-	_collider.Draw();
-	_attackCol.Draw(0xff000000);
+	//_collider.Draw();
+	//_attackCol.Draw(0xff000000);
 	//DrawBox(0, 400, 640, 480, 0xffffff,false);
 
 	FLOAT4 f4 = { 0.2f, 0.2f, 0.2f, 0.2f };
@@ -349,7 +349,7 @@ Player::GroundUpdate()
 void
 Player::KickUpdate()
 {
-	_attackColOffset = _isRight ? Vector2(64+_cOffsetX, -30) : Vector2(-64+_cOffsetX, -30);
+	_attackColOffset = _isRight ? Vector2(64+_cOffsetX, -10) : Vector2(-64+_cOffsetX, -10);
 	_attackCol.SetCenter(_pos + _attackColOffset);
 	if (_stateFrame[ps_Kick] > 10)
 	{
@@ -580,7 +580,7 @@ Player::NeutralUpdate()
 void
 Player::JumpKickUpdate()
 {
-	_attackColOffset = _isRight ? Vector2(58 + _cOffsetX, -32) : Vector2(-58 + _cOffsetX, -32);//攻撃判定
+	_attackColOffset = _isRight ? Vector2(58 + _cOffsetX, +16) : Vector2(-58 + _cOffsetX, +16);//攻撃判定
 	_attackCol.SetCenter(_pos + _attackColOffset);
 	
 
@@ -675,7 +675,7 @@ void
 Player::CrouchKickUpdate()
 {
 	_velocity.y = 3.0f;
-	_attackColOffset = _isRight ? Vector2(64 + _cOffsetX, 52) : Vector2(-64 + _cOffsetX, 52);
+	_attackColOffset = _isRight ? Vector2(64 + _cOffsetX, 32) : Vector2(-64 + _cOffsetX, 32);
 	_attackCol.SetCenter(_pos + _attackColOffset);
 
 	if (_stateFrame[_state] >= 15)
@@ -691,7 +691,7 @@ void
 Player::CrouchPunchUpdate()
 {
 	_velocity.y = 3.0f;
-	_attackColOffset = _isRight ? Vector2(48 + _cOffsetX, 0) : Vector2(-48 + _cOffsetX, 0);
+	_attackColOffset = _isRight ? Vector2(64 + _cOffsetX, 0) : Vector2(-64 + _cOffsetX, 0);
 	_attackCol.SetCenter(_pos + _attackColOffset);
 
 	_stateFrame[_state]++;
@@ -773,33 +773,33 @@ Player::GrabbedUpdate()
 void
 Player::DrawNeutral()
 {
-	DrawCameraGraph(_pos.x, _pos.y, 16 * 0, 0, 16, 40, 8, 20, 3.0, 0, _handleMap[_state], true, _isRight);
+	DrawCameraGraph(_pos.x, _pos.y, 64 * ((_stateFrame[ps_Neutral]%60)/10), 0, 64, 128, 32, 64, 1.1, 0, _handleMap[_state], true, !_isRight);
 }
 void
 Player::DrawKick()
 {
-	DrawCameraGraph(_pos.x, _pos.y, 0,0,50, 40,25,20, 3.0, 0, _handleMap[_state], true, _isRight);
+	DrawCameraGraph(_pos.x, _pos.y, 0,0,128, 128,64,64, 1.1, 0, _handleMap[_state], true, !_isRight);
 }
 void 
 Player::DrawPunch()
 {
-	DrawCameraGraph(_pos.x, _pos.y, 0,0,32, 40,16,20, 3.0, 0, _handleMap[_state], true, _isRight);
+	DrawCameraGraph(_pos.x, _pos.y, 0,0,64, 128,32,64, 1.1, 0, _handleMap[_state], true, !_isRight);
 }
 void
 Player::DrawWalk()
 {
 	//DrawCameraGraph(_pos.x, _pos.y, 16 * ((_walkFrame % 20) / 10), 0, 16, 40, 8, 20, 3.0, 0, _handleMap[_state], true, _isRight);
-	DrawCameraGraph(_pos.x, _pos.y, 16 * ((_walkFrame % 20) / 10), 0, 16, 40, 8, 20, 3.0, 0, _handleMap[_state], true, _isRight);//描画場所を変えてるだけなのでrectがついてきてない
+	DrawCameraGraph(_pos.x, _pos.y, 64 * ((_walkFrame % 90) / 10), 0, 64, 128, 32, 64, 1.1, 0, _handleMap[_state], true, !_isRight);//描画場所を変えてるだけなのでrectがついてきてない
 }
 void
 Player::DrawJump()
 {
-	DrawCameraGraph(_pos.x, _pos.y, 0, 0, 16, 40, 8, 20, 3.0, 0, _handleMap[_state], true, _isRight);
+	DrawCameraGraph(_pos.x, _pos.y, 0, 0, 128, 128, 64, 64, 1.1, 0, _handleMap[_state], true, !_isRight);
 }
 void
 Player::DrawJumpKick()
 {
-	DrawCameraGraph(_pos.x, _pos.y, 0, 0, 38, 44, 19, 22, 3.0, 0, _handleMap[_state], true, _isRight);
+	DrawCameraGraph(_pos.x, _pos.y, 0, 0, 128, 128, 64, 64, 1.1, 0, _handleMap[_state], true, !_isRight);
 }
 void
 Player::DrawCrouch()
@@ -807,32 +807,32 @@ Player::DrawCrouch()
 	//int w, h;//画像のサイズをとってきて自動で下に合わせている
 	//GetGraphSize(_handleMap[_state], &w, &h);
 	//DrawRotaGraph2(_rect.Center().x, 400 - 3.0*(h / 2), 8, 16, 3.0, 0, _handleMap[_state], true, _isRight);
-	DrawCameraGraph(_pos.x, _pos.y-16, 0, 0, 16, 40, 8, 20, 3.0, 0, _handleMap[_state], true, _isRight);
+	DrawCameraGraph(_pos.x, _pos.y-16, 0, 0, 128, 128, 64, 64, 1.1, 0, _handleMap[_state], true, !_isRight);
 }
 void
 Player::DrawCrouchKick()
 {
-	DrawCameraGraph(_pos.x, _pos.y-16, 0, 0, 50, 40, 25, 20, 3.0, 0, _handleMap[_state], true, _isRight);
+	DrawCameraGraph(_pos.x, _pos.y, 0, 0, 128, 64, 64, 32, 1.1, 0, _handleMap[_state], true, !_isRight);
 }
 void
 Player::DrawCrouchPunch()
 {
-	DrawCameraGraph(_pos.x, _pos.y-16, 0, 0, 40, 40, 20, 20, 3.0, 0, _handleMap[_state], true, _isRight);
+	DrawCameraGraph(_pos.x, _pos.y, 0, 0, 192, 64, 96, 32, 1.1, 0, _handleMap[_state], true, !_isRight);
 }
 void 
 Player::DrawKamae()
 {
-	DrawCameraGraph(_pos.x, _pos.y, 0, 0, 16, 40, 8, 20, 3.0, 0, _handleMap[_state], true, _isRight);
+	DrawCameraGraph(_pos.x, _pos.y, 0, 0, 64, 128, 32, 64, 1.1, 0, _handleMap[_state], true, !_isRight);
 }
 void
 Player::DrawCrouchKamae()
 {
-	DrawCameraGraph(_pos.x, _pos.y-16, 0, 0, 22, 40, 11, 20, 3.0, 0, _handleMap[_state], true, _isRight);
+	DrawCameraGraph(_pos.x, _pos.y, 0, 0, 128, 64, 64, 32, 1.1, 0, _handleMap[_state], true, !_isRight);
 }
 void
 Player::DrawSpell()
 {
-	DrawCameraGraph(_pos.x, _pos.y , 0, 0, 16, 40, 8, 20, 3.0, 0, _handleMap[_state], true, _isRight);
+	DrawCameraGraph(_pos.x, _pos.y , 64*(min(_stateFrame[ps_Spell],31)/8), 0, 64, 128, 32, 64, 1.1, 0, _handleMap[_state], true, !_isRight);
 }
 
 void
@@ -903,8 +903,8 @@ Player::Killed()
 
 	ChangeState(ps_Dead);
 	_isRight ? _fragDrawer->TurnUV() : 0;//uv値のUだけ反転
-	_fragDrawer->FragmentScalling(3.0f);//Scallingの方を先にする
-	_fragDrawer->FragmentTranslation(Vector2(_collider.Left() - 32, _collider.Top()));
+	_fragDrawer->FragmentScalling(1.0f);//Scallingの方を先にする
+	_fragDrawer->FragmentTranslation(Vector2(_collider.Left() - 64, _collider.Top()));
 	_fragDrawer->Break();
 
 	std::list<GrabMan*>::iterator it = _grabbingEnemies.begin();

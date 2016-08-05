@@ -142,7 +142,7 @@ void
 BatMan::Draw()
 {
 	(this->*_drawFuncMap[_state])();
-	_collider.Draw();
+	//_collider.Draw();
 
 	_attackCol.Draw();
 }

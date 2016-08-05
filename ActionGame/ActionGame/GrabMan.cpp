@@ -137,7 +137,7 @@ void
 GrabMan::Draw()
 {
 	(this->*_drawFuncMap[_state])();
-	_collider.Draw();
+	//_collider.Draw();
 	
 	
 }

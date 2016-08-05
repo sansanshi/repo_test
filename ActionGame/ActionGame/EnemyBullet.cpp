@@ -32,7 +32,7 @@ void
 EnemyBullet::Draw()
 {
 	DrawCameraGraph(_pos.x, _pos.y, 0, 0, 8, 4, 4, 2, 3.0f, 0.0f, _handle, true, _isLeft);
-	_collider.Draw();
+	//_collider.Draw();
 }
 
 void

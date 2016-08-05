@@ -43,6 +43,15 @@ PS_OUTPUT main( PS_INPUT PSInput )  //“ü—Í’l
 		TextureColor.g = Y;
 		TextureColor.b = Y;
 	}
+	else
+	{
+		if (timer != 0.0f)
+		{
+			TextureColor.r = 1.0f - TextureColor.r;
+			TextureColor.g = 1.0f - TextureColor.g;
+			TextureColor.b = 1.0f - TextureColor.b;
+		}
+	}
 	/*if (temp2 < radius + 0.2f)//‚®‚É‚á‚®‚É‚á
 	{
 		CalcPos.x = fmod(1.0 + PSInput.TextureCoord0.x + 0.2*sin(PSInput.TextureCoord0.y * 24.0 + timer), 1.0);
