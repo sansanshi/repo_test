@@ -261,7 +261,7 @@ PlayingScene::Update()
 	DrawExtendGraph(_hpBarRect.Left(),_hpBarRect.Top() ,
 		_hpBarRect.Left() + _hpBarRect.width * _player.GetPercentageHp(), _hpBarRect.Bottom(), _hpBarHandle, false);//バー表示 長いので2行
 
-	DrawString(30, 200, "移動：十字キー\nパンチ：Z　キック：X\n時間停止、解除：A",0xff0000);
+	DrawString(30, 200, "移動：十字キー\nパンチ：Z　キック：X\n時間停止、解除：A\nジャンプ：スペース",0xff0000);
 	float f = (float)(_stoppingLimit - _stoppingTimer) / 60.f;
 	std::string s = std::to_string(f);
 	if(_isTimeStop)DrawString(560, 200, s.c_str(), 0x0000ff);
